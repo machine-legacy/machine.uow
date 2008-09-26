@@ -10,4 +10,5 @@ bin
 _ReSharper.*
 InstallUtil.InstallLog
 NDependOut
+Specifications.html
 Libraries/Machine
