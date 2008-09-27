@@ -47,6 +47,12 @@
     <Compile Include="UnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Machine.UoW\Machine.UoW.csproj">
+      <Project>{2B83DA69-260F-41E3-975F-D96C3ECD24B0}</Project>
+      <Name>Machine.UoW</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

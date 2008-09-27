@@ -5,7 +5,11 @@ namespace Machine.UoW
 {
   public interface IUnitOfWork
   {
+    void AddNew<T>(T instance);
     void Save<T>(T instance);
+    void Remove<T>(T instance);
     void Delete<T>(T instance);
+    void Commit();
+    void Rollback();
   }
 }
