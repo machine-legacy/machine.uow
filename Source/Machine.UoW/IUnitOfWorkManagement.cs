@@ -9,10 +9,5 @@ namespace Machine.UoW
     {
       get;
     }
-
-    IEnumerable<UnitOfWorkChange> Changes
-    {
-      get;
-    }
   }
 }

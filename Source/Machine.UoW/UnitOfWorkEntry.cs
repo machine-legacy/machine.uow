@@ -6,22 +6,22 @@ namespace Machine.UoW
   public class UnitOfWorkEntry
   {
     private readonly object _instance;
-    private readonly List<UnitOfWorkChange> _changes;
+    private readonly List<UnitOfWorkChangeType> _changes;
 
     public object Instance
     {
       get { return _instance; }
     }
 
-    public IEnumerable<UnitOfWorkChange> Changes
+    public IEnumerable<UnitOfWorkChangeType> Changes
     {
       get { return _changes; }
     }
 
-    public UnitOfWorkEntry(object instance, List<UnitOfWorkChange> changes)
+    public UnitOfWorkEntry(object instance)
     {
       _instance = instance;
-      _changes = changes;
+      _changes = new List<UnitOfWorkChangeType>();
     }
 
     public void Saved()
