@@ -6,6 +6,12 @@ namespace Machine.UoW
   public class UnitOfWork : IUnitOfWork
   {
     private readonly Dictionary<object, UnitOfWorkEntry> _entries = new Dictionary<object, UnitOfWorkEntry>();
+    private readonly IUnitOfWorkManagement _unitOfWorkManagement;
+
+    public UnitOfWork(IUnitOfWorkManagement unitOfWorkManagement)
+    {
+      _unitOfWorkManagement = unitOfWorkManagement;
+    }
 
     public void AddNew<T>(T instance)
     {

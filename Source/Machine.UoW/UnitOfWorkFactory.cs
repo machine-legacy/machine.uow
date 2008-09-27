@@ -5,9 +5,16 @@ namespace Machine.UoW
 {
   public class UnitOfWorkFactory : IUnitOfWorkFactory
   {
+    private readonly IUnitOfWorkManagement _unitOfWorkManagement;
+
+    public UnitOfWorkFactory(IUnitOfWorkManagement unitOfWorkManagement)
+    {
+      _unitOfWorkManagement = unitOfWorkManagement;
+    }
+
     public IUnitOfWork StartUnitOfWork()
     {
-      return new UnitOfWork();
+      return new UnitOfWork(_unitOfWorkManagement);
     }
   }
 }

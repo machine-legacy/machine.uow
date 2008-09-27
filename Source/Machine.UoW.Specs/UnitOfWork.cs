@@ -13,7 +13,7 @@ namespace Machine.UoW.Specs
     Establish context = () =>
     {
       instance = new object();
-      uow = new UnitOfWork();
+      uow = new UnitOfWork(new UnitOfWorkManagement());
     };
   }
   [Concern("Unit of work")]

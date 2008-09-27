@@ -14,7 +14,7 @@ namespace Machine.UoW.Specs
 
     Establish context = () =>
     {
-      factory = new UnitOfWorkFactory();
+      factory = new UnitOfWorkFactory(new UnitOfWorkManagement());
     };
 
     Because of = () =>
