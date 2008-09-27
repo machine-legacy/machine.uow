@@ -55,9 +55,5 @@ namespace Machine.UoW
         _changes.Add(UnitOfWorkChangeType.Deleted);
       }
     }
-
-    public void Updated()
-    {
-    }
   }
 }
