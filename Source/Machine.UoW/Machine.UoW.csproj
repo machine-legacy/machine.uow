@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IUnitOfWork.cs" />
+    <Compile Include="IUnitOfWorkEvents.cs" />
     <Compile Include="IUnitOfWorkFactory.cs" />
     <Compile Include="IUnitOfWorkManagement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -46,6 +47,7 @@
     <Compile Include="UnitOfWorkChangeType.cs" />
     <Compile Include="UnitOfWorkEntry.cs" />
     <Compile Include="UnitOfWorkFactory.cs" />
+    <Compile Include="UnitOfWorkManagement.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
