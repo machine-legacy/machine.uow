@@ -24,12 +24,36 @@ namespace Machine.UoW
       _changes = new List<UnitOfWorkChangeType>();
     }
 
-    public void Saved()
+    public void Add()
     {
+      if (_changes.Contains(UnitOfWorkChangeType.Saved) || _changes.Contains(UnitOfWorkChangeType.Deleted))
+      {
+        throw new InvalidOperationException("Adding a object to a UoW when it's been Saved or Deleted already?");
+      }
+      if (!_changes.Contains(UnitOfWorkChangeType.Added))
+      {
+        _changes.Add(UnitOfWorkChangeType.Added);
+      }
     }
 
-    public void Deleted()
+    public void Save()
     {
+      if (_changes.Contains(UnitOfWorkChangeType.Deleted))
+      {
+        throw new InvalidOperationException("Saving an object in a UoW when it's been Deleted already?");
+      }
+      if (!_changes.Contains(UnitOfWorkChangeType.Saved))
+      {
+        _changes.Add(UnitOfWorkChangeType.Saved);
+      }
+    }
+
+    public void Delete()
+    {
+      if (!_changes.Contains(UnitOfWorkChangeType.Deleted))
+      {
+        _changes.Add(UnitOfWorkChangeType.Deleted);
+      }
     }
 
     public void Updated()

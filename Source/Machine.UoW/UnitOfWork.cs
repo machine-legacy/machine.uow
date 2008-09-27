@@ -9,22 +9,26 @@ namespace Machine.UoW
 
     public void AddNew<T>(T instance)
     {
-      throw new System.NotImplementedException();
+      FindOrCreateEntryFor(instance).Add();
     }
 
     public void Save<T>(T instance)
     {
-      throw new System.NotImplementedException();
+      FindOrCreateEntryFor(instance).Save();
     }
 
     public void Remove<T>(T instance)
     {
-      throw new System.NotImplementedException();
+      if (!HasEntryFor(instance))
+      {
+        throw new InvalidOperationException("Not allowed to remove instance that is NOT in the UoW.");
+      }
+      _entries.Remove(instance);
     }
 
     public void Delete<T>(T instance)
     {
-      throw new System.NotImplementedException();
+      FindOrCreateEntryFor(instance).Delete();
     }
 
     public void Commit()
@@ -44,7 +48,25 @@ namespace Machine.UoW
 
     public UnitOfWorkEntry FindEntryFor(object instance)
     {
-      throw new System.NotImplementedException();
+      if (HasEntryFor(instance))
+      {
+        return _entries[instance];
+      }
+      throw new KeyNotFoundException();
+    }
+
+    private UnitOfWorkEntry FindOrCreateEntryFor(object instance)
+    {
+      if (!HasEntryFor(instance))
+      {
+        _entries[instance] = new UnitOfWorkEntry(instance);
+      }
+      return _entries[instance];
+    }
+
+    public bool HasEntryFor(object instance)
+    {
+      return _entries.ContainsKey(instance);
     }
   }
 }
