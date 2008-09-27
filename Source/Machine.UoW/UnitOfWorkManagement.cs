@@ -5,9 +5,11 @@ namespace Machine.UoW
 {
   public class UnitOfWorkManagement : IUnitOfWorkManagement
   {
+    private IUnitOfWorkEvents _globalEvents;
+
     public void AddGlobalEvents(IUnitOfWorkEvents unitOfWorkEvents)
     {
-      throw new System.NotImplementedException();
+      _globalEvents = unitOfWorkEvents;
     }
 
     public void AddEventsFor<T>(IUnitOfWorkEvents unitOfWorkEvents)
@@ -17,7 +19,7 @@ namespace Machine.UoW
 
     public IUnitOfWorkEvents FindEventsFor(Type objectType)
     {
-      throw new System.NotImplementedException();
+      return _globalEvents;
     }
   }
 }

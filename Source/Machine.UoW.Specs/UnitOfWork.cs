@@ -9,11 +9,13 @@ namespace Machine.UoW.Specs
   {
     protected static object instance;
     protected static UnitOfWork uow;
+    protected static UnitOfWorkManagement unitOfWorkManagement;
 
     Establish context = () =>
     {
       instance = new object();
-      uow = new UnitOfWork(new UnitOfWorkManagement());
+      unitOfWorkManagement = new UnitOfWorkManagement();
+      uow = new UnitOfWork(unitOfWorkManagement);
     };
   }
   [Concern("Unit of work")]

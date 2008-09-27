@@ -55,5 +55,42 @@ namespace Machine.UoW
         _changes.Add(UnitOfWorkChangeType.Deleted);
       }
     }
+
+    public void Rollback(IUnitOfWorkManagement management)
+    {
+      IUnitOfWorkEvents events = management.FindEventsFor(_instance.GetType());
+      events.Rollback(_instance);
+    }
+
+    public void Commit(IUnitOfWorkManagement management)
+    {
+      IUnitOfWorkEvents events = management.FindEventsFor(_instance.GetType());
+      foreach (UnitOfWorkChangeType change in this.ChangesToBeCommitted)
+      {
+        switch (change)
+        {
+          case UnitOfWorkChangeType.Added:
+            events.AddNew(_instance);
+            break;
+          case UnitOfWorkChangeType.Saved:
+            events.Save(_instance);
+            break;
+          case UnitOfWorkChangeType.Deleted:
+            events.Delete(_instance);
+            break;
+        }
+      }
+    }
+
+    private IEnumerable<UnitOfWorkChangeType> ChangesToBeCommitted
+    {
+      get
+      {
+        foreach (UnitOfWorkChangeType change in _changes)
+        {
+          yield return change;
+        }
+      }
+    }
   }
 }

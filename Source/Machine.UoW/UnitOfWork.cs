@@ -39,12 +39,18 @@ namespace Machine.UoW
 
     public void Commit()
     {
-      throw new System.NotImplementedException();
+      foreach (UnitOfWorkEntry entry in _entries.Values)
+      {
+        entry.Commit(_unitOfWorkManagement);
+      }
     }
 
     public void Rollback()
     {
-      throw new System.NotImplementedException();
+      foreach (UnitOfWorkEntry entry in _entries.Values)
+      {
+        entry.Rollback(_unitOfWorkManagement);
+      }
     }
 
     public IEnumerable<UnitOfWorkEntry> Entries
