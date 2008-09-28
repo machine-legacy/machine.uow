@@ -18,6 +18,40 @@ namespace Machine.UoW.Specs
       uow = new UnitOfWork(unitOfWorkManagement);
     };
   }
+
+  [Subject("Unit of work")]
+  public class when_adding_a_null_reference : when_manipulating_a_unit_of_work
+  {
+    static Exception error;
+
+    Because of = () => error = Catch.Exception(() => uow.AddNew<object>(null));
+
+    It should_fail = () =>
+      error.ShouldBeOfType<ArgumentNullException>();
+  }
+
+  [Subject("Unit of work")]
+  public class when_saving_a_null_reference : when_manipulating_a_unit_of_work
+  {
+    static Exception error;
+
+    Because of = () => error = Catch.Exception(() => uow.Save<object>(null));
+
+    It should_fail = () =>
+      error.ShouldBeOfType<ArgumentNullException>();
+  }
+
+  [Subject("Unit of work")]
+  public class when_deleting_a_null_reference : when_manipulating_a_unit_of_work
+  {
+    static Exception error;
+
+    Because of = () => error = Catch.Exception(() => uow.Delete<object>(null));
+
+    It should_fail = () =>
+      error.ShouldBeOfType<ArgumentNullException>();
+  }
+
   [Subject("Unit of work")]
   public class when_adding_object : when_manipulating_a_unit_of_work
   {
@@ -179,7 +213,7 @@ namespace Machine.UoW.Specs
 
     It should_put_the_object_in_the_entries = () =>
       uow.HasEntryFor(instance).ShouldBeTrue();
-    
+
     It should_have_saved_and_deleted_changes = () =>
       uow.FindEntryFor(instance).Changes.ShouldContainOnly(UnitOfWorkChangeType.Saved, UnitOfWorkChangeType.Deleted);
   }
@@ -211,7 +245,7 @@ namespace Machine.UoW.Specs
 
     It should_put_the_object_in_the_entries = () =>
       uow.HasEntryFor(instance).ShouldBeTrue();
-    
+
     It should_have_added_and_saved_and_deleted_changes = () =>
       uow.FindEntryFor(instance).Changes.ShouldContainOnly(UnitOfWorkChangeType.Added, UnitOfWorkChangeType.Saved, UnitOfWorkChangeType.Deleted);
   }
@@ -236,7 +270,8 @@ namespace Machine.UoW.Specs
   {
     static Exception error;
 
-    Because of = () =>error = Catch.Exception(() => {
+    Because of = () => error = Catch.Exception(() =>
+    {
       uow.Delete(instance);
       uow.AddNew(instance);
     });
