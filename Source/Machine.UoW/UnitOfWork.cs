@@ -15,7 +15,7 @@ namespace Machine.UoW
 
     public void AddNew<T>(T instance)
     {
-      FindOrCreateEntryFor(instance).Add();
+      FindOrCreateEntryFor(instance).AddNew();
     }
 
     public void Save<T>(T instance)

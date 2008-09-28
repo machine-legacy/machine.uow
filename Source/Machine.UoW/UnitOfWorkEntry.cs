@@ -24,7 +24,7 @@ namespace Machine.UoW
       _changes = new List<UnitOfWorkChangeType>();
     }
 
-    public void Add()
+    public void AddNew()
     {
       if (_changes.Contains(UnitOfWorkChangeType.Saved) || _changes.Contains(UnitOfWorkChangeType.Deleted))
       {
