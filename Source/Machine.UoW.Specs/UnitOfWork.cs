@@ -18,7 +18,7 @@ namespace Machine.UoW.Specs
       uow = new UnitOfWork(unitOfWorkManagement);
     };
   }
-  [Concern("Unit of work")]
+  [Subject("Unit of work")]
   public class when_adding_object : when_manipulating_a_unit_of_work
   {
     Because of = () => uow.AddNew(instance);
@@ -30,7 +30,7 @@ namespace Machine.UoW.Specs
       uow.FindEntryFor(instance).Changes.ShouldContainOnly(UnitOfWorkChangeType.Added);
   }
 
-  [Concern("Unit of work")]
+  [Subject("Unit of work")]
   public class when_adding_object_multiple_times : when_manipulating_a_unit_of_work
   {
     Because of = () =>
@@ -46,7 +46,7 @@ namespace Machine.UoW.Specs
       uow.FindEntryFor(instance).Changes.ShouldContainOnly(UnitOfWorkChangeType.Added);
   }
 
-  [Concern("Unit of work")]
+  [Subject("Unit of work")]
   public class when_saving_object : when_manipulating_a_unit_of_work
   {
     Because of = () => uow.Save(instance);
@@ -58,7 +58,7 @@ namespace Machine.UoW.Specs
       uow.FindEntryFor(instance).Changes.ShouldContainOnly(UnitOfWorkChangeType.Saved);
   }
 
-  [Concern("Unit of work")]
+  [Subject("Unit of work")]
   public class when_saving_object_multiple_times : when_manipulating_a_unit_of_work
   {
     Because of = () =>
@@ -74,7 +74,7 @@ namespace Machine.UoW.Specs
       uow.FindEntryFor(instance).Changes.ShouldContainOnly(UnitOfWorkChangeType.Saved);
   }
 
-  [Concern("Unit of work")]
+  [Subject("Unit of work")]
   public class when_deleting_object : when_manipulating_a_unit_of_work
   {
     Because of = () => uow.Delete(instance);
@@ -86,7 +86,7 @@ namespace Machine.UoW.Specs
       uow.FindEntryFor(instance).Changes.ShouldContainOnly(UnitOfWorkChangeType.Deleted);
   }
 
-  [Concern("Unit of work")]
+  [Subject("Unit of work")]
   public class when_deleting_object_multiple_times : when_manipulating_a_unit_of_work
   {
     Because of = () =>
@@ -102,7 +102,7 @@ namespace Machine.UoW.Specs
       uow.FindEntryFor(instance).Changes.ShouldContainOnly(UnitOfWorkChangeType.Deleted);
   }
 
-  [Concern("Unit of work")]
+  [Subject("Unit of work")]
   public class when_adding_and_then_removing_object : when_manipulating_a_unit_of_work
   {
     Because of = () =>
@@ -115,7 +115,7 @@ namespace Machine.UoW.Specs
       uow.HasEntryFor(instance).ShouldBeFalse();
   }
 
-  [Concern("Unit of work")]
+  [Subject("Unit of work")]
   public class when_saving_and_then_removing_object : when_manipulating_a_unit_of_work
   {
     Because of = () =>
@@ -128,7 +128,7 @@ namespace Machine.UoW.Specs
       uow.HasEntryFor(instance).ShouldBeFalse();
   }
 
-  [Concern("Unit of work")]
+  [Subject("Unit of work")]
   public class when_deleting_and_then_removing_object : when_manipulating_a_unit_of_work
   {
     Because of = () =>
@@ -141,7 +141,7 @@ namespace Machine.UoW.Specs
       uow.HasEntryFor(instance).ShouldBeFalse();
   }
 
-  [Concern("Unit of work")]
+  [Subject("Unit of work")]
   public class when_removing_object_that_has_no_entry : when_manipulating_a_unit_of_work
   {
     static Exception error;
@@ -152,7 +152,7 @@ namespace Machine.UoW.Specs
       error.ShouldBeOfType<InvalidOperationException>();
   }
 
-  [Concern("Unit of work")]
+  [Subject("Unit of work")]
   public class when_adding_and_then_deleting_object : when_manipulating_a_unit_of_work
   {
     Because of = () =>
@@ -168,7 +168,7 @@ namespace Machine.UoW.Specs
       uow.FindEntryFor(instance).Changes.ShouldContainOnly(UnitOfWorkChangeType.Added, UnitOfWorkChangeType.Deleted);
   }
 
-  [Concern("Unit of work")]
+  [Subject("Unit of work")]
   public class when_saving_and_then_deleting_object : when_manipulating_a_unit_of_work
   {
     Because of = () =>
@@ -184,7 +184,7 @@ namespace Machine.UoW.Specs
       uow.FindEntryFor(instance).Changes.ShouldContainOnly(UnitOfWorkChangeType.Saved, UnitOfWorkChangeType.Deleted);
   }
 
-  [Concern("Unit of work")]
+  [Subject("Unit of work")]
   public class when_saving_and_then_adding_object : when_manipulating_a_unit_of_work
   {
     static Exception error;
@@ -199,7 +199,7 @@ namespace Machine.UoW.Specs
       error.ShouldBeOfType<InvalidOperationException>();
   }
 
-  [Concern("Unit of work")]
+  [Subject("Unit of work")]
   public class when_adding_and_then_saving_and_then_deleting_object : when_manipulating_a_unit_of_work
   {
     Because of = () =>
@@ -216,7 +216,7 @@ namespace Machine.UoW.Specs
       uow.FindEntryFor(instance).Changes.ShouldContainOnly(UnitOfWorkChangeType.Added, UnitOfWorkChangeType.Saved, UnitOfWorkChangeType.Deleted);
   }
 
-  [Concern("Unit of work")]
+  [Subject("Unit of work")]
   public class when_deleting_and_then_saving_object : when_manipulating_a_unit_of_work
   {
     static Exception error;
@@ -231,7 +231,7 @@ namespace Machine.UoW.Specs
       error.ShouldBeOfType<InvalidOperationException>();
   }
 
-  [Concern("Unit of work")]
+  [Subject("Unit of work")]
   public class when_deleting_and_then_adding_object : when_manipulating_a_unit_of_work
   {
     static Exception error;

@@ -7,7 +7,7 @@ using Rhino.Mocks;
 
 namespace Machine.UoW.Specs
 {
-  [Concern("Unit of work creation")]
+  [Subject("Unit of work creation")]
   public class when_creating_a_new_unit_of_work
   {
     static UnitOfWorkFactory factory;
@@ -50,7 +50,7 @@ namespace Machine.UoW.Specs
     };
   }
 
-  [Concern("Rolling back unit of work")]
+  [Subject("Rolling back unit of work")]
   public class when_rolling_back_a_unit_of_work : with_events_for_committing_and_rolling_back
   {
     Because of = () =>
@@ -70,7 +70,7 @@ namespace Machine.UoW.Specs
     };
   }
   
-  [Concern("Flushing unit of work")]
+  [Subject("Flushing unit of work")]
   public class when_flushing_a_unit_of_work_with_added_objects : with_events_for_committing_and_rolling_back
   {
     Because of = () =>
@@ -83,7 +83,7 @@ namespace Machine.UoW.Specs
     It should_call_addnew = () => events.AssertWasCalled(x => x.AddNew(added));
   }
   
-  [Concern("Flushing unit of work")]
+  [Subject("Flushing unit of work")]
   public class when_flushing_a_unit_of_work_with_saved_objects : with_events_for_committing_and_rolling_back
   {
     Because of = () =>
@@ -96,7 +96,7 @@ namespace Machine.UoW.Specs
     It should_call_save = () => events.AssertWasCalled(x => x.Save(added));
   }
   
-  [Concern("Flushing unit of work")]
+  [Subject("Flushing unit of work")]
   public class when_flushing_a_unit_of_work_with_deleted_objects : with_events_for_committing_and_rolling_back
   {
     Because of = () =>
@@ -109,7 +109,7 @@ namespace Machine.UoW.Specs
     It should_call_delete = () => events.AssertWasCalled(x => x.Delete(added));
   }
   
-  [Concern("Flushing unit of work")]
+  [Subject("Flushing unit of work")]
   public class when_flushing_a_unit_of_work_with_added_and_then_deleted_objects : with_events_for_committing_and_rolling_back
   {
     Because of = () =>
@@ -128,7 +128,7 @@ namespace Machine.UoW.Specs
     };
   }
   
-  [Concern("Flushing unit of work")]
+  [Subject("Flushing unit of work")]
   public class when_flushing_a_unit_of_work_with_saved_and_then_deleted_objects : with_events_for_committing_and_rolling_back
   {
     Because of = () =>
@@ -142,7 +142,7 @@ namespace Machine.UoW.Specs
     It should_call_delete = () => events.AssertWasCalled(x => x.Delete(added));
   }
   
-  [Concern("Flushing unit of work")]
+  [Subject("Flushing unit of work")]
   public class when_flushing_a_unit_of_work_with_added_and_then_saved_objects : with_events_for_committing_and_rolling_back
   {
     Because of = () =>
