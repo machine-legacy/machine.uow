@@ -42,7 +42,7 @@ namespace Machine.UoW.Specs
       mocks = new MockRepository();
       events = mocks.Stub<IUnitOfWorkEvents>();
       unitOfWorkManagement = new UnitOfWorkManagement();
-      unitOfWorkManagement.AddGlobalEvents(events);
+      unitOfWorkManagement.AddEvents(events);
       uow = new UnitOfWork(unitOfWorkManagement);
       added = new object();
       deleted = new object();

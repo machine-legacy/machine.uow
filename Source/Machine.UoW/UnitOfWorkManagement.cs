@@ -7,14 +7,9 @@ namespace Machine.UoW
   {
     private IUnitOfWorkEvents _globalEvents;
 
-    public void AddGlobalEvents(IUnitOfWorkEvents unitOfWorkEvents)
+    public void AddEvents(IUnitOfWorkEvents unitOfWorkEvents)
     {
       _globalEvents = unitOfWorkEvents;
-    }
-
-    public void AddEventsFor<T>(IUnitOfWorkEvents unitOfWorkEvents)
-    {
-      throw new System.NotImplementedException();
     }
 
     public IUnitOfWorkEvents FindEventsFor(Type objectType)
