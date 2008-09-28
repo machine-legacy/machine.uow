@@ -86,9 +86,12 @@ namespace Machine.UoW
     {
       get
       {
-        foreach (UnitOfWorkChangeType change in _changes)
+        if (!(_changes.Contains(UnitOfWorkChangeType.Added) && _changes.Contains(UnitOfWorkChangeType.Deleted)))
         {
-          yield return change;
+          foreach (UnitOfWorkChangeType change in _changes)
+          {
+            yield return change;
+          }
         }
       }
     }
