@@ -12,7 +12,7 @@ namespace Machine.UoW
       _globalEvents = unitOfWorkEvents;
     }
 
-    public IUnitOfWorkEvents FindEventsFor(Type objectType)
+    public IUnitOfWorkEvents FindEventsFor(object instance)
     {
       return _globalEvents;
     }

@@ -58,13 +58,13 @@ namespace Machine.UoW
 
     public void Rollback(IUnitOfWorkManagement management)
     {
-      IUnitOfWorkEvents events = management.FindEventsFor(_instance.GetType());
+      IUnitOfWorkEvents events = management.FindEventsFor(_instance);
       events.Rollback(_instance);
     }
 
     public void Commit(IUnitOfWorkManagement management)
     {
-      IUnitOfWorkEvents events = management.FindEventsFor(_instance.GetType());
+      IUnitOfWorkEvents events = management.FindEventsFor(_instance);
       foreach (UnitOfWorkChangeType change in this.ChangesToBeCommitted)
       {
         switch (change)
