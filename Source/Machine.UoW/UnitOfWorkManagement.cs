@@ -5,16 +5,23 @@ namespace Machine.UoW
 {
   public class UnitOfWorkManagement : IUnitOfWorkManagement
   {
-    private IUnitOfWorkEvents _globalEvents;
+    private readonly List<IUnitOfWorkEvents> _events = new List<IUnitOfWorkEvents>();
 
     public void AddEvents(IUnitOfWorkEvents unitOfWorkEvents)
     {
-      _globalEvents = unitOfWorkEvents;
+      _events.Add(unitOfWorkEvents);
     }
 
     public IUnitOfWorkEvents FindEventsFor(object instance)
     {
-      return _globalEvents;
+      foreach (IUnitOfWorkEvents events in _events)
+      {
+        if (events.AppliesToObject(instance))
+        {
+          return events;
+        }
+      }
+      throw new InvalidOperationException("No application Events implementation found for: " + instance);
     }
   }
 }

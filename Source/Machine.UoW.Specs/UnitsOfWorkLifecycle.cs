@@ -27,6 +27,68 @@ namespace Machine.UoW.Specs
       uow.Entries.ShouldBeEmpty();
   }
 
+  [Subject("Rolling back unit of work")]
+  public class when_rolling_back_a_unit_of_work_with_no_applicable_events
+  {
+    static MockRepository mocks;
+    static UnitOfWork uow;
+    static UnitOfWorkManagement unitOfWorkManagement;
+    static IUnitOfWorkEvents events;
+    static object instance;
+    static Exception error;
+
+    Establish context = () =>
+    {
+      mocks = new MockRepository();
+      events = mocks.Stub<IUnitOfWorkEvents>();
+      unitOfWorkManagement = new UnitOfWorkManagement();
+      unitOfWorkManagement.AddEvents(events);
+      uow = new UnitOfWork(unitOfWorkManagement);
+      instance = new object();
+    };
+    
+    Because of = () => error = Catch.Exception(() =>
+    {
+      mocks.ReplayAll();
+      uow.AddNew(instance);
+      uow.Rollback();
+    });
+
+    It should_fail = () =>
+      error.ShouldBeOfType<InvalidOperationException>();
+  }
+
+  [Subject("Flushing unit of work")]
+  public class when_committing_a_unit_of_work_with_no_applicable_events
+  {
+    static MockRepository mocks;
+    static UnitOfWork uow;
+    static UnitOfWorkManagement unitOfWorkManagement;
+    static IUnitOfWorkEvents events;
+    static object instance;
+    static Exception error;
+
+    Establish context = () =>
+    {
+      mocks = new MockRepository();
+      events = mocks.Stub<IUnitOfWorkEvents>();
+      unitOfWorkManagement = new UnitOfWorkManagement();
+      unitOfWorkManagement.AddEvents(events);
+      uow = new UnitOfWork(unitOfWorkManagement);
+      instance = new object();
+    };
+    
+    Because of = () => error = Catch.Exception(() =>
+    {
+      mocks.ReplayAll();
+      uow.AddNew(instance);
+      uow.Commit();
+    });
+
+    It should_fail = () =>
+      error.ShouldBeOfType<InvalidOperationException>();
+  }
+
   public class with_events_for_committing_and_rolling_back
   {
     protected static MockRepository mocks;
@@ -45,8 +107,11 @@ namespace Machine.UoW.Specs
       unitOfWorkManagement.AddEvents(events);
       uow = new UnitOfWork(unitOfWorkManagement);
       added = new object();
-      deleted = new object();
       saved = new object();
+      deleted = new object();
+      SetupResult.For(events.AppliesToObject(added)).Return(true);
+      SetupResult.For(events.AppliesToObject(saved)).Return(true);
+      SetupResult.For(events.AppliesToObject(deleted)).Return(true);
     };
   }
 
