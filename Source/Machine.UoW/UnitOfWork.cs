@@ -108,6 +108,9 @@ namespace Machine.UoW
     {
       AssertIsOpen();
       _open = false;
+      this.Closed(this, EventArgs.Empty);
     }
+
+    public event EventHandler<EventArgs> Closed = delegate(object sender, EventArgs e) { };
   }
 }
