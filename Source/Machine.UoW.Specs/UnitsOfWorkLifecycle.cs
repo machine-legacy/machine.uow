@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
+using System.Runtime.Serialization;
 using Machine.Specifications;
 using Rhino.Mocks;
 
@@ -140,7 +140,9 @@ namespace Machine.UoW.Specs
   [Subject("Rolling back unit of work")]
   public class when_rolling_back_a_unit_of_work_multiple_times : with_events_for_committing_and_rolling_back
   {
-    Because of = () =>
+    static Exception error;
+
+    Because of = () => error = Catch.Exception(() =>
     {
       mocks.ReplayAll();
       uow.AddNew(added);
@@ -148,16 +150,9 @@ namespace Machine.UoW.Specs
       uow.Delete(deleted);
       uow.Rollback();
       uow.Rollback();
-    };
+    });
 
-    It should_call_rollback_for_all_objects_only_once = () =>
-    {
-      events.AssertWasCalled(x => x.Rollback(added));
-      events.AssertWasCalled(x => x.Rollback(saved));
-      events.AssertWasCalled(x => x.Rollback(deleted));
-    };
-
-    It should_clear_entries = () => uow.Entries.ShouldBeEmpty();
+    It should_fail = () => error.ShouldBeOfType<InvalidOperationException>();
   }
   
   [Subject("Flushing unit of work")]
@@ -178,17 +173,19 @@ namespace Machine.UoW.Specs
   [Subject("Flushing unit of work")]
   public class when_flushing_a_unit_of_work_multiple_times_with_added_objects : with_events_for_committing_and_rolling_back
   {
-    Because of = () =>
+    static Exception error;
+
+    Because of = () => error = Catch.Exception(() =>
     {
       mocks.ReplayAll();
       uow.AddNew(added);
+      uow.Save(saved);
+      uow.Delete(deleted);
       uow.Commit();
       uow.Commit();
-    };
+    });
 
-    It should_call_addnew = () => events.AssertWasCalled(x => x.AddNew(added));
-
-    It should_clear_entries = () => uow.Entries.ShouldBeEmpty();
+    It should_fail = () => error.ShouldBeOfType<InvalidOperationException>();
   }
   
   [Subject("Flushing unit of work")]
