@@ -36,6 +36,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GenericUnitOfWorkEvents.cs" />
@@ -43,12 +44,14 @@
     <Compile Include="IUnitOfWorkEvents.cs" />
     <Compile Include="IUnitOfWorkFactory.cs" />
     <Compile Include="IUnitOfWorkManagement.cs" />
+    <Compile Include="IUnitOfWorkProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitOfWork.cs" />
     <Compile Include="UnitOfWorkChangeType.cs" />
     <Compile Include="UnitOfWorkEntry.cs" />
     <Compile Include="UnitOfWorkFactory.cs" />
     <Compile Include="UnitOfWorkManagement.cs" />
+    <Compile Include="UoW.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
