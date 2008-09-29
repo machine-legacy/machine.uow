@@ -58,7 +58,7 @@ namespace Machine.UoW.Specs
       error.ShouldBeOfType<InvalidOperationException>();
   }
 
-  [Subject("Flushing unit of work")]
+  [Subject("Committing a unit of work")]
   public class when_committing_a_unit_of_work_with_no_applicable_events
   {
     static MockRepository mocks;
@@ -155,8 +155,8 @@ namespace Machine.UoW.Specs
     It should_fail = () => error.ShouldBeOfType<InvalidOperationException>();
   }
   
-  [Subject("Flushing unit of work")]
-  public class when_flushing_a_unit_of_work_with_added_objects : with_events_for_committing_and_rolling_back
+  [Subject("Committing a unit of work")]
+  public class when_committing_a_unit_of_work_with_added_objects : with_events_for_committing_and_rolling_back
   {
     Because of = () =>
     {
@@ -170,8 +170,8 @@ namespace Machine.UoW.Specs
     It should_clear_entries = () => uow.Entries.ShouldBeEmpty();
   }
   
-  [Subject("Flushing unit of work")]
-  public class when_flushing_a_unit_of_work_multiple_times_with_added_objects : with_events_for_committing_and_rolling_back
+  [Subject("Committing a unit of work")]
+  public class when_committing_a_unit_of_work_multiple_times_with_added_objects : with_events_for_committing_and_rolling_back
   {
     static Exception error;
 
@@ -188,8 +188,8 @@ namespace Machine.UoW.Specs
     It should_fail = () => error.ShouldBeOfType<InvalidOperationException>();
   }
   
-  [Subject("Flushing unit of work")]
-  public class when_flushing_a_unit_of_work_with_saved_objects : with_events_for_committing_and_rolling_back
+  [Subject("Committing a unit of work")]
+  public class when_committing_a_unit_of_work_with_saved_objects : with_events_for_committing_and_rolling_back
   {
     Because of = () =>
     {
@@ -203,8 +203,8 @@ namespace Machine.UoW.Specs
     It should_clear_entries = () => uow.Entries.ShouldBeEmpty();
   }
   
-  [Subject("Flushing unit of work")]
-  public class when_flushing_a_unit_of_work_with_deleted_objects : with_events_for_committing_and_rolling_back
+  [Subject("Committing a unit of work")]
+  public class when_committing_a_unit_of_work_with_deleted_objects : with_events_for_committing_and_rolling_back
   {
     Because of = () =>
     {
@@ -218,8 +218,8 @@ namespace Machine.UoW.Specs
     It should_clear_entries = () => uow.Entries.ShouldBeEmpty();
   }
   
-  [Subject("Flushing unit of work")]
-  public class when_flushing_a_unit_of_work_with_added_and_then_deleted_objects : with_events_for_committing_and_rolling_back
+  [Subject("Committing a unit of work")]
+  public class when_committing_a_unit_of_work_with_added_and_then_deleted_objects : with_events_for_committing_and_rolling_back
   {
     Because of = () =>
     {
@@ -239,8 +239,8 @@ namespace Machine.UoW.Specs
     It should_clear_entries = () => uow.Entries.ShouldBeEmpty();
   }
   
-  [Subject("Flushing unit of work")]
-  public class when_flushing_a_unit_of_work_with_saved_and_then_deleted_objects : with_events_for_committing_and_rolling_back
+  [Subject("Committing a unit of work")]
+  public class when_committing_a_unit_of_work_with_saved_and_then_deleted_objects : with_events_for_committing_and_rolling_back
   {
     Because of = () =>
     {
@@ -255,8 +255,8 @@ namespace Machine.UoW.Specs
     It should_clear_entries = () => uow.Entries.ShouldBeEmpty();
   }
   
-  [Subject("Flushing unit of work")]
-  public class when_flushing_a_unit_of_work_with_added_and_then_saved_objects : with_events_for_committing_and_rolling_back
+  [Subject("Committing a unit of work")]
+  public class when_committing_a_unit_of_work_with_added_and_then_saved_objects : with_events_for_committing_and_rolling_back
   {
     Because of = () =>
     {
