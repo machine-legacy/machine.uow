@@ -17,5 +17,10 @@ namespace Machine.UoW
     {
       get { return _provider.GetUnitOfWork(); }
     }
+
+    public static IUnitOfWork Start()
+    {
+      return _provider.Start();
+    }
   }
 }
