@@ -17,6 +17,7 @@ namespace Machine.UoW
     public IUnitOfWork Start()
     {
       _unitOfWork = _unitOfWorkFactory.StartUnitOfWork();
+      _unitOfWork.Closed += OnClosed;
       return GetUnitOfWork();
     }
 
@@ -25,5 +26,10 @@ namespace Machine.UoW
       return _unitOfWork;
     }
     #endregion
+
+    private static void OnClosed(object sender, EventArgs e)
+    {
+      _unitOfWork = null;
+    }
   }
 }
