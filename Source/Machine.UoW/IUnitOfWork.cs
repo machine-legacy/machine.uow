@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Machine.UoW
 {
-  public interface IUnitOfWork
+  public interface IUnitOfWork : IDisposable
   {
     void AddNew<T>(T instance);
     void Save<T>(T instance);

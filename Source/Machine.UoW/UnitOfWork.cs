@@ -82,5 +82,10 @@ namespace Machine.UoW
     {
       return _entries.ContainsKey(instance);
     }
+
+    public void Dispose()
+    {
+      Commit();
+    }
   }
 }
