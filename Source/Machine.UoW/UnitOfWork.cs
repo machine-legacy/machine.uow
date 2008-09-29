@@ -43,6 +43,7 @@ namespace Machine.UoW
       {
         entry.Commit(_unitOfWorkManagement);
       }
+      _entries.Clear();
     }
 
     public void Rollback()
@@ -51,6 +52,7 @@ namespace Machine.UoW
       {
         entry.Rollback(_unitOfWorkManagement);
       }
+      _entries.Clear();
     }
 
     public IEnumerable<UnitOfWorkEntry> Entries

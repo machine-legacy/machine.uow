@@ -133,6 +133,31 @@ namespace Machine.UoW.Specs
       events.AssertWasCalled(x => x.Rollback(saved));
       events.AssertWasCalled(x => x.Rollback(deleted));
     };
+
+    It should_clear_entries = () => uow.Entries.ShouldBeEmpty();
+  }
+  
+  [Subject("Rolling back unit of work")]
+  public class when_rolling_back_a_unit_of_work_multiple_times : with_events_for_committing_and_rolling_back
+  {
+    Because of = () =>
+    {
+      mocks.ReplayAll();
+      uow.AddNew(added);
+      uow.Save(saved);
+      uow.Delete(deleted);
+      uow.Rollback();
+      uow.Rollback();
+    };
+
+    It should_call_rollback_for_all_objects_only_once = () =>
+    {
+      events.AssertWasCalled(x => x.Rollback(added));
+      events.AssertWasCalled(x => x.Rollback(saved));
+      events.AssertWasCalled(x => x.Rollback(deleted));
+    };
+
+    It should_clear_entries = () => uow.Entries.ShouldBeEmpty();
   }
   
   [Subject("Flushing unit of work")]
@@ -146,6 +171,24 @@ namespace Machine.UoW.Specs
     };
 
     It should_call_addnew = () => events.AssertWasCalled(x => x.AddNew(added));
+
+    It should_clear_entries = () => uow.Entries.ShouldBeEmpty();
+  }
+  
+  [Subject("Flushing unit of work")]
+  public class when_flushing_a_unit_of_work_multiple_times_with_added_objects : with_events_for_committing_and_rolling_back
+  {
+    Because of = () =>
+    {
+      mocks.ReplayAll();
+      uow.AddNew(added);
+      uow.Commit();
+      uow.Commit();
+    };
+
+    It should_call_addnew = () => events.AssertWasCalled(x => x.AddNew(added));
+
+    It should_clear_entries = () => uow.Entries.ShouldBeEmpty();
   }
   
   [Subject("Flushing unit of work")]
@@ -159,6 +202,8 @@ namespace Machine.UoW.Specs
     };
 
     It should_call_save = () => events.AssertWasCalled(x => x.Save(added));
+
+    It should_clear_entries = () => uow.Entries.ShouldBeEmpty();
   }
   
   [Subject("Flushing unit of work")]
@@ -172,6 +217,8 @@ namespace Machine.UoW.Specs
     };
 
     It should_call_delete = () => events.AssertWasCalled(x => x.Delete(added));
+
+    It should_clear_entries = () => uow.Entries.ShouldBeEmpty();
   }
   
   [Subject("Flushing unit of work")]
@@ -191,6 +238,8 @@ namespace Machine.UoW.Specs
       events.AssertWasNotCalled(x => x.Save(added));
       events.AssertWasNotCalled(x => x.Delete(added));
     };
+
+    It should_clear_entries = () => uow.Entries.ShouldBeEmpty();
   }
   
   [Subject("Flushing unit of work")]
@@ -205,6 +254,8 @@ namespace Machine.UoW.Specs
     };
 
     It should_call_delete = () => events.AssertWasCalled(x => x.Delete(added));
+
+    It should_clear_entries = () => uow.Entries.ShouldBeEmpty();
   }
   
   [Subject("Flushing unit of work")]
@@ -223,5 +274,7 @@ namespace Machine.UoW.Specs
       events.AssertWasCalled(x => x.AddNew(added));
       events.AssertWasCalled(x => x.Save(added));
     };
+
+    It should_clear_entries = () => uow.Entries.ShouldBeEmpty();
   }
 }
