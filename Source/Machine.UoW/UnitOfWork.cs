@@ -51,22 +51,24 @@ namespace Machine.UoW
     public void Commit()
     {
       Close();
+      IUnitOfWorkEvents events = _unitOfWorkManagement.GetUnitOfWorkEventsProxy();
       foreach (UnitOfWorkEntry entry in _entries.Values)
       {
-        entry.Commit(_unitOfWorkManagement.GetUnitOfWorkEventsProxy());
+        entry.Commit(events);
       }
-      _unitOfWorkManagement.GetUnitOfWorkEventsProxy().Commit(this);
+      events.Commit(this);
       _entries.Clear();
     }
 
     public void Rollback()
     {
       Close();
+      IUnitOfWorkEvents events = _unitOfWorkManagement.GetUnitOfWorkEventsProxy();
       foreach (UnitOfWorkEntry entry in _entries.Values)
       {
-        entry.Rollback(_unitOfWorkManagement.GetUnitOfWorkEventsProxy());
+        entry.Rollback(events);
       }
-      _unitOfWorkManagement.GetUnitOfWorkEventsProxy().Rollback(this);
+      events.Rollback(this);
       _entries.Clear();
     }
 
