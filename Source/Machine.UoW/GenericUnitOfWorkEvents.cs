@@ -9,24 +9,24 @@ namespace Machine.UoW
     {
     }
 
-    public void AddNew(object obj)
+    public void AddNew(IUnitOfWork unitOfWork, object obj)
     {
-      AddNew((T)obj);
+      AddNew(unitOfWork, (T)obj);
     }
 
-    public void Save(object obj)
+    public void Save(IUnitOfWork unitOfWork, object obj)
     {
-      Save((T)obj);
+      Save(unitOfWork, (T)obj);
     }
 
-    public void Delete(object obj)
+    public void Delete(IUnitOfWork unitOfWork, object obj)
     {
-      Delete((T)obj);
+      Delete(unitOfWork, (T)obj);
     }
 
-    public void Rollback(object obj)
+    public void Rollback(IUnitOfWork unitOfWork, object obj)
     {
-      Rollback((T)obj);
+      Rollback(unitOfWork, (T)obj);
     }
 
     public virtual void Rollback(IUnitOfWork unitOfWork)
@@ -38,19 +38,19 @@ namespace Machine.UoW
     }
     #endregion
 
-    public virtual void AddNew(T obj)
+    public virtual void AddNew(IUnitOfWork unitOfWork, T obj)
     {
     }
 
-    public virtual void Save(T obj)
+    public virtual void Save(IUnitOfWork unitOfWork, T obj)
     {
     }
 
-    public virtual void Delete(T obj)
+    public virtual void Delete(IUnitOfWork unitOfWork, T obj)
     {
     }
 
-    public virtual void Rollback(T obj)
+    public virtual void Rollback(IUnitOfWork unitOfWork, T obj)
     {
     }
   }

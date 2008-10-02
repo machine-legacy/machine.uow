@@ -149,9 +149,9 @@ namespace Machine.UoW.Specs
 
     It should_call_rollback_for_all_objects = () =>
     {
-      events.AssertWasCalled(x => x.Rollback(added));
-      events.AssertWasCalled(x => x.Rollback(saved));
-      events.AssertWasCalled(x => x.Rollback(deleted));
+      events.AssertWasCalled(x => x.Rollback(uow, added));
+      events.AssertWasCalled(x => x.Rollback(uow, saved));
+      events.AssertWasCalled(x => x.Rollback(uow, deleted));
     };
 
     It should_clear_entries = () => uow.Entries.ShouldBeEmpty();
@@ -188,7 +188,7 @@ namespace Machine.UoW.Specs
       uow.Commit();
     };
 
-    It should_call_addnew = () => events.AssertWasCalled(x => x.AddNew(added));
+    It should_call_addnew = () => events.AssertWasCalled(x => x.AddNew(uow, added));
 
     It should_call_commit_for_the_unit_of_work = () =>
       events.AssertWasCalled(x => x.Commit(uow));
@@ -224,7 +224,7 @@ namespace Machine.UoW.Specs
       uow.Commit();
     };
 
-    It should_call_save = () => events.AssertWasCalled(x => x.Save(added));
+    It should_call_save = () => events.AssertWasCalled(x => x.Save(uow, added));
 
     It should_clear_entries = () => uow.Entries.ShouldBeEmpty();
   }
@@ -239,7 +239,7 @@ namespace Machine.UoW.Specs
       uow.Commit();
     };
 
-    It should_call_delete = () => events.AssertWasCalled(x => x.Delete(added));
+    It should_call_delete = () => events.AssertWasCalled(x => x.Delete(uow, added));
 
     It should_clear_entries = () => uow.Entries.ShouldBeEmpty();
   }
@@ -257,9 +257,9 @@ namespace Machine.UoW.Specs
 
     It should_call_nothing = () =>
     {
-      events.AssertWasNotCalled(x => x.AddNew(added));
-      events.AssertWasNotCalled(x => x.Save(added));
-      events.AssertWasNotCalled(x => x.Delete(added));
+      events.AssertWasNotCalled(x => x.AddNew(uow, added));
+      events.AssertWasNotCalled(x => x.Save(uow, added));
+      events.AssertWasNotCalled(x => x.Delete(uow, added));
     };
 
     It should_clear_entries = () => uow.Entries.ShouldBeEmpty();
@@ -276,7 +276,7 @@ namespace Machine.UoW.Specs
       uow.Commit();
     };
 
-    It should_call_delete = () => events.AssertWasCalled(x => x.Delete(added));
+    It should_call_delete = () => events.AssertWasCalled(x => x.Delete(uow, added));
 
     It should_clear_entries = () => uow.Entries.ShouldBeEmpty();
   }
@@ -294,8 +294,8 @@ namespace Machine.UoW.Specs
 
     It should_call_addnew_and_then_save = () =>
     {
-      events.AssertWasCalled(x => x.AddNew(added));
-      events.AssertWasCalled(x => x.Save(added));
+      events.AssertWasCalled(x => x.AddNew(uow, added));
+      events.AssertWasCalled(x => x.Save(uow, added));
     };
 
     It should_clear_entries = () => uow.Entries.ShouldBeEmpty();

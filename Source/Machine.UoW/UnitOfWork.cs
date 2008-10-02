@@ -54,7 +54,7 @@ namespace Machine.UoW
       IUnitOfWorkEvents events = _unitOfWorkManagement.GetUnitOfWorkEventsProxy();
       foreach (UnitOfWorkEntry entry in _entries.Values)
       {
-        entry.Commit(events);
+        entry.Commit(this, events);
       }
       events.Commit(this);
       _entries.Clear();
@@ -66,7 +66,7 @@ namespace Machine.UoW
       IUnitOfWorkEvents events = _unitOfWorkManagement.GetUnitOfWorkEventsProxy();
       foreach (UnitOfWorkEntry entry in _entries.Values)
       {
-        entry.Rollback(events);
+        entry.Rollback(this, events);
       }
       events.Rollback(this);
       _entries.Clear();

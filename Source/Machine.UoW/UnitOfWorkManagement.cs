@@ -40,35 +40,35 @@ namespace Machine.UoW
       }
     }
 
-    public void AddNew(object obj)
+    public void AddNew(IUnitOfWork unitOfWork, object obj)
     {
       foreach (IUnitOfWorkEvents events in _events)
       {
-        events.AddNew(obj);
+        events.AddNew(unitOfWork, obj);
       }
     }
 
-    public void Save(object obj)
+    public void Save(IUnitOfWork unitOfWork, object obj)
     {
       foreach (IUnitOfWorkEvents events in _events)
       {
-        events.Save(obj);
+        events.Save(unitOfWork, obj);
       }
     }
 
-    public void Delete(object obj)
+    public void Delete(IUnitOfWork unitOfWork, object obj)
     {
       foreach (IUnitOfWorkEvents events in _events)
       {
-        events.Delete(obj);
+        events.Delete(unitOfWork, obj);
       }
     }
 
-    public void Rollback(object obj)
+    public void Rollback(IUnitOfWork unitOfWork, object obj)
     {
       foreach (IUnitOfWorkEvents events in _events)
       {
-        events.Rollback(obj);
+        events.Rollback(unitOfWork, obj);
       }
     }
 
