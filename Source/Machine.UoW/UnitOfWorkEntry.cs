@@ -56,26 +56,25 @@ namespace Machine.UoW
       }
     }
 
-    public void Rollback(IUnitOfWorkManagement management)
+    public void Rollback(IUnitOfWorkEvents unitOfWorkEvents)
     {
-      management.GetUnitOfWorkEventsProxy().Rollback(_instance);
+      unitOfWorkEvents.Rollback(_instance);
     }
 
-    public void Commit(IUnitOfWorkManagement management)
+    public void Commit(IUnitOfWorkEvents unitOfWorkEvents)
     {
-      UnitOfWorkEventsProxy events = management.GetUnitOfWorkEventsProxy();
       foreach (UnitOfWorkChangeType change in this.ChangesToBeCommitted)
       {
         switch (change)
         {
           case UnitOfWorkChangeType.Added:
-            events.AddNew(_instance);
+            unitOfWorkEvents.AddNew(_instance);
             break;
           case UnitOfWorkChangeType.Saved:
-            events.Save(_instance);
+            unitOfWorkEvents.Save(_instance);
             break;
           case UnitOfWorkChangeType.Deleted:
-            events.Delete(_instance);
+            unitOfWorkEvents.Delete(_instance);
             break;
         }
       }

@@ -31,6 +31,15 @@ namespace Machine.UoW
     }
 
     #region IUnitOfWorkEvents Members
+
+    public void Start(IUnitOfWork unitOfWork)
+    {
+      foreach (IUnitOfWorkEvents events in _events)
+      {
+        events.Start(unitOfWork);
+      }
+    }
+
     public void AddNew(object obj)
     {
       foreach (IUnitOfWorkEvents events in _events)
@@ -60,6 +69,22 @@ namespace Machine.UoW
       foreach (IUnitOfWorkEvents events in _events)
       {
         events.Rollback(obj);
+      }
+    }
+
+    public void Rollback(IUnitOfWork unitOfWork)
+    {
+      foreach (IUnitOfWorkEvents events in _events)
+      {
+        events.Rollback(unitOfWork);
+      }
+    }
+
+    public void Commit(IUnitOfWork unitOfWork)
+    {
+      foreach (IUnitOfWorkEvents events in _events)
+      {
+        events.Commit(unitOfWork);
       }
     }
     #endregion

@@ -15,15 +15,38 @@ namespace Machine.UoW.Specs
     Establish context = () =>
     {
       factory = new UnitOfWorkFactory(new UnitOfWorkManagement());
-    };
-
-    Because of = () =>
-    {
       uow = (UnitOfWork)factory.StartUnitOfWork();
     };
 
     It should_have_no_entries = () =>
       uow.Entries.ShouldBeEmpty();
+  }
+
+  [Subject("Starting a unit of work")]
+  public class when_starting_a_new_unit_of_work
+  {
+    static MockRepository mocks;
+    static UnitOfWork uow;
+    static UnitOfWorkManagement unitOfWorkManagement;
+    static IUnitOfWorkEvents events;
+
+    Establish context = () =>
+    {
+      mocks = new MockRepository();
+      events = mocks.Stub<IUnitOfWorkEvents>();
+      unitOfWorkManagement = new UnitOfWorkManagement();
+      unitOfWorkManagement.AddEvents(events);
+      uow = new UnitOfWork(unitOfWorkManagement);
+    };
+
+    Because of = () =>
+    {
+      mocks.ReplayAll();
+      uow.Start();
+    };
+
+    It should_call_start_for_the_unit_of_work = () =>
+      events.AssertWasCalled(x => x.Start(uow));
   }
 
   [Subject("Rolling back a unit of work")]
@@ -125,6 +148,9 @@ namespace Machine.UoW.Specs
     };
 
     It should_clear_entries = () => uow.Entries.ShouldBeEmpty();
+
+    It should_call_rollback_for_the_unit_of_work = () =>
+      events.AssertWasCalled(x => x.Rollback(uow));
   }
   
   [Subject("Rolling back unit of work")]
@@ -156,6 +182,9 @@ namespace Machine.UoW.Specs
     };
 
     It should_call_addnew = () => events.AssertWasCalled(x => x.AddNew(added));
+
+    It should_call_commit_for_the_unit_of_work = () =>
+      events.AssertWasCalled(x => x.Commit(uow));
 
     It should_clear_entries = () => uow.Entries.ShouldBeEmpty();
   }

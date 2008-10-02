@@ -15,6 +15,11 @@ namespace Machine.UoW
       _open = true;
     }
 
+    public void Start()
+    {
+      _unitOfWorkManagement.GetUnitOfWorkEventsProxy().Start(this);
+    }
+
     public void AddNew<T>(T instance)
     {
       AssertIsOpen();
@@ -48,8 +53,9 @@ namespace Machine.UoW
       Close();
       foreach (UnitOfWorkEntry entry in _entries.Values)
       {
-        entry.Commit(_unitOfWorkManagement);
+        entry.Commit(_unitOfWorkManagement.GetUnitOfWorkEventsProxy());
       }
+      _unitOfWorkManagement.GetUnitOfWorkEventsProxy().Commit(this);
       _entries.Clear();
     }
 
@@ -58,8 +64,9 @@ namespace Machine.UoW
       Close();
       foreach (UnitOfWorkEntry entry in _entries.Values)
       {
-        entry.Rollback(_unitOfWorkManagement);
+        entry.Rollback(_unitOfWorkManagement.GetUnitOfWorkEventsProxy());
       }
+      _unitOfWorkManagement.GetUnitOfWorkEventsProxy().Rollback(this);
       _entries.Clear();
     }
 
