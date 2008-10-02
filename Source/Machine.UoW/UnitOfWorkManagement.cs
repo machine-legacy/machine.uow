@@ -12,16 +12,56 @@ namespace Machine.UoW
       _events.Add(unitOfWorkEvents);
     }
 
-    public IUnitOfWorkEvents FindEventsFor(object instance)
+    public UnitOfWorkEventsProxy GetUnitOfWorkEventsProxy()
+    {
+      if (_events.Count == 0)
+      {
+        throw new InvalidOperationException("No UnitOfWorkEvents have been registered! Nothing is happening!");
+      }
+      return new UnitOfWorkEventsProxy(_events);
+    }
+  }
+  public class UnitOfWorkEventsProxy : IUnitOfWorkEvents
+  {
+    private readonly List<IUnitOfWorkEvents> _events;
+
+    public UnitOfWorkEventsProxy(List<IUnitOfWorkEvents> events)
+    {
+      _events = events;
+    }
+
+    #region IUnitOfWorkEvents Members
+    public void AddNew(object obj)
     {
       foreach (IUnitOfWorkEvents events in _events)
       {
-        if (events.AppliesToObject(instance))
-        {
-          return events;
-        }
+        events.AddNew(obj);
       }
-      throw new InvalidOperationException("No application Events implementation found for: " + instance);
     }
+
+    public void Save(object obj)
+    {
+      foreach (IUnitOfWorkEvents events in _events)
+      {
+        events.Save(obj);
+      }
+    }
+
+    public void Delete(object obj)
+    {
+      foreach (IUnitOfWorkEvents events in _events)
+      {
+        events.Delete(obj);
+      }
+    }
+
+    public void Rollback(object obj)
+    {
+      foreach (IUnitOfWorkEvents events in _events)
+      {
+        events.Rollback(obj);
+      }
+    }
+    #endregion
   }
 }

@@ -5,11 +5,6 @@ namespace Machine.UoW
   public class GenericUnitOfWorkEvents<T> : IUnitOfWorkEvents
   {
     #region IUnitOfWorkEvents Members
-    public virtual bool AppliesToObject(object obj)
-    {
-      return typeof(T).IsInstanceOfType(obj);
-    }
-
     public void AddNew(object obj)
     {
       AddNew((T)obj);

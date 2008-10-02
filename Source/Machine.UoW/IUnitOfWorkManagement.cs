@@ -6,6 +6,6 @@ namespace Machine.UoW
   public interface IUnitOfWorkManagement
   {
     void AddEvents(IUnitOfWorkEvents unitOfWorkEvents);
-    IUnitOfWorkEvents FindEventsFor(object instance);
+    UnitOfWorkEventsProxy GetUnitOfWorkEventsProxy();
   }
 }

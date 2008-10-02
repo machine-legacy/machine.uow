@@ -1,13 +1,12 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
+
 using Machine.Specifications;
 using Rhino.Mocks;
 
 namespace Machine.UoW.Specs
 {
-  [Subject("Unit of work creation")]
+  [Subject("Starting a unit of work")]
   public class when_creating_a_new_unit_of_work
   {
     static UnitOfWorkFactory factory;
@@ -27,22 +26,19 @@ namespace Machine.UoW.Specs
       uow.Entries.ShouldBeEmpty();
   }
 
-  [Subject("Rolling back unit of work")]
-  public class when_rolling_back_a_unit_of_work_with_no_applicable_events
+  [Subject("Rolling back a unit of work")]
+  public class when_rolling_back_a_unit_of_work_with_no_events
   {
     static MockRepository mocks;
     static UnitOfWork uow;
     static UnitOfWorkManagement unitOfWorkManagement;
-    static IUnitOfWorkEvents events;
     static object instance;
     static Exception error;
 
     Establish context = () =>
     {
       mocks = new MockRepository();
-      events = mocks.Stub<IUnitOfWorkEvents>();
       unitOfWorkManagement = new UnitOfWorkManagement();
-      unitOfWorkManagement.AddEvents(events);
       uow = new UnitOfWork(unitOfWorkManagement);
       instance = new object();
     };
@@ -59,21 +55,18 @@ namespace Machine.UoW.Specs
   }
 
   [Subject("Committing a unit of work")]
-  public class when_committing_a_unit_of_work_with_no_applicable_events
+  public class when_committing_a_unit_of_work_with_no_events
   {
     static MockRepository mocks;
     static UnitOfWork uow;
     static UnitOfWorkManagement unitOfWorkManagement;
-    static IUnitOfWorkEvents events;
     static object instance;
     static Exception error;
 
     Establish context = () =>
     {
       mocks = new MockRepository();
-      events = mocks.Stub<IUnitOfWorkEvents>();
       unitOfWorkManagement = new UnitOfWorkManagement();
-      unitOfWorkManagement.AddEvents(events);
       uow = new UnitOfWork(unitOfWorkManagement);
       instance = new object();
     };
@@ -109,9 +102,6 @@ namespace Machine.UoW.Specs
       added = new object();
       saved = new object();
       deleted = new object();
-      SetupResult.For(events.AppliesToObject(added)).Return(true);
-      SetupResult.For(events.AppliesToObject(saved)).Return(true);
-      SetupResult.For(events.AppliesToObject(deleted)).Return(true);
     };
   }
 
