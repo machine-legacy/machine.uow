@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.UoW", "Machine.UoW\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.UoW.Specs", "Machine.UoW.Specs\Machine.UoW.Specs.csproj", "{517672A8-22FB-46D1-8DE9-2B66070D4555}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.UoW.NHibernate", "Machine.UoW.NHibernate\Machine.UoW.NHibernate.csproj", "{6ECA60D2-FD90-4CED-ABDF-515E26517BBB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,6 +20,10 @@ Global
 		{517672A8-22FB-46D1-8DE9-2B66070D4555}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{517672A8-22FB-46D1-8DE9-2B66070D4555}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{517672A8-22FB-46D1-8DE9-2B66070D4555}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6ECA60D2-FD90-4CED-ABDF-515E26517BBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6ECA60D2-FD90-4CED-ABDF-515E26517BBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6ECA60D2-FD90-4CED-ABDF-515E26517BBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6ECA60D2-FD90-4CED-ABDF-515E26517BBB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
