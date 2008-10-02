@@ -9,12 +9,19 @@ namespace Machine.UoW.Specs
   [Subject("Starting a unit of work")]
   public class when_creating_a_new_unit_of_work
   {
-    static UnitOfWorkFactory factory;
+    static MockRepository mocks;
     static UnitOfWork uow;
+    static UnitOfWorkManagement unitOfWorkManagement;
+    static IUnitOfWorkEvents events;
+    static UnitOfWorkFactory factory;
 
     Establish context = () =>
     {
-      factory = new UnitOfWorkFactory(new UnitOfWorkManagement());
+      mocks = new MockRepository();
+      events = mocks.Stub<IUnitOfWorkEvents>();
+      unitOfWorkManagement = new UnitOfWorkManagement();
+      unitOfWorkManagement.AddEvents(events);
+      factory = new UnitOfWorkFactory(unitOfWorkManagement);
       uow = (UnitOfWork)factory.StartUnitOfWork();
     };
 
