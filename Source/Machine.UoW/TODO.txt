@@ -1,0 +1,2 @@
+﻿I'd like a way to pass parameters down into the events implementations. Like being
+able to pass the FlushMode down to NH for example would be useful?
