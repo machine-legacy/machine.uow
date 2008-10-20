@@ -8,7 +8,7 @@ namespace Machine.UoW.NHibernate
   {
     public static ISession Session(this IUnitOfWorkState state)
     {
-      return state.Get<ISession>();
+      return state.Get<CurrentSession>().Session;
     }
   }
 }

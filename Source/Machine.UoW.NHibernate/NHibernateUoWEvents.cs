@@ -18,8 +18,7 @@ namespace Machine.UoW.NHibernate
     {
       ISession session = _sessionFactory.OpenSession();
       ITransaction transaction = session.BeginTransaction();
-      unitOfWork.Set(session);
-      unitOfWork.Set(transaction);
+      unitOfWork.Set(new CurrentSession(session, transaction));
     }
 
     public void AddNew(IUnitOfWork unitOfWork, object obj)
@@ -40,13 +39,36 @@ namespace Machine.UoW.NHibernate
 
     public void Rollback(IUnitOfWork unitOfWork)
     {
-      unitOfWork.Get<ITransaction>().Rollback();
+      unitOfWork.Get<CurrentSession>().Rollback();
     }
 
     public void Commit(IUnitOfWork unitOfWork)
     {
-      unitOfWork.Get<ITransaction>().Commit();
+      unitOfWork.Get<CurrentSession>().Commit();
     }
     #endregion
+  }
+  public class CurrentSession
+  {
+    public ISession Session { get; private set; }
+    public ITransaction Transaction { get; private set; }
+
+    public CurrentSession(ISession session, ITransaction transaction)
+    {
+      this.Session = session;
+      this.Transaction = transaction;
+    }
+
+    public void Rollback()
+    {
+      this.Transaction.Rollback();
+      this.Session.Close();
+    }
+
+    public void Commit()
+    {
+      this.Transaction.Commit();
+      this.Session.Close();
+    }
   }
 }
