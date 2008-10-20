@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -56,6 +57,12 @@ namespace Machine.UoW.NHibernate.Specs
     {
       NorthwindDatabase database = new NorthwindDatabase(_database.Connection);
       database.AddDefaultData();
+    }
+
+    public long AddSingleEmployee()
+    {
+      NorthwindDatabase database = new NorthwindDatabase(_database.Connection);
+      return database.AddEmployee("Steve", "Zandt", DateTime.Now, true, 0);
     }
   }
 }

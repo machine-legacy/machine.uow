@@ -23,14 +23,17 @@ namespace Machine.UoW.NHibernate
 
     public void AddNew(IUnitOfWork unitOfWork, object obj)
     {
+      unitOfWork.Get<CurrentSession>().Session.Save(obj);
     }
 
     public void Save(IUnitOfWork unitOfWork, object obj)
     {
+      unitOfWork.Get<CurrentSession>().Session.Save(obj);
     }
 
     public void Delete(IUnitOfWork unitOfWork, object obj)
     {
+      unitOfWork.Get<CurrentSession>().Session.Delete(obj);
     }
 
     public void Rollback(IUnitOfWork unitOfWork, object obj)
