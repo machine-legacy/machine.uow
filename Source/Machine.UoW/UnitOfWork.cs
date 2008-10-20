@@ -102,7 +102,10 @@ namespace Machine.UoW
 
     public void Dispose()
     {
-      Commit();
+      if (_open)
+      {
+        Rollback();
+      }
     }
 
     private void AssertIsOpen()

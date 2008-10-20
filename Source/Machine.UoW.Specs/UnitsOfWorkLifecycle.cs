@@ -300,4 +300,47 @@ namespace Machine.UoW.Specs
 
     It should_clear_entries = () => uow.Entries.ShouldBeEmpty();
   }
+  
+  [Subject("Committing a unit of work")]
+  public class when_disposing_of_a_unit_of_work : with_events_for_committing_and_rolling_back
+  {
+    Because of = () =>
+    {
+      mocks.ReplayAll();
+      uow.Save(saved);
+      uow.Dispose();
+    };
+
+    It should_call_rollback = () =>
+    {
+      events.AssertWasCalled(x => x.Rollback(uow, saved));
+    };
+
+    It should_not_call_committing_events = () =>
+    {
+      events.AssertWasNotCalled(x => x.Save(uow, saved));
+    };
+  }
+  
+  [Subject("Committing a unit of work")]
+  public class when_disposing_of_a_committed_unit_of_work : with_events_for_committing_and_rolling_back
+  {
+    Because of = () =>
+    {
+      mocks.ReplayAll();
+      uow.Save(saved);
+      uow.Commit();
+      uow.Dispose();
+    };
+
+    It should_call_committing_events = () =>
+    {
+      events.AssertWasCalled(x => x.Save(uow, saved));
+    };
+
+    It should_not_call_rollback = () =>
+    {
+      events.AssertWasNotCalled(x => x.Rollback(uow, saved));
+    };
+  }
 }
