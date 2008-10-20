@@ -71,13 +71,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DatabaseViaNHibernate.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="NorthwindModel\NorthwindCategory.cs" />
     <Compile Include="NorthwindModel\NorthwindCustomer.cs" />
     <Compile Include="NorthwindModel\NorthwindEmployee.cs" />
     <Compile Include="NorthwindModel\NorthwindOrder.cs" />
     <Compile Include="NorthwindModel\NorthwindOrderLine.cs" />
     <Compile Include="NorthwindModel\NorthwindProduct.cs" />
+    <Compile Include="NorthwindSqliteDatabase.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqliteDatabase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SqliteHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="with_sqlite_database.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.UoW.NHibernate\Machine.UoW.NHibernate.csproj">
