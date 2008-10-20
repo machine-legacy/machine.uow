@@ -5,11 +5,11 @@ using System.Globalization;
 
 namespace Machine.UoW.NHibernate.Specs
 {
-  public class NorthwindSqliteDatabase
+  public class NorthwindDatabase
   {
     private readonly IDbConnection _connection;
 
-    public NorthwindSqliteDatabase(IDbConnection connection)
+    public NorthwindDatabase(IDbConnection connection)
     {
       _connection = connection;
     }
@@ -53,9 +53,7 @@ namespace Machine.UoW.NHibernate.Specs
       {
         SqliteHelper.ExecuteNonQuery(_connection, create);
       }
-      IDbTransaction transaction = _connection.BeginTransaction();
       AddDefaultData();
-      transaction.Commit();
     }
 
     public virtual void DropAllTables()
@@ -110,6 +108,7 @@ namespace Machine.UoW.NHibernate.Specs
 
     public virtual void AddDefaultData()
     {
+      IDbTransaction transaction = _connection.BeginTransaction();
       long superBoss = AddEmployee("Craig", "Boucher", DateTime.Today, true, 0);
       long boss = AddEmployee("Jacob", "Lewallen", DateTime.Today, true, superBoss);
       AddEmployee("Bruce", "Springsteen", DateTime.Today, true, 0);
@@ -128,6 +127,7 @@ namespace Machine.UoW.NHibernate.Specs
 
       AddCustomerData("Cyberdyne", 2);
       AddCustomerData("ACME", 4);
+      transaction.Commit();
     }
 
     public virtual void AddCustomerData(string customer, int orders)

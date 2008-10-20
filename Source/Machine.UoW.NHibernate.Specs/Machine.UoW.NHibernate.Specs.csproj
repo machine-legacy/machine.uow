@@ -80,7 +80,7 @@
     <Compile Include="NorthwindModel\NorthwindOrder.cs" />
     <Compile Include="NorthwindModel\NorthwindOrderLine.cs" />
     <Compile Include="NorthwindModel\NorthwindProduct.cs" />
-    <Compile Include="NorthwindSqliteDatabase.cs">
+    <Compile Include="NorthwindDatabase.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -9,7 +9,7 @@ namespace Machine.UoW.NHibernate.Specs
     private static string _filename = "Northwind.db";
     private static bool _firstTime = true;
     private static SQLiteConnection _connection;
-    private static NorthwindSqliteDatabase _database;
+    private static NorthwindDatabase _database;
 
     public SQLiteConnection Connection
     {
@@ -53,7 +53,7 @@ namespace Machine.UoW.NHibernate.Specs
 
     protected virtual void CreateDatabase(SQLiteConnection connection)
     {
-      _database = new NorthwindSqliteDatabase(connection);
+      _database = new NorthwindDatabase(connection);
       _database.DropAllTables();
       _database.Create();
     }
