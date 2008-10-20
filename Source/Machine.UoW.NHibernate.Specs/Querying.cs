@@ -21,7 +21,7 @@ namespace Machine.UoW.NHibernate.Specs
   }
   
   [Subject("Querying")]
-  public class when_querying_with_a_valid_uow : with_nhibernate_uow
+  public class when_querying_with_in_a_uow : with_nhibernate_uow
   {
     static ICollection<NorthwindEmployee> employees;
 

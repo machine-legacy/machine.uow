@@ -28,7 +28,7 @@ namespace Machine.UoW.NHibernate.Specs
       }
     };
 
-    It should_be_saved = () =>
+    It should_be_changed_in_database = () =>
       employee.FirstName.ShouldEqual("Steve Van");
   }
   
@@ -53,7 +53,7 @@ namespace Machine.UoW.NHibernate.Specs
       }
     };
 
-    It should_not_be_saved = () =>
+    It should_be_unchanged_in_database = () =>
       employee.FirstName.ShouldNotEqual("Steve Van");
   }
 }

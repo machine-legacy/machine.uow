@@ -27,7 +27,7 @@ namespace Machine.UoW.NHibernate.Specs
       }
     };
 
-    It should_not_be_saved = () =>
+    It should_disappear_from_database = () =>
       employees.ShouldBeEmpty();
   }
   
@@ -51,7 +51,7 @@ namespace Machine.UoW.NHibernate.Specs
       }
     };
 
-    It should_not_be_saved = () =>
+    It should_appear_in_database = () =>
       employees.ShouldNotBeEmpty();
   }
 }
