@@ -53,7 +53,6 @@ namespace Machine.UoW.NHibernate.Specs
       {
         SqliteHelper.ExecuteNonQuery(_connection, create);
       }
-      AddDefaultData();
     }
 
     public virtual void DropAllTables()

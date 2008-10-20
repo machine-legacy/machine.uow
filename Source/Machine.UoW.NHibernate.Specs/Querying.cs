@@ -11,6 +11,8 @@ namespace Machine.UoW.NHibernate.Specs
   {
     static ICollection<NorthwindEmployee> employees;
 
+    Establish context = () => database.AddDefaultData();
+
     Because of = () =>
       employees = session.CreateQuery("FROM NorthwindEmployee").List<NorthwindEmployee>();
 
@@ -22,6 +24,8 @@ namespace Machine.UoW.NHibernate.Specs
   public class when_querying_with_a_valid_uow : with_nhibernate_uow
   {
     static ICollection<NorthwindEmployee> employees;
+
+    Establish context = () => database.AddDefaultData();
 
     Because of = () =>
     {

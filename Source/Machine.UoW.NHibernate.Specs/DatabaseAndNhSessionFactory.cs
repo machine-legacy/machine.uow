@@ -51,5 +51,11 @@ namespace Machine.UoW.NHibernate.Specs
       _sessionFactory.Close();
       _database.Close();
     }
+
+    public void AddDefaultData()
+    {
+      NorthwindDatabase database = new NorthwindDatabase(_database.Connection);
+      database.AddDefaultData();
+    }
   }
 }
