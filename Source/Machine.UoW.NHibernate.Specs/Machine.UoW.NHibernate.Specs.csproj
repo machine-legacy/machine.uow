@@ -90,6 +90,7 @@
     <Compile Include="SqliteHelper.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="with_nhibernate_uow.cs" />
     <Compile Include="with_sqlite_database.cs">
       <SubType>Code</SubType>
     </Compile>
