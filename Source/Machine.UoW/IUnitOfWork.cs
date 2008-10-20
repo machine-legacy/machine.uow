@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Machine.UoW
 {
-  public interface IUnitOfWork : IDisposable
+  public interface IUnitOfWork : IUnitOfWorkState, IDisposable
   {
     void AddNew<T>(T instance);
     void Save<T>(T instance);
@@ -12,5 +12,10 @@ namespace Machine.UoW
     void Commit();
     void Rollback();
     event EventHandler<EventArgs> Closed;
+  }
+  public interface IUnitOfWorkState
+  {
+    T Get<T>();
+    void Set<T>(T value);
   }
 }

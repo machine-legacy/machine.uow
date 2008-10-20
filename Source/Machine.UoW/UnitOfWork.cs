@@ -121,5 +121,23 @@ namespace Machine.UoW
     }
 
     public event EventHandler<EventArgs> Closed = delegate(object sender, EventArgs e) { };
+
+    private readonly Dictionary<Type, object> _state = new Dictionary<Type, object>();
+
+    #region IUnitOfWorkState Members
+    public T Get<T>()
+    {
+      if (!_state.ContainsKey(typeof(T)))
+      {
+        return default(T);
+      }
+      return (T)_state[typeof(T)];
+    }
+
+    public void Set<T>(T value)
+    {
+      _state[typeof(T)] = value;
+    }
+    #endregion
   }
 }
