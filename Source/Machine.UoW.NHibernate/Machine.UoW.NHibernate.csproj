@@ -56,7 +56,7 @@
   <ItemGroup>
     <Compile Include="NHibernateUoWEvents.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="EasySession.cs" />
+    <Compile Include="UnitOfWorkExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.UoW\Machine.UoW.csproj">
