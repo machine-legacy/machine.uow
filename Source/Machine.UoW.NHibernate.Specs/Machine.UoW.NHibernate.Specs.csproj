@@ -87,6 +87,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Querying.cs" />
+    <Compile Include="Saving_objects.cs" />
     <Compile Include="SqliteDatabaseManager.cs">
       <SubType>Code</SubType>
     </Compile>
