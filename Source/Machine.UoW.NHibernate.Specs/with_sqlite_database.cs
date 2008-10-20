@@ -9,12 +9,12 @@ namespace Machine.UoW.NHibernate.Specs
 {
   public class with_sqlite_database
   {
-    protected static DatabaseViaNHibernate database;
+    protected static DatabaseAndNhSessionFactory database;
     protected static ISession session;
 
     Establish context = () =>
     {
-      database = new DatabaseViaNHibernate();
+      database = new DatabaseAndNhSessionFactory();
       database.Open();
       session = database.SessionFactory.OpenSession();
     };

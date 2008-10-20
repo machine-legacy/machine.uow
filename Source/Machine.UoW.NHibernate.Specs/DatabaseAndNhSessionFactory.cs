@@ -9,12 +9,12 @@ using Machine.UoW.NHibernate.Specs.NorthwindModel;
 
 namespace Machine.UoW.NHibernate.Specs
 {
-  public class DatabaseViaNHibernate
+  public class DatabaseAndNhSessionFactory
   {
-    private SqliteDatabase _database;
+    private SqliteDatabaseManager _database;
     private ISessionFactory _sessionFactory;
 
-    public SqliteDatabase Database
+    public SqliteDatabaseManager Database
     {
       get { return _database; }
     }
@@ -26,7 +26,7 @@ namespace Machine.UoW.NHibernate.Specs
 
     public void Open()
     {
-      _database = new SqliteDatabase();
+      _database = new SqliteDatabaseManager();
       _database.Recreate();
 
       Dictionary<string, string> properties = new Dictionary<string, string>();

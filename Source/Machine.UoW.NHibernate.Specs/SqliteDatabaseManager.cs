@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Machine.UoW.NHibernate.Specs
 {
-  public class SqliteDatabase
+  public class SqliteDatabaseManager
   {
     private string _filename = "Northwind.db";
     private SQLiteConnection _connection;

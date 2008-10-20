@@ -71,7 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DatabaseViaNHibernate.cs">
+    <Compile Include="DatabaseAndNhSessionFactory.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="NorthwindModel\NorthwindCategory.cs" />
@@ -85,7 +85,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Querying.cs" />
-    <Compile Include="SqliteDatabase.cs">
+    <Compile Include="SqliteDatabaseManager.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SqliteHelper.cs">
