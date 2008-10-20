@@ -11,8 +11,8 @@ namespace Machine.UoW.NHibernate.Specs
 {
   public class DatabaseViaNHibernate
   {
-    private readonly SqliteDatabase _database;
-    private readonly ISessionFactory _sessionFactory;
+    private SqliteDatabase _database;
+    private ISessionFactory _sessionFactory;
 
     public SqliteDatabase Database
     {
@@ -24,10 +24,10 @@ namespace Machine.UoW.NHibernate.Specs
       get { return _sessionFactory; }
     }
 
-    public DatabaseViaNHibernate()
+    public void Open()
     {
       _database = new SqliteDatabase();
-      _database.Open();
+      _database.Recreate();
 
       Dictionary<string, string> properties = new Dictionary<string, string>();
       properties["connection.provider"] = "NHibernate.Connection.DriverConnectionProvider";
@@ -44,6 +44,12 @@ namespace Machine.UoW.NHibernate.Specs
       stream.Close();
 
       _sessionFactory = configuration.BuildSessionFactory();
+    }
+
+    public void Close()
+    {
+      _sessionFactory.Close();
+      _database.Close();
     }
   }
 }

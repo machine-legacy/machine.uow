@@ -15,7 +15,13 @@ namespace Machine.UoW.NHibernate.Specs
     Establish context = () =>
     {
       database = new DatabaseViaNHibernate();
+      database.Open();
       session = database.SessionFactory.OpenSession();
+    };
+
+    Cleanup after = () =>
+    {
+      database.Close();
     };
   }
 }
