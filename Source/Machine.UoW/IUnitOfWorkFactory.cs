@@ -4,6 +4,6 @@ namespace Machine.UoW
 {
   public interface IUnitOfWorkFactory
   {
-    IUnitOfWork StartUnitOfWork();
+    IUnitOfWork StartUnitOfWork(IUnitOfWorkSettings[] settings);
   }
 }

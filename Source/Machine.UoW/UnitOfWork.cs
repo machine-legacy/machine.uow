@@ -9,10 +9,14 @@ namespace Machine.UoW
     private readonly IUnitOfWorkManagement _unitOfWorkManagement;
     private bool _open;
 
-    public UnitOfWork(IUnitOfWorkManagement unitOfWorkManagement)
+    public UnitOfWork(IUnitOfWorkManagement unitOfWorkManagement, params IUnitOfWorkSettings[] startupSettings)
     {
       _unitOfWorkManagement = unitOfWorkManagement;
       _open = true;
+      foreach (IUnitOfWorkSettings settings in startupSettings)
+      {
+        _state[settings.GetType()] = settings;
+      }
     }
 
     public void Start()

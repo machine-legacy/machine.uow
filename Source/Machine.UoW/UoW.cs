@@ -18,9 +18,12 @@ namespace Machine.UoW
       get { return _provider.GetUnitOfWork(); }
     }
 
-    public static IUnitOfWork Start()
+    public static IUnitOfWork Start(params IUnitOfWorkSettings[] settings)
     {
-      return _provider.Start();
+      return _provider.Start(settings);
     }
+  }
+  public interface IUnitOfWorkSettings
+  {
   }
 }

@@ -12,9 +12,9 @@ namespace Machine.UoW
       _unitOfWorkManagement = unitOfWorkManagement;
     }
 
-    public IUnitOfWork StartUnitOfWork()
+    public IUnitOfWork StartUnitOfWork(IUnitOfWorkSettings[] settings)
     {
-      UnitOfWork unitOfWork = new UnitOfWork(_unitOfWorkManagement);
+      UnitOfWork unitOfWork = new UnitOfWork(_unitOfWorkManagement, settings);
       unitOfWork.Start();
       return unitOfWork;
     }

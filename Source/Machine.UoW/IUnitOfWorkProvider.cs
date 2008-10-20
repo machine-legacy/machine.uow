@@ -5,7 +5,7 @@ namespace Machine.UoW
 {
   public interface IUnitOfWorkProvider
   {
-    IUnitOfWork Start();
+    IUnitOfWork Start(IUnitOfWorkSettings[] settings);
     IUnitOfWork GetUnitOfWork();
   }
 }

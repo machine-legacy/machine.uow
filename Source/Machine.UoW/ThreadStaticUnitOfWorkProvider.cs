@@ -14,9 +14,9 @@ namespace Machine.UoW
     }
 
     #region IUnitOfWorkProvider Members
-    public IUnitOfWork Start()
+    public IUnitOfWork Start(IUnitOfWorkSettings[] settings)
     {
-      _unitOfWork = _unitOfWorkFactory.StartUnitOfWork();
+      _unitOfWork = _unitOfWorkFactory.StartUnitOfWork(settings);
       _unitOfWork.Closed += OnClosed;
       return GetUnitOfWork();
     }
