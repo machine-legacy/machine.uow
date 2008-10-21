@@ -16,8 +16,14 @@ namespace Machine.UoW.NHibernate
     #region IUnitOfWorkEvents Members
     public void Start(IUnitOfWork unitOfWork)
     {
+      NHibernateSessionSettings settings = unitOfWork.Get<NHibernateSessionSettings>();
+      if (settings == null)
+      {
+        settings = NHibernateSessionSettings.Default;
+      }
       ISession session = _sessionFactory.OpenSession();
-      ITransaction transaction = session.BeginTransaction();
+      session.FlushMode = settings.FlushMode;
+      ITransaction transaction = session.BeginTransaction(settings.IsolationLevel);
       unitOfWork.Set(new CurrentSession(session, transaction));
     }
 
