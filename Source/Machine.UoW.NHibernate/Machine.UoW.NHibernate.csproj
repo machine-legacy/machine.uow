@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CurrentSession.cs" />
     <Compile Include="NHibernateSessionSettings.cs" />
     <Compile Include="NHibernateUoWEvents.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
