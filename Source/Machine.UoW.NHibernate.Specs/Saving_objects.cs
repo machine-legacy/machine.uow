@@ -73,7 +73,6 @@ namespace Machine.UoW.NHibernate.Specs
         {
           employee = uow.Session().Get<NorthwindEmployee>(id);
           employee.FirstName = "Steve Van";
-          uow.Commit();
         }
       }
       using (IUnitOfWork uow = UoW.Start())
@@ -102,7 +101,6 @@ namespace Machine.UoW.NHibernate.Specs
         {
           employee = uow.Session().Get<NorthwindEmployee>(id);
           employee.FirstName = "Steve Van";
-          uow.Commit();
         }
         scope.Complete();
       }

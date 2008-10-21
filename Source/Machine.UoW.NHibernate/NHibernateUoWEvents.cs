@@ -44,12 +44,18 @@ namespace Machine.UoW.NHibernate
 
     public void Rollback(IUnitOfWork unitOfWork)
     {
-      unitOfWork.Get<CurrentSession>().Rollback();
+      if (unitOfWork.Get<EnlistmentNotifications>() == null)
+      {
+        unitOfWork.Get<CurrentSession>().Rollback();
+      }
     }
 
     public void Commit(IUnitOfWork unitOfWork)
     {
-      unitOfWork.Get<CurrentSession>().Commit();
+      if (unitOfWork.Get<EnlistmentNotifications>() == null)
+      {
+        unitOfWork.Get<CurrentSession>().Commit();
+      }
     }
     #endregion
   }

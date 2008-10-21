@@ -7,10 +7,12 @@ namespace Machine.UoW
   {
     private readonly Dictionary<object, UnitOfWorkEntry> _entries = new Dictionary<object, UnitOfWorkEntry>();
     private readonly IUnitOfWorkManagement _unitOfWorkManagement;
+    private readonly bool _enlistedInScope;
     private bool _open;
 
     public UnitOfWork(IUnitOfWorkManagement unitOfWorkManagement, params IUnitOfWorkSettings[] startupSettings)
     {
+      _enlistedInScope = EnlistmentNotifications.Enlist(this);
       _unitOfWorkManagement = unitOfWorkManagement;
       _open = true;
       foreach (IUnitOfWorkSettings settings in startupSettings)
@@ -106,6 +108,10 @@ namespace Machine.UoW
 
     public void Dispose()
     {
+      if (_enlistedInScope)
+      {
+        return;
+      }
       if (_open)
       {
         Rollback();
