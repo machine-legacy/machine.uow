@@ -15,6 +15,7 @@ namespace Machine.UoW
   }
   public interface IUnitOfWorkState
   {
+    T Get<T>(T defaultValue);
     T Get<T>();
     void Set<T>(T value);
   }

@@ -132,13 +132,18 @@ namespace Machine.UoW
     private readonly Dictionary<Type, object> _state = new Dictionary<Type, object>();
 
     #region IUnitOfWorkState Members
-    public T Get<T>()
+    public T Get<T>(T defaultValue)
     {
       if (!_state.ContainsKey(typeof(T)))
       {
-        return default(T);
+        return defaultValue;
       }
       return (T)_state[typeof(T)];
+    }
+
+    public T Get<T>()
+    {
+      return Get<T>(default(T));
     }
 
     public void Set<T>(T value)
