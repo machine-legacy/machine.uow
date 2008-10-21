@@ -65,13 +65,11 @@ namespace Machine.UoW.NHibernate
     public void Rollback()
     {
       this.Transaction.Rollback();
-      this.Session.Close();
     }
 
     public void Commit()
     {
       this.Transaction.Commit();
-      this.Session.Close();
     }
   }
 }
