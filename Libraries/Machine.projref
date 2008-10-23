@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-16"?>
 <ProjectManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <ProjectName>Machine</ProjectName>
-  <VersionCreatedAt>2008-09-29T08:26:57.405-07:00</VersionCreatedAt>
+  <VersionNumber>
+    <TimeStamp>2008-10-23T15:29:51.609Z</TimeStamp>
+  </VersionNumber>
 </ProjectManifest>

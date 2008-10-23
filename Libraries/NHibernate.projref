@@ -2,6 +2,6 @@
 <ProjectManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <ProjectName>NHibernate</ProjectName>
   <VersionNumber>
-    <TimeStamp>2008-10-02T04:21:56.139375Z</TimeStamp>
+    <TimeStamp>2008-10-23T18:39:30.437125Z</TimeStamp>
   </VersionNumber>
 </ProjectManifest>
