@@ -48,6 +48,7 @@
     <Compile Include="IUnitOfWorkFactory.cs" />
     <Compile Include="IUnitOfWorkManagement.cs" />
     <Compile Include="IUnitOfWorkProvider.cs" />
+    <Compile Include="IUnitOfWorkSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ThreadStaticUnitOfWorkProvider.cs" />
     <Compile Include="UnitOfWork.cs" />

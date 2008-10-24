@@ -23,7 +23,4 @@ namespace Machine.UoW
       return _provider.Start(settings);
     }
   }
-  public interface IUnitOfWorkSettings
-  {
-  }
 }
