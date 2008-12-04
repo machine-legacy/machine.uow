@@ -17,14 +17,7 @@ namespace Machine.UoW
     public IUnitOfWork Start(IUnitOfWorkSettings[] settings)
     {
       CurrentUnitOfWork state = State;
-      if (state.UnitOfWork == null)
-      {
-        state.UnitOfWork = _unitOfWorkFactory.StartUnitOfWork(settings);
-      }
-      else
-      {
-        throw new InvalidOperationException("Nested UnitsOfWork not supported.");
-      }
+      state.UnitOfWork = _unitOfWorkFactory.StartUnitOfWork(settings);
       return state.UnitOfWork;
     }
 
