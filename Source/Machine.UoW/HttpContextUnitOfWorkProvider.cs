@@ -17,7 +17,9 @@ namespace Machine.UoW
     public IUnitOfWork Start(IUnitOfWorkSettings[] settings)
     {
       CurrentUnitOfWork state = State;
-      state.UnitOfWork = _unitOfWorkFactory.StartUnitOfWork(settings);
+      IUnitOfWork unitOfWork = _unitOfWorkFactory.StartUnitOfWork(settings);
+      unitOfWork.Closed += OnClosed;
+      state.UnitOfWork = unitOfWork;
       return state.UnitOfWork;
     }
 
@@ -26,6 +28,11 @@ namespace Machine.UoW
       return State.UnitOfWork;
     }
     #endregion
+
+    private static void OnClosed(object sender, EventArgs e)
+    {
+      State.UnitOfWork = null;
+    }
 
     private static HttpContext Current
     {
