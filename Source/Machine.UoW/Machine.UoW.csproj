@@ -45,6 +45,7 @@
     <Compile Include="EnlistmentNotifications.cs" />
     <Compile Include="GenericUnitOfWorkEvents.cs" />
     <Compile Include="HttpContextUnitOfWorkProvider.cs" />
+    <Compile Include="HybridUnitOfWorkProvider.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="IUnitOfWorkEvents.cs" />
     <Compile Include="IUnitOfWorkFactory.cs" />
