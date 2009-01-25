@@ -38,6 +38,46 @@ namespace Machine.UoW.NHibernate.Specs.AmbientTransactions
   }
 
   [Subject("Ambient Transactions")]
+  public class when_saving_an_object_twice : with_nhibernate_uow
+  {
+    static NorthwindEmployee employee;
+    static long id;
+
+    Establish context = () => id = database.AddSingleEmployee();
+
+    Because of = () =>
+    {
+      using (TransactionScope txn = new TransactionScope())
+      {
+        using (IUnitOfWork uow = UoW.Start())
+        {
+          employee = uow.Session().Get<NorthwindEmployee>(id);
+          employee.FirstName = "Steve Van #1";
+          uow.Commit();
+        }
+        txn.Complete();
+      }
+      using (TransactionScope txn = new TransactionScope())
+      {
+        using (IUnitOfWork uow = UoW.Start())
+        {
+          employee = uow.Session().Get<NorthwindEmployee>(id);
+          employee.FirstName = "Steve Van #2";
+          uow.Commit();
+        }
+        txn.Complete();
+      }
+      using (IUnitOfWork uow = UoW.Start())
+      {
+        employee = uow.Session().Get<NorthwindEmployee>(id);
+      }
+    };
+
+    It should_be_changed_in_database = () =>
+      employee.FirstName.ShouldEqual("Steve Van #2");
+  }
+
+  [Subject("Ambient Transactions")]
   public class when_saving_an_object_and_not_committing : with_nhibernate_uow
   {
     static NorthwindEmployee employee;
