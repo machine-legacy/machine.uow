@@ -6,14 +6,26 @@ namespace Machine.UoW
 {
   public class EnlistmentNotifications : IEnlistmentNotification
   {
-    private readonly IUnitOfWork _unitOfWork;
+    readonly UnitOfWork _unitOfWork;
 
-    public EnlistmentNotifications(IUnitOfWork unitOfWork)
+    public static bool Enlist(UnitOfWork unitOfWork)
+    {
+      Transaction transaction = Transaction.Current;
+      if (transaction == null)
+      {
+        return false;
+      }
+      EnlistmentNotifications notifications = new EnlistmentNotifications(unitOfWork);
+      transaction.EnlistVolatile(notifications, EnlistmentOptions.None);
+      unitOfWork.Set(notifications);
+      return true;
+    }
+
+    public EnlistmentNotifications(UnitOfWork unitOfWork)
     {
       _unitOfWork = unitOfWork;
     }
 
-    #region IEnlistmentNotification Members
     public void Commit(Enlistment enlistment)
     {
       enlistment.Done();
@@ -26,28 +38,14 @@ namespace Machine.UoW
 
     public void Prepare(PreparingEnlistment preparingEnlistment)
     {
-      _unitOfWork.Commit();
+      _unitOfWork.Commit(CommitOrRollbackType.Ambient);
       preparingEnlistment.Prepared();
     }
 
     public void Rollback(Enlistment enlistment)
     {
-      _unitOfWork.Rollback();
+      _unitOfWork.Rollback(CommitOrRollbackType.Ambient);
       enlistment.Done();
-    }
-    #endregion
-
-    public static bool Enlist(IUnitOfWork unitOfWork)
-    {
-      Transaction transaction = Transaction.Current;
-      if (transaction == null)
-      {
-        return false;
-      }
-      EnlistmentNotifications notifications = new EnlistmentNotifications(unitOfWork);
-      transaction.EnlistVolatile(notifications, EnlistmentOptions.None);
-      unitOfWork.Set(notifications);
-      return true;
     }
   }
 }

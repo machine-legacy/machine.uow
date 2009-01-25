@@ -4,23 +4,36 @@ namespace Machine.UoW.NHibernate
 {
   public class CurrentSession
   {
-    public ISession Session { get; private set; }
-    public ITransaction Transaction { get; private set; }
+    readonly ISession _session;
+    readonly ITransaction _transaction;
+
+    public ISession Session
+    {
+      get { return _session; }
+    }
+
+    public CurrentSession(ISession session)
+    {
+      _session = session;
+      _transaction = new NullTransaction();
+    }
 
     public CurrentSession(ISession session, ITransaction transaction)
     {
-      this.Session = session;
-      this.Transaction = transaction;
+      _session = session;
+      _transaction = transaction;
     }
 
     public void Rollback()
     {
-      this.Transaction.Rollback();
+      _session.Clear();
+      _transaction.Rollback();
     }
 
     public void Commit()
     {
-      this.Transaction.Commit();
+      _session.Flush();
+      _transaction.Commit();
     }
   }
 }

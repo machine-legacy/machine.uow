@@ -3,22 +3,31 @@ using System.Collections.Generic;
 
 namespace Machine.UoW
 {
+  public enum CommitOrRollbackType
+  {
+    Local,
+    Ambient
+  }
   public class UnitOfWork : IUnitOfWork
   {
     private readonly Dictionary<object, UnitOfWorkEntry> _entries = new Dictionary<object, UnitOfWorkEntry>();
     private readonly IUnitOfWorkManagement _unitOfWorkManagement;
-    private readonly bool _enlistedInScope;
     private bool _open;
 
     public UnitOfWork(IUnitOfWorkManagement unitOfWorkManagement, params IUnitOfWorkSettings[] startupSettings)
     {
-      _enlistedInScope = EnlistmentNotifications.Enlist(this);
+      // EnlistmentNotifications.Enlist(this);
       _unitOfWorkManagement = unitOfWorkManagement;
       _open = true;
       foreach (IUnitOfWorkSettings settings in startupSettings)
       {
         _state[settings.GetType()] = settings;
       }
+    }
+
+    public bool IsClosed
+    {
+      get { return !_open; }
     }
 
     public void Start()
@@ -56,6 +65,11 @@ namespace Machine.UoW
 
     public void Commit()
     {
+      Commit(CommitOrRollbackType.Local);
+    }
+
+    public void Commit(CommitOrRollbackType type)
+    {
       Close();
       IUnitOfWorkEvents events = _unitOfWorkManagement.GetUnitOfWorkEventsProxy();
       foreach (UnitOfWorkEntry entry in _entries.Values)
@@ -67,6 +81,11 @@ namespace Machine.UoW
     }
 
     public void Rollback()
+    {
+      Rollback(CommitOrRollbackType.Local);
+    }
+
+    public void Rollback(CommitOrRollbackType type)
     {
       Close();
       IUnitOfWorkEvents events = _unitOfWorkManagement.GetUnitOfWorkEventsProxy();
@@ -108,10 +127,6 @@ namespace Machine.UoW
 
     public void Dispose()
     {
-      if (_enlistedInScope)
-      {
-        return;
-      }
       if (_open)
       {
         Rollback();

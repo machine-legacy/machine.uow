@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+
 using NHibernate;
 
 namespace Machine.UoW.NHibernate
@@ -19,8 +20,15 @@ namespace Machine.UoW.NHibernate
       NHibernateSessionSettings settings = unitOfWork.Get(NHibernateSessionSettings.Default);
       ISession session = _sessionFactory.OpenSession();
       session.FlushMode = settings.FlushMode;
-      ITransaction transaction = session.BeginTransaction(settings.IsolationLevel);
-      unitOfWork.Set(new CurrentSession(session, transaction));
+      if (!unitOfWork.InAmbientTransaction())
+      {
+        ITransaction transaction = session.BeginTransaction(settings.IsolationLevel);
+        unitOfWork.Set(new CurrentSession(session, transaction));
+      }
+      else
+      {
+        unitOfWork.Set(new CurrentSession(session));
+      }
     }
 
     public void AddNew(IUnitOfWork unitOfWork, object obj)
@@ -44,19 +52,20 @@ namespace Machine.UoW.NHibernate
 
     public void Rollback(IUnitOfWork unitOfWork)
     {
-      if (unitOfWork.Get<EnlistmentNotifications>() == null)
-      {
-        unitOfWork.Get<CurrentSession>().Rollback();
-      }
+      unitOfWork.Get<CurrentSession>().Rollback();
     }
 
     public void Commit(IUnitOfWork unitOfWork)
     {
-      if (unitOfWork.Get<EnlistmentNotifications>() == null)
-      {
-        unitOfWork.Get<CurrentSession>().Commit();
-      }
+      unitOfWork.Get<CurrentSession>().Commit();
     }
     #endregion
+  }
+  public static class AmbientTransactionHelpers
+  {
+    public static bool InAmbientTransaction(this IUnitOfWork uow)
+    {
+      return System.Transactions.Transaction.Current != null;
+    }
   }
 }

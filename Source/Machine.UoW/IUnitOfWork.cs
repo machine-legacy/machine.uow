@@ -5,6 +5,10 @@ namespace Machine.UoW
 {
   public interface IUnitOfWork : IUnitOfWorkState, IDisposable
   {
+    bool IsClosed
+    {
+      get;
+    }
     void AddNew<T>(T instance);
     void Save<T>(T instance);
     void Remove<T>(T instance);

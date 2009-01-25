@@ -77,6 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adding_objects.cs" />
+    <Compile Include="Ambient_transactions.cs" />
     <Compile Include="DatabaseAndNhSessionFactory.cs">
       <SubType>Code</SubType>
     </Compile>
