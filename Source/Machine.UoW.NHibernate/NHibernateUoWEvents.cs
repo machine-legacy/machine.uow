@@ -14,7 +14,6 @@ namespace Machine.UoW.NHibernate
       _sessionFactory = sessionFactory;
     }
 
-    #region IUnitOfWorkEvents Members
     public void Start(IUnitOfWork unitOfWork)
     {
       NHibernateSessionSettings settings = unitOfWork.Get(NHibernateSessionSettings.Default);
@@ -59,7 +58,11 @@ namespace Machine.UoW.NHibernate
     {
       unitOfWork.Get<CurrentSession>().Commit();
     }
-    #endregion
+
+    public void Dispose(IUnitOfWork unitOfWork)
+    {
+      unitOfWork.Get<CurrentSession>().Dispose();
+    }
   }
   public static class AmbientTransactionHelpers
   {

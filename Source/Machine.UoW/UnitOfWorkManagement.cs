@@ -30,8 +30,6 @@ namespace Machine.UoW
       _events = events;
     }
 
-    #region IUnitOfWorkEvents Members
-
     public void Start(IUnitOfWork unitOfWork)
     {
       foreach (IUnitOfWorkEvents events in _events)
@@ -87,6 +85,13 @@ namespace Machine.UoW
         events.Commit(unitOfWork);
       }
     }
-    #endregion
+
+    public void Dispose(IUnitOfWork unitOfWork)
+    {
+      foreach (IUnitOfWorkEvents events in _events)
+      {
+        events.Dispose(unitOfWork);
+      }
+    }
   }
 }

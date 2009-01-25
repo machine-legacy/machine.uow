@@ -11,5 +11,6 @@ namespace Machine.UoW
     void Rollback(IUnitOfWork unitOfWork, object obj);
     void Rollback(IUnitOfWork unitOfWork);
     void Commit(IUnitOfWork unitOfWork);
+    void Dispose(IUnitOfWork unitOfWork);
   }
 }

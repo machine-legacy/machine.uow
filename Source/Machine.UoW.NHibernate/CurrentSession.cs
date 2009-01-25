@@ -35,5 +35,9 @@ namespace Machine.UoW.NHibernate
       _session.Flush();
       _transaction.Commit();
     }
+
+    public void Dispose()
+    {
+    }
   }
 }

@@ -32,5 +32,9 @@ namespace Machine.UoW
     public void Commit(IUnitOfWork unitOfWork)
     {
     }
+
+    public void Dispose(IUnitOfWork unitOfWork)
+    {
+    }
   }
 }

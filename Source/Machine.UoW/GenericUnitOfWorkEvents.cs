@@ -4,7 +4,6 @@ namespace Machine.UoW
 {
   public class GenericUnitOfWorkEvents<T> : IUnitOfWorkEvents
   {
-    #region IUnitOfWorkEvents Members
     public virtual void Start(IUnitOfWork unitOfWork)
     {
     }
@@ -36,7 +35,6 @@ namespace Machine.UoW
     public virtual void Commit(IUnitOfWork unitOfWork)
     {
     }
-    #endregion
 
     public virtual void AddNew(IUnitOfWork unitOfWork, T obj)
     {
@@ -51,6 +49,10 @@ namespace Machine.UoW
     }
 
     public virtual void Rollback(IUnitOfWork unitOfWork, T obj)
+    {
+    }
+
+    public virtual void Dispose(IUnitOfWork unitOfWork)
     {
     }
   }

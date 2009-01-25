@@ -13,6 +13,7 @@ namespace Machine.UoW
     private readonly Dictionary<object, UnitOfWorkEntry> _entries = new Dictionary<object, UnitOfWorkEntry>();
     private readonly IUnitOfWorkManagement _unitOfWorkManagement;
     private bool _open;
+    private bool _disposed;
 
     public UnitOfWork(IUnitOfWorkManagement unitOfWorkManagement, params IUnitOfWorkSettings[] startupSettings)
     {
@@ -131,6 +132,13 @@ namespace Machine.UoW
       {
         Rollback();
       }
+      if (_disposed)
+      {
+        return;
+      }
+      IUnitOfWorkEvents events = _unitOfWorkManagement.GetUnitOfWorkEventsProxy();
+      events.Dispose(this);
+      _disposed = true;
     }
 
     private void AssertIsOpen()
