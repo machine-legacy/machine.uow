@@ -19,7 +19,7 @@ namespace Machine.UoW.NHibernate
       NHibernateSessionSettings settings = unitOfWork.Get(NHibernateSessionSettings.Default);
       ISession session = _sessionFactory.OpenSession();
       session.FlushMode = settings.FlushMode;
-      if (!unitOfWork.InAmbientTransaction())
+      if (!AmbientTransactionHelpers.InAmbientTransaction())
       {
         ITransaction transaction = session.BeginTransaction(settings.IsolationLevel);
         unitOfWork.Set(new CurrentSession(session, transaction));
@@ -66,7 +66,7 @@ namespace Machine.UoW.NHibernate
   }
   public static class AmbientTransactionHelpers
   {
-    public static bool InAmbientTransaction(this IUnitOfWork uow)
+    public static bool InAmbientTransaction()
     {
       return System.Transactions.Transaction.Current != null;
     }
