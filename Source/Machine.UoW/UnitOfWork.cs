@@ -17,7 +17,6 @@ namespace Machine.UoW
 
     public UnitOfWork(IUnitOfWorkManagement unitOfWorkManagement, params IUnitOfWorkSettings[] startupSettings)
     {
-      // EnlistmentNotifications.Enlist(this);
       _unitOfWorkManagement = unitOfWorkManagement;
       _open = true;
       foreach (IUnitOfWorkSettings settings in startupSettings)

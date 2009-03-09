@@ -21,7 +21,7 @@ namespace Machine.UoW
       return true;
     }
 
-    public EnlistmentNotifications(UnitOfWork unitOfWork)
+    protected EnlistmentNotifications(UnitOfWork unitOfWork)
     {
       _unitOfWork = unitOfWork;
     }
