@@ -38,6 +38,7 @@ namespace Machine.UoW.NHibernate
 
     public void Dispose()
     {
+      _session.Dispose();
     }
   }
 }
