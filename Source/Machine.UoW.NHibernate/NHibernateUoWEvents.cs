@@ -64,11 +64,4 @@ namespace Machine.UoW.NHibernate
       unitOfWork.Get<CurrentSession>().Dispose();
     }
   }
-  public static class AmbientTransactionHelpers
-  {
-    public static bool InAmbientTransaction()
-    {
-      return System.Transactions.Transaction.Current != null;
-    }
-  }
 }

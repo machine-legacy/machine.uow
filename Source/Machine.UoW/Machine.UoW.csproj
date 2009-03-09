@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AmbientTransactionHelpers.cs" />
     <Compile Include="EnlistmentNotifications.cs" />
     <Compile Include="GenericUnitOfWorkEvents.cs" />
     <Compile Include="HttpContextUnitOfWorkProvider.cs" />
