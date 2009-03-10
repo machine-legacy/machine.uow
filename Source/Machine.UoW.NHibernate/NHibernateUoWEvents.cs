@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using Machine.UoW.AmbientTransactions;
+
 using NHibernate;
 
 namespace Machine.UoW.NHibernate

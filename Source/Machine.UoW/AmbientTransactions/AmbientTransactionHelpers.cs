@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Transactions;
 
-namespace Machine.UoW
+namespace Machine.UoW.AmbientTransactions
 {
   public static class AmbientTransactionHelpers
   {
     public static bool InAmbientTransaction()
     {
-      return System.Transactions.Transaction.Current != null;
+      return Transaction.Current != null;
     }
   }
 }
