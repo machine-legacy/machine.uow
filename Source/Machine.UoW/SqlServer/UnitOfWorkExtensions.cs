@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Data.SqlClient;
 
 namespace Machine.UoW.SqlServer
 {
@@ -12,6 +13,11 @@ namespace Machine.UoW.SqlServer
         throw new InvalidOperationException("No current UoW");
       }
       return state.Get<CurrentConnection>().Connection();
+    }
+
+    public static SqlConnection Sql(this IUnitOfWorkState state)
+    {
+      return (SqlConnection)state.Connection();
     }
   }
 }
