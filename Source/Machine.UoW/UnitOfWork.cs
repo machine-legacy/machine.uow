@@ -8,7 +8,7 @@ namespace Machine.UoW
     Local,
     Ambient
   }
-  public class UnitOfWork : IUnitOfWork
+  public class UnitOfWork : UnitOfWorkStateBase, IUnitOfWork
   {
     private readonly Dictionary<object, UnitOfWorkEntry> _entries = new Dictionary<object, UnitOfWorkEntry>();
     private readonly IUnitOfWorkManagement _unitOfWorkManagement;
@@ -21,7 +21,7 @@ namespace Machine.UoW
       _open = true;
       foreach (IUnitOfWorkSettings settings in startupSettings)
       {
-        _state[settings.GetType()] = settings;
+        Set(settings.GetType(), settings);
       }
     }
 
@@ -156,10 +156,12 @@ namespace Machine.UoW
     }
 
     public event EventHandler<EventArgs> Closed = delegate(object sender, EventArgs e) { };
+  }
 
-    private readonly Dictionary<Type, object> _state = new Dictionary<Type, object>();
+  public abstract class UnitOfWorkStateBase : IUnitOfWorkState
+  {
+    readonly Dictionary<Type, object> _state = new Dictionary<Type, object>();
 
-    #region IUnitOfWorkState Members
     public T Get<T>(T defaultValue)
     {
       if (!_state.ContainsKey(typeof(T)))
@@ -174,10 +176,14 @@ namespace Machine.UoW
       return Get<T>(default(T));
     }
 
+    public void Set(Type key, object value)
+    {
+      _state[key] = value;
+    }
+
     public void Set<T>(T value)
     {
-      _state[typeof(T)] = value;
+      Set(typeof(T), value);
     }
-    #endregion
   }
 }

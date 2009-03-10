@@ -17,6 +17,7 @@ namespace Machine.UoW
     void Rollback();
     event EventHandler<EventArgs> Closed;
   }
+  
   public interface IUnitOfWorkState
   {
     T Get<T>(T defaultValue);

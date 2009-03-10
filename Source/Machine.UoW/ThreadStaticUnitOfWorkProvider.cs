@@ -13,7 +13,6 @@ namespace Machine.UoW
       _unitOfWorkFactory = unitOfWorkFactory;
     }
 
-    #region IUnitOfWorkProvider Members
     public IUnitOfWork Start(IUnitOfWorkSettings[] settings)
     {
       _unitOfWork = _unitOfWorkFactory.StartUnitOfWork(settings);
@@ -25,7 +24,6 @@ namespace Machine.UoW
     {
       return _unitOfWork;
     }
-    #endregion
 
     private static void OnClosed(object sender, EventArgs e)
     {
