@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using Machine.Specifications;
-using Machine.UoW.SqlServer;
+using Machine.UoW.AdoDotNet;
 
 namespace Machine.UoW.NHibernate.Specs
 {

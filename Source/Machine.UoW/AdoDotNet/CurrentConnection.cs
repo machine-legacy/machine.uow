@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 
-namespace Machine.UoW.SqlServer
+namespace Machine.UoW.AdoDotNet
 {
   public class CurrentConnection
   {

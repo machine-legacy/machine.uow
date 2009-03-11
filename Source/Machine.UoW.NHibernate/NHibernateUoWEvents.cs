@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-using Machine.UoW.SqlServer;
+using Machine.UoW.AdoDotNet;
 
 using NHibernate;
 

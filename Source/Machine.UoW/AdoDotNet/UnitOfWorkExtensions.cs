@@ -2,7 +2,7 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace Machine.UoW.SqlServer
+namespace Machine.UoW.AdoDotNet
 {
   public static class UnitOfWorkExtensions
   {

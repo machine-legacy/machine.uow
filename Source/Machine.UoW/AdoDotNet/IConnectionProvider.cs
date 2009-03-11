@@ -1,7 +1,7 @@
 using System;
 using System.Data;
 
-namespace Machine.UoW.SqlServer
+namespace Machine.UoW.AdoDotNet
 {
   public interface IConnectionProvider
   {

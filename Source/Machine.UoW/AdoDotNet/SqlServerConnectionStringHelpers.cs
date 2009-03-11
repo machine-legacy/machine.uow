@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace Machine.UoW.SqlServer
+namespace Machine.UoW.AdoDotNet
 {
   // Should maybe split the string on ; and look at the individual parts?
   public static class SqlServerConnectionStringHelpers

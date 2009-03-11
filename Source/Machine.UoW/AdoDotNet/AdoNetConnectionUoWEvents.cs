@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Machine.UoW.SqlServer
+namespace Machine.UoW.AdoDotNet
 {
   public class AdoNetConnectionUoWEvents : IUnitOfWorkEvents
   {

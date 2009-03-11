@@ -6,7 +6,7 @@ using System.Data.SQLite;
 using System.Globalization;
 using System.IO;
 
-using Machine.UoW.SqlServer;
+using Machine.UoW.AdoDotNet;
 
 namespace Machine.UoW.NHibernate.Specs
 {
