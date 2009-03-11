@@ -140,7 +140,6 @@ namespace Machine.UoW
 
     public override void Dispose()
     {
-      base.Dispose();
       if (_open)
       {
         Rollback();
@@ -152,6 +151,7 @@ namespace Machine.UoW
       IUnitOfWorkEvents events = _unitOfWorkManagement.GetUnitOfWorkEventsProxy();
       events.Dispose(this);
       _disposed = true;
+      base.Dispose();
     }
 
     private void AssertIsOpen()
@@ -202,6 +202,10 @@ namespace Machine.UoW
 
     public virtual void Dispose()
     {
+      foreach (IDisposable disposable in _state.Values)
+      {
+        disposable.Dispose();
+      }
     }
   }
 }

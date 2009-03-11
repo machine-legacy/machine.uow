@@ -85,7 +85,7 @@ namespace Machine.UoW.AmbientTransactions
       _transaction = transaction;
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
       TransactionInformation information = _transaction.TransactionInformation;
       _log.Info("Disposing: " + information.LocalIdentifier + " (" + information.DistributedIdentifier + ") " + information.Status);
@@ -102,6 +102,7 @@ namespace Machine.UoW.AmbientTransactions
       }
       Get<IUnitOfWork>().Dispose();
       _transaction.Dispose();
+      base.Dispose();
     }
   }
 }

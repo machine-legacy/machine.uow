@@ -56,7 +56,7 @@ namespace Machine.UoW.NHibernate
 
     public void Dispose(IUnitOfWork unitOfWork)
     {
-      unitOfWork.Get<CurrentSession>().Dispose();
+      // unitOfWork.Get<CurrentSession>().Dispose();
     }
   }
 }
