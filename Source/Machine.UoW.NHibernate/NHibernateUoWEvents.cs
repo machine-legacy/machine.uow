@@ -21,15 +21,8 @@ namespace Machine.UoW.NHibernate
       NHibernateSessionSettings settings = unitOfWork.Get(NHibernateSessionSettings.Default);
       ISession session = _sessionFactory.OpenSession();
       session.FlushMode = settings.FlushMode;
-      if (!AmbientTransactionHelpers.InAmbientTransaction())
-      {
-        ITransaction transaction = session.BeginTransaction(settings.IsolationLevel);
-        unitOfWork.Set(new CurrentSession(session, transaction));
-      }
-      else
-      {
-        unitOfWork.Set(new CurrentSession(session));
-      }
+      ITransaction transaction = session.BeginTransaction(settings.IsolationLevel);
+      unitOfWork.Set(new CurrentSession(session, transaction));
     }
 
     public void AddNew(IUnitOfWork unitOfWork, object obj)

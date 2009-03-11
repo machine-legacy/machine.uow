@@ -9,6 +9,8 @@ namespace Machine.UoW
     {
       get;
     }
+    bool WasCommitted { get; }
+    bool WasRolledBack { get; }
     void AddNew<T>(T instance);
     void Save<T>(T instance);
     void Remove<T>(T instance);

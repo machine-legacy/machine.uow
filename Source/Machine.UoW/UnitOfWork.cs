@@ -8,12 +8,14 @@ namespace Machine.UoW
     Local,
     Ambient
   }
+  
   public class UnitOfWork : UnitOfWorkStateBase, IUnitOfWork
   {
     private readonly Dictionary<object, UnitOfWorkEntry> _entries = new Dictionary<object, UnitOfWorkEntry>();
     private readonly IUnitOfWorkManagement _unitOfWorkManagement;
     private bool _open;
     private bool _disposed;
+    private bool _wasCommitted;
 
     public UnitOfWork(IUnitOfWorkManagement unitOfWorkManagement, params IUnitOfWorkSettings[] startupSettings)
     {
@@ -28,6 +30,16 @@ namespace Machine.UoW
     public bool IsClosed
     {
       get { return !_open; }
+    }
+
+    public bool WasCommitted
+    {
+      get { return !_open && _wasCommitted; }
+    }
+
+    public bool WasRolledBack
+    {
+      get { return !_open && !_wasCommitted; }
     }
 
     public void Start()
@@ -78,6 +90,7 @@ namespace Machine.UoW
       }
       events.Commit(this);
       _entries.Clear();
+      _wasCommitted = true;
     }
 
     public void Rollback()

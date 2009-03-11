@@ -23,6 +23,10 @@ namespace Machine.UoW.AmbientTransactions
       _active = this;
     }
 
+    public bool WasCommitted { get { return _unitOfWork.WasCommitted; } }
+
+    public bool WasRolledBack { get { return _unitOfWork.WasRolledBack; } }
+    
     public T Get<T>(T defaultValue)
     {
       return _unitOfWork.Get(defaultValue);

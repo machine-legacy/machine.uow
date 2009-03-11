@@ -6,9 +6,10 @@ namespace Machine.UoW
 {
   public class EnlistmentNotifications : IEnlistmentNotification
   {
-    readonly UnitOfWork _unitOfWork;
+    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(EnlistmentNotifications));
+    readonly IUnitOfWork _unitOfWork;
 
-    public static bool Enlist(UnitOfWork unitOfWork)
+    public static bool Enlist(IUnitOfWork unitOfWork)
     {
       Transaction transaction = Transaction.Current;
       if (transaction == null)
@@ -17,34 +18,37 @@ namespace Machine.UoW
       }
       EnlistmentNotifications notifications = new EnlistmentNotifications(unitOfWork);
       transaction.EnlistVolatile(notifications, EnlistmentOptions.None);
-      unitOfWork.Set(notifications);
       return true;
     }
 
-    protected EnlistmentNotifications(UnitOfWork unitOfWork)
+    protected EnlistmentNotifications(IUnitOfWork unitOfWork)
     {
       _unitOfWork = unitOfWork;
     }
 
     public void Commit(Enlistment enlistment)
     {
+      _log.Info("Commit: " + _unitOfWork.WasCommitted + " " + _unitOfWork);
       enlistment.Done();
     }
 
     public void InDoubt(Enlistment enlistment)
     {
+      _log.Info("InDoubt: " + _unitOfWork.WasCommitted + " " + _unitOfWork);
       Rollback(enlistment);
     }
 
     public void Prepare(PreparingEnlistment preparingEnlistment)
     {
-      _unitOfWork.Commit(CommitOrRollbackType.Ambient);
+      _log.Info("Prepare: " + _unitOfWork.WasCommitted + " " + _unitOfWork);
+      _unitOfWork.Commit();
       preparingEnlistment.Prepared();
     }
 
     public void Rollback(Enlistment enlistment)
     {
-      _unitOfWork.Rollback(CommitOrRollbackType.Ambient);
+      _log.Info("Rollback: " + _unitOfWork.WasCommitted + " " + _unitOfWork);
+      _unitOfWork.Rollback();
       enlistment.Done();
     }
   }

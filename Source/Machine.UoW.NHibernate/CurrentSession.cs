@@ -13,12 +13,6 @@ namespace Machine.UoW.NHibernate
       get { return _session; }
     }
 
-    public CurrentSession(ISession session)
-    {
-      _session = session;
-      _transaction = new NullTransaction();
-    }
-
     public CurrentSession(ISession session, ITransaction transaction)
     {
       _session = session;

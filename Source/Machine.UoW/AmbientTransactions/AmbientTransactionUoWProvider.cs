@@ -21,6 +21,10 @@ namespace Machine.UoW.AmbientTransactions
 
     public IUnitOfWork Start(IUnitOfWorkSettings[] settings)
     {
+      if (!AmbientTransactionHelpers.InAmbientTransaction())
+      {
+        throw new InvalidOperationException("Ambient transaction scope invalid unless inside transaction!");
+      }
       UnitOfWorkScope scope = Scope();
       IUnitOfWork unitOfWork = scope.Get<IUnitOfWork>();
       if (unitOfWork == null)
@@ -28,6 +32,7 @@ namespace Machine.UoW.AmbientTransactions
         unitOfWork = _unitOfWorkFactory.StartUnitOfWork(settings);
         scope.Set(unitOfWork);
         _log.Info("Starting UoW");
+        EnlistmentNotifications.Enlist(unitOfWork);
       }
       AmbientTransactionSettings ambientTransactionSettings = settings.AmbientSettings();
       return new AmbientTransactionUnitOfWorkProxy(unitOfWork, ambientTransactionSettings.ToScope());
@@ -35,15 +40,15 @@ namespace Machine.UoW.AmbientTransactions
 
     public IUnitOfWork GetUnitOfWork()
     {
+      if (!AmbientTransactionHelpers.InAmbientTransaction())
+      {
+        throw new InvalidOperationException("Ambient transaction scope invalid unless inside transaction!");
+      }
       return AmbientTransactionUnitOfWorkProxy.Active;
     }
 
     private static UnitOfWorkScope Scope()
     {
-      if (!AmbientTransactionHelpers.InAmbientTransaction())
-      {
-        throw new InvalidOperationException("Ambient transaction scope invalid unless inside transaction!");
-      }
       Transaction transaction = Transaction.Current;
       using (RWLock.AsReader(_lock))
       {
@@ -52,7 +57,8 @@ namespace Machine.UoW.AmbientTransactions
           Transaction clone = transaction.Clone();
           _scope[clone] = new UnitOfWorkScope(clone);
           transaction.TransactionCompleted += Completed;
-          _log.Info("Creating: " + clone.TransactionInformation.LocalIdentifier + "(" + clone.TransactionInformation.DistributedIdentifier + ")");
+          TransactionInformation information = clone.TransactionInformation;
+          _log.Info("Creating: " + information.LocalIdentifier + "(" + information.DistributedIdentifier + ")");
         }
         return _scope[transaction];
       }
@@ -81,7 +87,19 @@ namespace Machine.UoW.AmbientTransactions
 
     public void Dispose()
     {
-      _log.Info("Disposing: " + _transaction.TransactionInformation.LocalIdentifier + "(" + _transaction.TransactionInformation.DistributedIdentifier + ")");
+      TransactionInformation information = _transaction.TransactionInformation;
+      _log.Info("Disposing: " + information.LocalIdentifier + " (" + information.DistributedIdentifier + ") " + information.Status);
+      switch (information.Status)
+      {
+        case TransactionStatus.Aborted:
+          break;
+        case TransactionStatus.Active:
+          break;
+        case TransactionStatus.Committed:
+          break;
+        case TransactionStatus.InDoubt:
+          break;
+      }
       Get<IUnitOfWork>().Dispose();
       _transaction.Dispose();
     }

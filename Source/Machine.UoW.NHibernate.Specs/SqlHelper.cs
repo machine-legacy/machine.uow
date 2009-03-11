@@ -176,7 +176,7 @@ namespace Machine.UoW.NHibernate.Specs
 
   public static class SqlHelper
   {
-    public static IDatabaseProvider Provider = new SqliteProvider();
+    public static IDatabaseProvider Provider = new SqlServerProvider();
 
     public static IDataReader Execute(IDbConnection connection, string sql)
     {

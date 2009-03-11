@@ -58,6 +58,7 @@ namespace Machine.UoW.NHibernate.Specs
       employee.FirstName.ShouldNotEqual("Steve Van");
   }
 
+  // Fails on Sqlite because of weird transaction nesting problems?
   [Subject("Saving objects")]
   public class when_saving_an_object_in_transaction_scope_with_no_complete : with_nhibernate_uow
   {
@@ -86,6 +87,7 @@ namespace Machine.UoW.NHibernate.Specs
       employee.FirstName.ShouldEqual("Steve");
   }
 
+  // Fails on Sqlite because of weird transaction nesting problems?
   [Subject("Saving objects")]
   public class when_saving_an_object_in_transaction_scope : with_nhibernate_uow
   {
@@ -117,7 +119,7 @@ namespace Machine.UoW.NHibernate.Specs
   }
 
   [Subject("Saving objects")]
-  public class when_saving_an_object_in_transaction_scope_and_no_commit : with_nhibernate_uow
+  public class when_saving_an_object_in_transaction_scope_and_completing_when_inner_transaction_has_failed : with_nhibernate_uow
   {
     static NorthwindEmployee employee;
     static long id;
@@ -126,20 +128,25 @@ namespace Machine.UoW.NHibernate.Specs
 
     Because of = () =>
     {
-      using (TransactionScope scope = new TransactionScope())
-      {
-        using (IUnitOfWork uow = UoW.Start())
+      exception = Catch.Exception(() => {
+        using (TransactionScope scope = new TransactionScope())
         {
-          employee = uow.Session().Get<NorthwindEmployee>(id);
-          employee.FirstName = "Steve Van";
+          using (IUnitOfWork uow = UoW.Start())
+          {
+            employee = uow.Session().Get<NorthwindEmployee>(id);
+            employee.FirstName = "Steve Van";
+          }
+          scope.Complete();
         }
-        scope.Complete();
-      }
+      });
       using (IUnitOfWork uow = UoW.Start())
       {
         employee = uow.Session().Get<NorthwindEmployee>(id);
       }
     };
+
+    It should_throw_because_we_tried_committing_after_a_rollback = () => 
+      exception.ShouldNotBeNull();
 
     It should_not_be_changed_in_database = () =>
       employee.FirstName.ShouldEqual("Steve");
