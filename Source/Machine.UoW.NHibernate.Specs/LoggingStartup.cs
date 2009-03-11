@@ -10,8 +10,14 @@ namespace Machine.UoW.NHibernate.Specs
 {
   public class LoggingStartup
   {
+    static bool _configured;
+
     public void Start()
     {
+      if (_configured)
+      {
+        return;
+      }
       PatternLayout layout = new PatternLayout(@"%-5p (%30.30c) %m%n");
       ConsoleAppender consoleAppender = new ConsoleAppender();
       consoleAppender.Layout = layout;
@@ -26,6 +32,8 @@ namespace Machine.UoW.NHibernate.Specs
       ChangeLevel("NHibernate.Persister.Entity.AbstractEntityPersister", Level.Warn);
 
       ((log4net.Repository.Hierarchy.Hierarchy)LogManager.GetRepository()).Root.AddAppender(outputDebugStringAppender);
+
+      _configured = true;
     }
 
     public static void ChangeLevel(string logger, Level level)
