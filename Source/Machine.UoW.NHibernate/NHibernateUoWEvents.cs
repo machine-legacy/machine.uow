@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-using Machine.UoW.AmbientTransactions;
+using Machine.UoW.SqlServer;
 
 using NHibernate;
 
@@ -19,7 +19,7 @@ namespace Machine.UoW.NHibernate
     public void Start(IUnitOfWork unitOfWork)
     {
       NHibernateSessionSettings settings = unitOfWork.Get(NHibernateSessionSettings.Default);
-      ISession session = _sessionFactory.OpenSession();
+      ISession session = _sessionFactory.OpenSession(unitOfWork.Connection());
       session.FlushMode = settings.FlushMode;
       ITransaction transaction = session.BeginTransaction(settings.IsolationLevel);
       unitOfWork.Set(new CurrentSession(session, transaction));

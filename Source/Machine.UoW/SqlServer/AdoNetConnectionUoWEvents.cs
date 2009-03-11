@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Machine.UoW.SqlServer
 {
-  public class SqlServerConnectionUoWEvents : IUnitOfWorkEvents
+  public class AdoNetConnectionUoWEvents : IUnitOfWorkEvents
   {
     readonly IConnectionProvider _connectionProvider;
 
-    public SqlServerConnectionUoWEvents(IConnectionProvider connectionProvider)
+    public AdoNetConnectionUoWEvents(IConnectionProvider connectionProvider)
     {
       _connectionProvider = connectionProvider;
     }

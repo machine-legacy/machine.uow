@@ -59,7 +59,7 @@
     <Compile Include="AmbientTransactions\AmbientTransactionUoWProvider.cs" />
     <Compile Include="SqlServer\CurrentConnection.cs" />
     <Compile Include="SqlServer\IConnectionProvider.cs" />
-    <Compile Include="SqlServer\SqlServerConnectionUoWEvents.cs" />
+    <Compile Include="SqlServer\AdoNetConnectionUoWEvents.cs" />
     <Compile Include="SqlServer\SqlServerConnectionProvider.cs" />
     <Compile Include="SqlServer\SqlServerConnectionStringHelpers.cs" />
     <Compile Include="EnlistmentNotifications.cs" />

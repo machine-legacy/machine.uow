@@ -6,16 +6,17 @@ using System.Data.SQLite;
 using System.Globalization;
 using System.IO;
 
+using Machine.UoW.SqlServer;
+
 namespace Machine.UoW.NHibernate.Specs
 {
-  public interface IDatabaseProvider
+  public interface IDatabaseProvider : IConnectionProvider
   {
     long QueryLastRowId(IDbConnection connection, IDbTransaction transaction);
     string[] CreateTablesSql();
     string[] TableNames();
     string ToDateTimeString(DateTime dateValue);
     IDictionary<string, string> CreateNhibernateProperties();
-    IDbConnection CreateConnection();
   }
 
   public class SqliteProvider : IDatabaseProvider
@@ -85,12 +86,14 @@ namespace Machine.UoW.NHibernate.Specs
       return properties;
     }
 
-    public IDbConnection CreateConnection()
+    public IDbConnection OpenConnection()
     {
       DeleteIfExists();
       bool recreateNecessary = true;
       string connectionString = String.Format("Data Source={0};Version=3;New={1};Compress=False", _filename, recreateNecessary ? "True" : "False");
-      return new SQLiteConnection(connectionString);
+      IDbConnection connection = new SQLiteConnection(connectionString);
+      connection.Open();
+      return connection;
     }
 
     private void DeleteIfExists()
@@ -167,10 +170,12 @@ namespace Machine.UoW.NHibernate.Specs
       return properties;
     }
 
-    public IDbConnection CreateConnection()
+    public IDbConnection OpenConnection()
     {
       string connectionString = "Server=127.0.0.1;Initial Catalog=northwind;Integrated Security=true";
-      return new SqlConnection(connectionString);
+      IDbConnection connection = new SqlConnection(connectionString);
+      connection.Open();
+      return connection;
     }
   }
 

@@ -14,8 +14,7 @@ namespace Machine.UoW.NHibernate.Specs
 
     public void Recreate()
     {
-      _connection = SqlHelper.Provider.CreateConnection();
-      _connection.Open();
+      _connection = SqlHelper.Provider.OpenConnection();
       NorthwindDatabase database = new NorthwindDatabase(_connection);
       database.DropAllTables();
       database.Create();
