@@ -12,10 +12,10 @@ namespace Machine.UoW.NHibernate.Specs
 {
   public class DatabaseAndNhSessionFactory
   {
-    private SqliteDatabaseManager _database;
+    private DatabaseManager _database;
     private ISessionFactory _sessionFactory;
 
-    public SqliteDatabaseManager Database
+    public DatabaseManager Database
     {
       get { return _database; }
     }
@@ -27,14 +27,13 @@ namespace Machine.UoW.NHibernate.Specs
 
     public void Open()
     {
-      _database = new SqliteDatabaseManager();
+      _database = new DatabaseManager();
       _database.Recreate();
 
-      Dictionary<string, string> properties = new Dictionary<string, string>();
+      IDictionary<string, string> properties = SqlHelper.Provider.CreateNhibernateProperties();
       properties["connection.provider"] = "NHibernate.Connection.DriverConnectionProvider";
-      properties["connection.driver_class"] = "NHibernate.Driver.SQLite20Driver";
       properties["connection.connection_string"] = _database.Connection.ConnectionString;
-      properties["dialect"] = "NHibernate.Dialect.SQLiteDialect";
+      properties["proxyfactory.factory_class"] = "NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle";
 
       Configuration configuration = new Configuration();
       configuration.AddProperties(properties);

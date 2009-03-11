@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
 
 namespace Machine.UoW.NHibernate.Specs
 {
   public class NorthwindDatabase
   {
-    private readonly IDbConnection _connection;
+    readonly IDbConnection _connection;
+    IDbTransaction _transaction;
 
     public NorthwindDatabase(IDbConnection connection)
     {
@@ -16,50 +16,23 @@ namespace Machine.UoW.NHibernate.Specs
 
     public virtual void Create()
     {
-      string[] sql = new string[] {
-  		  @"CREATE TABLE Employees (
-  		    EmployeeId INTEGER PRIMARY KEY,
-		      FirstName VARCHAR(100),
-		      LastName VARCHAR(100),
-		      BirthDate DATETIME,
-		      IsAlive BOOL,
-		      ReportsTo INTEGER REFERENCES Employees
-		    );",
-		    @"CREATE TABLE Categories (
-		      CategoryId INTEGER PRIMARY KEY,
-		      CategoryName VARCHAR(100)
-		    );",
-		    @"CREATE TABLE Products (
-		      ProductId INTEGER PRIMARY KEY,
-		      ProductName VARCHAR(100),
-		      CategoryId INTEGER REFERENCES Categories
-		    );",
-		    @"CREATE TABLE Customers (
-		      CustomerId INTEGER PRIMARY KEY,
-		      CustomerName VARCHAR(100)
-		    );",
-		    @"CREATE TABLE Orders (
-		      OrderId INTEGER PRIMARY KEY,
-          Title VARCHAR(100),
-		      CustomerId INTEGER REFERENCES Customers
-		    );",
-		    @"CREATE TABLE OrderLines (
-		      OrderLineId INTEGER PRIMARY KEY,
-          Title VARCHAR(100),
-		      OrderId INTEGER REFERENCES Orders
-		    );"
-		  };
-      foreach (string create in sql)
+      foreach (string create in SqlHelper.Provider.CreateTablesSql())
       {
-        SqliteHelper.ExecuteNonQuery(_connection, create);
+        SqlHelper.ExecuteNonQuery(_connection, _transaction, create);
       }
     }
 
     public virtual void DropAllTables()
     {
-      foreach (string table in SqliteHelper.GetTableNames(_connection))
+      foreach (string table in SqlHelper.Provider.TableNames())
       {
-        SqliteHelper.ExecuteNonQuery(_connection, "DROP TABLE " + table);
+        try
+        {
+          SqlHelper.ExecuteNonQuery(_connection, null, "DROP TABLE " + table);
+        }
+        catch
+        {
+        }
       }
     }
 
@@ -95,19 +68,19 @@ namespace Machine.UoW.NHibernate.Specs
 
     public virtual string ToString(DateTime dateValue)
     {
-      return dateValue.ToString("yyyy-MM-dd HH:mm:ss.fffffff", CultureInfo.InvariantCulture); 
+      return SqlHelper.Provider.ToDateTimeString(dateValue);
     }
 
     public virtual long AddEntity(string pre, params object[] parameters)
     {
       string sql = String.Format(pre, parameters);
-      SqliteHelper.ExecuteNonQuery(_connection, sql);
-      return SqliteHelper.QueryLastInsertRowId(_connection);
+      SqlHelper.ExecuteNonQuery(_connection, _transaction, sql);
+      return SqlHelper.Provider.QueryLastRowId(_connection, _transaction);
     }
 
     public virtual void AddDefaultData()
     {
-      IDbTransaction transaction = _connection.BeginTransaction();
+      _transaction = _connection.BeginTransaction();
       long superBoss = AddEmployee("Craig", "Boucher", DateTime.Today, true, 0);
       long boss = AddEmployee("Jacob", "Lewallen", DateTime.Today, true, superBoss);
       AddEmployee("Bruce", "Springsteen", DateTime.Today, true, 0);
@@ -126,7 +99,7 @@ namespace Machine.UoW.NHibernate.Specs
 
       AddCustomerData("Cyberdyne", 2);
       AddCustomerData("ACME", 4);
-      transaction.Commit();
+      _transaction.Commit();
     }
 
     public virtual void AddCustomerData(string customer, int orders)

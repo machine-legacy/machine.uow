@@ -7,7 +7,7 @@ using Machine.Specifications;
 
 namespace Machine.UoW.NHibernate.Specs
 {
-  public class with_sqlite_database
+  public abstract class with_sqlite_database
   {
     protected static DatabaseAndNhSessionFactory database;
     protected static ISession session;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Transactions;
+
 using Machine.Specifications;
 using Machine.UoW.NHibernate.Specs.NorthwindModel;
 
