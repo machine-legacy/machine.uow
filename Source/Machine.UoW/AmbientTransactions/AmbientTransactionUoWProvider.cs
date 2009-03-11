@@ -75,7 +75,7 @@ namespace Machine.UoW.AmbientTransactions
     }
   }
 
-  public class UnitOfWorkScope : UnitOfWorkStateBase, IDisposable
+  public class UnitOfWorkScope : UnitOfWorkScopeBase, IDisposable
   {
     static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(AmbientTransactionUoWProvider));
     readonly Transaction _transaction;

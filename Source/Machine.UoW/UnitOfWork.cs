@@ -9,7 +9,7 @@ namespace Machine.UoW
     Ambient
   }
   
-  public class UnitOfWork : UnitOfWorkStateBase, IUnitOfWork
+  public class UnitOfWork : UnitOfWorkScopeBase, IUnitOfWork
   {
     private readonly Dictionary<object, UnitOfWorkEntry> _entries = new Dictionary<object, UnitOfWorkEntry>();
     private readonly IUnitOfWorkManagement _unitOfWorkManagement;
@@ -171,7 +171,7 @@ namespace Machine.UoW
     public event EventHandler<EventArgs> Closed = delegate(object sender, EventArgs e) { };
   }
 
-  public abstract class UnitOfWorkStateBase : IUnitOfWorkState
+  public abstract class UnitOfWorkScopeBase : IUnitOfWorkScope
   {
     readonly Dictionary<Type, object> _state = new Dictionary<Type, object>();
 
