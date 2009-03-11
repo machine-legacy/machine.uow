@@ -27,17 +27,17 @@ namespace Machine.UoW.AmbientTransactions
 
     public bool WasRolledBack { get { return _unitOfWork.WasRolledBack; } }
     
-    public T Get<T>(T defaultValue)
+    public T Get<T>(T defaultValue) where T : IDisposable
     {
       return _unitOfWork.Get(defaultValue);
     }
 
-    public T Get<T>()
+    public T Get<T>() where T : IDisposable
     {
       return _unitOfWork.Get<T>();
     }
 
-    public void Set<T>(T value)
+    public void Set<T>(T value) where T : IDisposable
     {
       _unitOfWork.Set(value);
     }

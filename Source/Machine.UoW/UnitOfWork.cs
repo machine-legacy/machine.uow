@@ -138,8 +138,9 @@ namespace Machine.UoW
       return _entries.ContainsKey(instance);
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
+      base.Dispose();
       if (_open)
       {
         Rollback();
@@ -173,9 +174,9 @@ namespace Machine.UoW
 
   public abstract class UnitOfWorkScopeBase : IUnitOfWorkScope
   {
-    readonly Dictionary<Type, object> _state = new Dictionary<Type, object>();
+    readonly Dictionary<Type, IDisposable> _state = new Dictionary<Type, IDisposable>();
 
-    public T Get<T>(T defaultValue)
+    public T Get<T>(T defaultValue) where T : IDisposable
     {
       if (!_state.ContainsKey(typeof(T)))
       {
@@ -184,19 +185,23 @@ namespace Machine.UoW
       return (T)_state[typeof(T)];
     }
 
-    public T Get<T>()
+    public T Get<T>() where T : IDisposable
     {
       return Get<T>(default(T));
     }
 
-    public void Set(Type key, object value)
+    public void Set(Type key, IDisposable value)
     {
       _state[key] = value;
     }
 
-    public void Set<T>(T value)
+    public void Set<T>(T value) where T : IDisposable
     {
       Set(typeof(T), value);
+    }
+
+    public virtual void Dispose()
+    {
     }
   }
 }

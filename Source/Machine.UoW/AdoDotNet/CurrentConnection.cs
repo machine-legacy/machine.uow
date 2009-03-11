@@ -4,7 +4,7 @@ using System.Data;
 
 namespace Machine.UoW.AdoDotNet
 {
-  public class CurrentConnection
+  public class CurrentConnection : IDisposable
   {
     readonly IConnectionProvider _connectionProvider;
     IDbConnection _connection;
@@ -30,6 +30,10 @@ namespace Machine.UoW.AdoDotNet
         _connection.Close();
         _connection = null;
       }
+    }
+
+    public void Dispose()
+    {
     }
   }
 }

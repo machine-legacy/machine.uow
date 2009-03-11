@@ -27,5 +27,9 @@ namespace Machine.UoW.NHibernate
       _isolationLevel = isolationLevel;
       _flushMode = flushMode;
     }
+
+    public void Dispose()
+    {
+    }
   }
 }

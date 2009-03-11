@@ -1,8 +1,9 @@
+using System;
 using NHibernate;
 
 namespace Machine.UoW.NHibernate
 {
-  public class CurrentSession
+  public class CurrentSession : IDisposable
   {
     static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(CurrentSession));
     readonly ISession _session;

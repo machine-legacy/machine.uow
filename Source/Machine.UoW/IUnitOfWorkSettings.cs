@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Machine.UoW
 {
-  public interface IUnitOfWorkSettings
+  public interface IUnitOfWorkSettings : IDisposable
   {
   }
 }

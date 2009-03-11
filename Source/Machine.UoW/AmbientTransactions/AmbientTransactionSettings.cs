@@ -50,6 +50,10 @@ namespace Machine.UoW.AmbientTransactions
     {
       return new AmbientTransactionSettings(flags);
     }
+
+    public void Dispose()
+    {
+    }
   }
 
   public static class AmbientSettingsHelpers
