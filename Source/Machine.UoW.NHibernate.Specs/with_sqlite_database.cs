@@ -14,6 +14,8 @@ namespace Machine.UoW.NHibernate.Specs
 
     Establish context = () =>
     {
+      LoggingStartup loggingStartup = new LoggingStartup();
+      loggingStartup.Start();
       database = new DatabaseAndNhSessionFactory();
       database.Open();
       session = database.SessionFactory.OpenSession();
