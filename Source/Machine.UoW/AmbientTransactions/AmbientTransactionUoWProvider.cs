@@ -81,6 +81,7 @@ namespace Machine.UoW.AmbientTransactions
     readonly Transaction _transaction;
 
     public UnitOfWorkScope(Transaction transaction)
+      : base(new NullScope())
     {
       _transaction = transaction;
     }

@@ -26,7 +26,7 @@ namespace Machine.UoW
 
     public IUnitOfWorkScope StartScope(IUnitOfWorkSettings[] allSettings)
     {
-      UnitOfWorkScope scope = new UnitOfWorkScope();
+      UnitOfWorkScope scope = new UnitOfWorkScope(new NullScope());
       foreach (IUnitOfWorkSettings settings in allSettings)
       {
         scope.Set(settings.GetType(), settings);

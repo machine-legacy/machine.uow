@@ -10,6 +10,12 @@ namespace Machine.UoW
     readonly IDictionary<Type, IScopeProvider> _providers = new Dictionary<Type, IScopeProvider>();
     readonly IDictionary<Type, IDisposable> _state = new Dictionary<Type, IDisposable>();
     readonly List<IDisposable> _additions = new List<IDisposable>();
+    readonly IUnitOfWorkScope _parentScope;
+
+    public UnitOfWorkScope(IUnitOfWorkScope parentScope)
+    {
+      _parentScope = parentScope;
+    }
 
     public void Add(Type key, IScopeProvider provider)
     {
@@ -23,10 +29,12 @@ namespace Machine.UoW
       {
         if (_providers.ContainsKey(key))
         {
-          IScopeProvider provider = _providers[key];
-          Set(key, provider.Create());
+          Set(key, _providers[key].Create());
         }
-        return defaultValue;
+        else
+        {
+          return _parentScope.Get(defaultValue);
+        }
       }
       return (T)_state[key];
     }
