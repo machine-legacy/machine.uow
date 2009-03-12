@@ -3,12 +3,13 @@ using System.Collections.Generic;
 
 namespace Machine.UoW
 {
-  public interface IUnitOfWork : IUnitOfWorkScope, IDisposable
+  public interface IUnitOfWork : IDisposable
   {
     bool IsClosed
     {
       get;
     }
+    IUnitOfWorkScope Scope { get; }
     bool WasCommitted { get; }
     bool WasRolledBack { get; }
     void AddNew<T>(T instance);

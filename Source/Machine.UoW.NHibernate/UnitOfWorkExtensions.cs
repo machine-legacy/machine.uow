@@ -6,13 +6,13 @@ namespace Machine.UoW.NHibernate
 {
   public static class UnitOfWorkExtensions
   {
-    public static ISession Session(this IUnitOfWorkScope scope)
+    public static ISession Session(this IUnitOfWork scope)
     {
       if (scope == null)
       {
         throw new InvalidOperationException("No current UoW");
       }
-      return scope.Get<CurrentSession>().Session;
+      return scope.Scope.Get<CurrentSession>().Session;
     }
   }
 }

@@ -10,21 +10,28 @@ namespace Machine.UoW
     Ambient
   }
   
-  public class UnitOfWork : UnitOfWorkScopeBase, IUnitOfWork
+  public class UnitOfWork : IUnitOfWork
   {
     private readonly Dictionary<object, UnitOfWorkEntry> _entries = new Dictionary<object, UnitOfWorkEntry>();
     private readonly IUnitOfWorkManagement _unitOfWorkManagement;
+    private readonly IUnitOfWorkScope _scope;
     private bool _open;
     private bool _disposed;
     private bool _wasCommitted;
 
     public UnitOfWork(IUnitOfWorkManagement unitOfWorkManagement, params IUnitOfWorkSettings[] startupSettings)
+      : this(unitOfWorkManagement, new UnitOfWorkScope(), startupSettings)
+    {
+    }
+
+    public UnitOfWork(IUnitOfWorkManagement unitOfWorkManagement, IUnitOfWorkScope scope, params IUnitOfWorkSettings[] startupSettings)
     {
       _unitOfWorkManagement = unitOfWorkManagement;
       _open = true;
+      _scope = scope;
       foreach (IUnitOfWorkSettings settings in startupSettings)
       {
-        Set(settings.GetType(), settings);
+        _scope.Set(settings.GetType(), settings);
       }
     }
 
@@ -41,6 +48,11 @@ namespace Machine.UoW
     public bool WasRolledBack
     {
       get { return !_open && !_wasCommitted; }
+    }
+
+    public IUnitOfWorkScope Scope
+    {
+      get { return _scope; }
     }
 
     public void Start()
@@ -139,7 +151,7 @@ namespace Machine.UoW
       return _entries.ContainsKey(instance);
     }
 
-    public override void Dispose()
+    public void Dispose()
     {
       if (_open)
       {
@@ -152,7 +164,6 @@ namespace Machine.UoW
       IUnitOfWorkEvents events = _unitOfWorkManagement.GetUnitOfWorkEventsProxy();
       events.Dispose(this);
       _disposed = true;
-      base.Dispose();
     }
 
     private void AssertIsOpen()
@@ -173,9 +184,9 @@ namespace Machine.UoW
     public event EventHandler<EventArgs> Closed = delegate(object sender, EventArgs e) { };
   }
 
-  public abstract class UnitOfWorkScopeBase : IUnitOfWorkScope
+  public class UnitOfWorkScope : IUnitOfWorkScope
   {
-    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(UnitOfWorkScopeBase));
+    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(UnitOfWorkScope));
     readonly IDictionary<Type, IDisposable> _state = new Dictionary<Type, IDisposable>();
     readonly List<IDisposable> _additions = new List<IDisposable>();
 

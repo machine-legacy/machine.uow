@@ -14,7 +14,7 @@ namespace Machine.UoW.AdoDotNet
 
     public void Start(IUnitOfWork unitOfWork)
     {
-      unitOfWork.Set(new CurrentConnection(_connectionProvider));
+      unitOfWork.Scope.Set(new CurrentConnection(_connectionProvider));
     }
 
     public void AddNew(IUnitOfWork unitOfWork, object obj)
@@ -43,7 +43,7 @@ namespace Machine.UoW.AdoDotNet
 
     public void Dispose(IUnitOfWork unitOfWork)
     {
-      unitOfWork.Get<CurrentConnection>().Close();
+      unitOfWork.Scope.Get<CurrentConnection>().Close();
     }
   }
 }

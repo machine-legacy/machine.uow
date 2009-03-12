@@ -14,7 +14,7 @@ namespace Machine.UoW
 
     public IUnitOfWork StartUnitOfWork(IUnitOfWorkSettings[] settings)
     {
-      UnitOfWork unitOfWork = new UnitOfWork(_unitOfWorkManagement, settings);
+      UnitOfWork unitOfWork = new UnitOfWork(_unitOfWorkManagement, new UnitOfWorkScope(), settings);
       unitOfWork.Start();
       return unitOfWork;
     }

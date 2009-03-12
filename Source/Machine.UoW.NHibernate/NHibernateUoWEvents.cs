@@ -18,26 +18,26 @@ namespace Machine.UoW.NHibernate
 
     public void Start(IUnitOfWork unitOfWork)
     {
-      NHibernateSessionSettings settings = unitOfWork.Get(NHibernateSessionSettings.Default);
+      NHibernateSessionSettings settings = unitOfWork.Scope.Get(NHibernateSessionSettings.Default);
       ISession session = _sessionFactory.OpenSession(unitOfWork.Connection());
       session.FlushMode = settings.FlushMode;
       ITransaction transaction = session.BeginTransaction(settings.IsolationLevel);
-      unitOfWork.Set(new CurrentSession(session, transaction));
+      unitOfWork.Scope.Set(new CurrentSession(session, transaction));
     }
 
     public void AddNew(IUnitOfWork unitOfWork, object obj)
     {
-      unitOfWork.Get<CurrentSession>().Session.Save(obj);
+      unitOfWork.Scope.Get<CurrentSession>().Session.Save(obj);
     }
 
     public void Save(IUnitOfWork unitOfWork, object obj)
     {
-      unitOfWork.Get<CurrentSession>().Session.Save(obj);
+      unitOfWork.Scope.Get<CurrentSession>().Session.Save(obj);
     }
 
     public void Delete(IUnitOfWork unitOfWork, object obj)
     {
-      unitOfWork.Get<CurrentSession>().Session.Delete(obj);
+      unitOfWork.Scope.Get<CurrentSession>().Session.Delete(obj);
     }
 
     public void Rollback(IUnitOfWork unitOfWork, object obj)
@@ -46,17 +46,17 @@ namespace Machine.UoW.NHibernate
 
     public void Rollback(IUnitOfWork unitOfWork)
     {
-      unitOfWork.Get<CurrentSession>().Rollback();
+      unitOfWork.Scope.Get<CurrentSession>().Rollback();
     }
 
     public void Commit(IUnitOfWork unitOfWork)
     {
-      unitOfWork.Get<CurrentSession>().Commit();
+      unitOfWork.Scope.Get<CurrentSession>().Commit();
     }
 
     public void Dispose(IUnitOfWork unitOfWork)
     {
-      // unitOfWork.Get<CurrentSession>().Dispose();
+      // unitOfWork.Scope.Get<CurrentSession>().Dispose();
     }
   }
 }

@@ -26,21 +26,8 @@ namespace Machine.UoW.AmbientTransactions
     public bool WasCommitted { get { return _unitOfWork.WasCommitted; } }
 
     public bool WasRolledBack { get { return _unitOfWork.WasRolledBack; } }
-    
-    public T Get<T>(T defaultValue) where T : IDisposable
-    {
-      return _unitOfWork.Get(defaultValue);
-    }
 
-    public T Get<T>() where T : IDisposable
-    {
-      return _unitOfWork.Get<T>();
-    }
-
-    public void Set<T>(T value) where T : IDisposable
-    {
-      _unitOfWork.Set(value);
-    }
+    public IUnitOfWorkScope Scope { get { return _unitOfWork.Scope; } }
 
     public bool IsClosed
     {

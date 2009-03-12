@@ -6,16 +6,16 @@ namespace Machine.UoW.AdoDotNet
 {
   public static class UnitOfWorkExtensions
   {
-    public static IDbConnection Connection(this IUnitOfWorkScope scope)
+    public static IDbConnection Connection(this IUnitOfWork scope)
     {
       if (scope == null)
       {
         throw new InvalidOperationException("No current UoW");
       }
-      return scope.Get<CurrentConnection>().Connection();
+      return scope.Scope.Get<CurrentConnection>().Connection();
     }
 
-    public static SqlConnection Sql(this IUnitOfWorkScope scope)
+    public static SqlConnection Sql(this IUnitOfWork scope)
     {
       return (SqlConnection)scope.Connection();
     }
