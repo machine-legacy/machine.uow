@@ -19,14 +19,12 @@ namespace Machine.UoW.NHibernate
 
     public void Commit(IUnitOfWorkScope scope)
     {
-      System.Diagnostics.Debug.WriteLine("COMMIT");
       scope.Session().Flush();
       _transaction.Commit();
     }
 
     public void Rollback(IUnitOfWorkScope scope)
     {
-      System.Diagnostics.Debug.WriteLine("ROLLBACK");
       _transaction.Rollback();
     }
 
