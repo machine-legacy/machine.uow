@@ -29,10 +29,6 @@ namespace Machine.UoW
 
     public ScopeEventsProxy GetScopeEventsProxy()
     {
-      if (_scopeEvents.Count == 0)
-      {
-        throw new InvalidOperationException("No ScopeEvents have been registered! Nothing is happening!");
-      }
       return new ScopeEventsProxy(_scopeEvents);
     }
   }
