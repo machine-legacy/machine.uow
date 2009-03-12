@@ -6,7 +6,7 @@ using log4net.Appender;
 using log4net.Core;
 using log4net.Layout;
 
-namespace Machine.UoW.NHibernate.Specs
+namespace Machine.UoW.Specs
 {
   public class LoggingStartup
   {

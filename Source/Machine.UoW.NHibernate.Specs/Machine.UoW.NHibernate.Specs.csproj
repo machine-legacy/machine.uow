@@ -86,7 +86,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Deleting_objects.cs" />
-    <Compile Include="LoggingStartup.cs" />
     <Compile Include="NorthwindModel\NorthwindCategory.cs" />
     <Compile Include="NorthwindModel\NorthwindCustomer.cs" />
     <Compile Include="NorthwindModel\NorthwindEmployee.cs" />

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using NHibernate;
 
 using Machine.Specifications;
+using Machine.UoW.Specs;
 
 namespace Machine.UoW.NHibernate.Specs
 {
