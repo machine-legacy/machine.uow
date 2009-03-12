@@ -5,53 +5,70 @@ namespace Machine.UoW
 {
   public class HttpContextUnitOfWorkProvider : IUnitOfWorkProvider
   {
-    private static readonly string Key = typeof (HttpContextUnitOfWorkProvider).FullName;
-    private readonly IUnitOfWorkFactory _unitOfWorkFactory;
+    static readonly string Key = typeof (HttpContextUnitOfWorkProvider).FullName;
+    readonly IUnitOfWorkFactory _unitOfWorkFactory;
+    readonly IUnitOfWorkScopeProvider _unitOfWorkScopeProvider;
 
-    public HttpContextUnitOfWorkProvider(IUnitOfWorkFactory unitOfWorkFactory)
+    public HttpContextUnitOfWorkProvider(IUnitOfWorkFactory unitOfWorkFactory, IUnitOfWorkScopeProvider unitOfWorkScopeProvider)
     {
       _unitOfWorkFactory = unitOfWorkFactory;
+      _unitOfWorkScopeProvider = unitOfWorkScopeProvider;
     }
 
     public IUnitOfWork Start(IUnitOfWorkSettings[] settings)
     {
-      CurrentUnitOfWork state = State;
-      IUnitOfWork unitOfWork = _unitOfWorkFactory.StartUnitOfWork(settings);
+      IUnitOfWork unitOfWork = _unitOfWorkFactory.StartUnitOfWork(_unitOfWorkScopeProvider.GetUnitOfWorkScope(settings));
       unitOfWork.Closed += OnClosed;
-      state.UnitOfWork = unitOfWork;
-      return state.UnitOfWork;
+      CurrentUoW = unitOfWork;
+      return CurrentUoW;
     }
 
     public IUnitOfWork GetUnitOfWork()
     {
-      return State.UnitOfWork;
+      return CurrentUoW;
     }
 
     private static void OnClosed(object sender, EventArgs e)
     {
-      State.UnitOfWork = null;
+      CurrentUoW = null;
     }
 
-    private static HttpContext Current
+    private static IUnitOfWork CurrentUoW
     {
-      get { return HttpContext.Current; }
+      get { return (IUnitOfWork)HttpContext.Current.Items[Key]; }
+      set { HttpContext.Current.Items[Key] = value; }
+    }
+  }
+
+  public class HttpContextUnitOfWorkScopeProvider : IUnitOfWorkScopeProvider
+  {
+    static readonly string Key = typeof (HttpContextUnitOfWorkScopeProvider).FullName;
+    readonly IUnitOfWorkFactory _unitOfWorkFactory;
+
+    public HttpContextUnitOfWorkScopeProvider(IUnitOfWorkFactory unitOfWorkFactory)
+    {
+      _unitOfWorkFactory = unitOfWorkFactory;
     }
 
-    private static CurrentUnitOfWork State
+    public IUnitOfWorkScope GetUnitOfWorkScope(params IUnitOfWorkSettings[] settings)
     {
-      get
+      if (CurrentScope == null)
       {
-        if (Current.Items[Key] == null)
-        {
-          Current.Items[Key] = new CurrentUnitOfWork();
-        }
-        return (CurrentUnitOfWork)Current.Items[Key];
+        CurrentScope = _unitOfWorkFactory.StartScope(settings);
+        CurrentScope.Disposed += OnUnitOfWorkScopeDisposed;
       }
+      return CurrentScope;
     }
 
-    public class CurrentUnitOfWork
+    private static void OnUnitOfWorkScopeDisposed(object sender, EventArgs e)
     {
-      public IUnitOfWork UnitOfWork;
+      CurrentScope = null;
+    }
+
+    private static IUnitOfWorkScope CurrentScope
+    {
+      get { return (IUnitOfWorkScope)HttpContext.Current.Items[Key]; }
+      set { HttpContext.Current.Items[Key] = value; }
     }
   }
 }

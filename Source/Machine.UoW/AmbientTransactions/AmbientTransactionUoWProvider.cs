@@ -1,36 +1,28 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Transactions;
-
-using Machine.Core.Utility;
 
 namespace Machine.UoW.AmbientTransactions
 {
   public class AmbientTransactionUoWProvider : IUnitOfWorkProvider
   {
+    readonly static log4net.ILog _log = log4net.LogManager.GetLogger(typeof(AmbientTransactionUoWProvider));
     readonly IUnitOfWorkFactory _unitOfWorkFactory;
-    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(AmbientTransactionUoWProvider));
-    readonly static ReaderWriterLock _lock = new ReaderWriterLock();
-    readonly static Dictionary<Transaction, UnitOfWorkScope> _scope = new Dictionary<Transaction, UnitOfWorkScope>();
+    readonly IUnitOfWorkScopeProvider _unitOfWorkScopeProvider;
 
-    public AmbientTransactionUoWProvider(IUnitOfWorkFactory unitOfWorkFactory)
+    public AmbientTransactionUoWProvider(IUnitOfWorkFactory unitOfWorkFactory, IUnitOfWorkScopeProvider unitOfWorkScopeProvider)
     {
       _unitOfWorkFactory = unitOfWorkFactory;
+      _unitOfWorkScopeProvider = unitOfWorkScopeProvider;
     }
 
     public IUnitOfWork Start(IUnitOfWorkSettings[] settings)
     {
-      if (!AmbientTransactionHelpers.InAmbientTransaction())
-      {
-        throw new InvalidOperationException("Ambient transaction scope invalid unless inside transaction!");
-      }
-      UnitOfWorkScope scope = Scope();
-      IUnitOfWork unitOfWork = scope.Get<IUnitOfWork>();
+      TransactionState state = TransactionState.ForCurrentTransaction();
+      IUnitOfWork unitOfWork = state.Get<IUnitOfWork>();
       if (unitOfWork == null)
       {
-        unitOfWork = _unitOfWorkFactory.StartUnitOfWork(settings);
-        scope.Set(unitOfWork);
+        unitOfWork = _unitOfWorkFactory.StartUnitOfWork(_unitOfWorkScopeProvider.GetUnitOfWorkScope(settings));
+        state.Set<IUnitOfWork>(unitOfWork);
         _log.Info("Starting UoW");
         EnlistmentNotifications.Enlist(unitOfWork);
       }
@@ -46,64 +38,34 @@ namespace Machine.UoW.AmbientTransactions
       }
       return AmbientTransactionUnitOfWorkProxy.Active;
     }
-
-    private static UnitOfWorkScope Scope()
-    {
-      Transaction transaction = Transaction.Current;
-      using (RWLock.AsReader(_lock))
-      {
-        if (RWLock.UpgradeToWriterIf(_lock, () => !_scope.ContainsKey(transaction)))
-        {
-          Transaction clone = transaction.Clone();
-          _scope[clone] = new UnitOfWorkScope(clone);
-          transaction.TransactionCompleted += Completed;
-          TransactionInformation information = clone.TransactionInformation;
-          _log.Info("Creating: " + information.LocalIdentifier + "(" + information.DistributedIdentifier + ")");
-        }
-        return _scope[transaction];
-      }
-    }
-
-    private static void Completed(object sender, TransactionEventArgs e)
-    {
-      using (RWLock.AsWriter(_lock))
-      {
-        UnitOfWorkScope scope = _scope[e.Transaction];
-        scope.Dispose();
-        _scope.Remove(e.Transaction);
-      }
-    }
   }
 
-  public class UnitOfWorkScope : Machine.UoW.UnitOfWorkScope, IDisposable
+  public class AmbientTransactionUnitOfWorkScopeProvider : IUnitOfWorkScopeProvider
   {
-    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(AmbientTransactionUoWProvider));
-    readonly Transaction _transaction;
+    readonly IUnitOfWorkFactory _unitOfWorkFactory;
 
-    public UnitOfWorkScope(Transaction transaction)
-      : base(new NullScope())
+    public AmbientTransactionUnitOfWorkScopeProvider(IUnitOfWorkFactory unitOfWorkFactory)
     {
-      _transaction = transaction;
+      _unitOfWorkFactory = unitOfWorkFactory;
     }
 
-    public override void Dispose()
+    public IUnitOfWorkScope GetUnitOfWorkScope(params IUnitOfWorkSettings[] settings)
     {
-      TransactionInformation information = _transaction.TransactionInformation;
-      _log.Info("Disposing: " + information.LocalIdentifier + " (" + information.DistributedIdentifier + ") " + information.Status);
-      switch (information.Status)
+      TransactionState state = TransactionState.ForCurrentTransaction();
+      IUnitOfWorkScope scope = state.Get<IUnitOfWorkScope>();
+      if (scope == null)
       {
-        case TransactionStatus.Aborted:
-          break;
-        case TransactionStatus.Active:
-          break;
-        case TransactionStatus.Committed:
-          break;
-        case TransactionStatus.InDoubt:
-          break;
+        scope = _unitOfWorkFactory.StartScope(settings);
+        scope.Disposed += OnUnitOfWorkScopeDisposed;
+        state.Set<IUnitOfWorkScope>(scope);
       }
-      Get<IUnitOfWork>().Dispose();
-      _transaction.Dispose();
-      // base.Dispose();
+      return scope;
+    }
+
+    private static void OnUnitOfWorkScopeDisposed(object sender, EventArgs e)
+    {
+      TransactionState state = TransactionState.ForCurrentTransaction();
+      state.Set<IUnitOfWorkScope>();
     }
   }
 }

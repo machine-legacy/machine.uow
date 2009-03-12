@@ -15,9 +15,9 @@ namespace Machine.UoW
 
     public HybridUnitOfWorkProvider(IUnitOfWorkFactory unitOfWorkFactory)
     {
-      _httpContextUnitOfWorkProvider = new HttpContextUnitOfWorkProvider(unitOfWorkFactory);
-      _threadStaticUnitOfWorkProvider = new ThreadStaticUnitOfWorkProvider(unitOfWorkFactory);
-      _ambientTransactionUoWProvider = new AmbientTransactionUoWProvider(unitOfWorkFactory);
+      _httpContextUnitOfWorkProvider = new HttpContextUnitOfWorkProvider(unitOfWorkFactory, new HttpContextUnitOfWorkScopeProvider(unitOfWorkFactory));
+      _threadStaticUnitOfWorkProvider = new ThreadStaticUnitOfWorkProvider(unitOfWorkFactory, new ThreadStaticUnitOfWorkScopeProvider(unitOfWorkFactory));
+      _ambientTransactionUoWProvider = new AmbientTransactionUoWProvider(unitOfWorkFactory, new AmbientTransactionUnitOfWorkScopeProvider(unitOfWorkFactory));
     }
 
     public IUnitOfWork Start(IUnitOfWorkSettings[] settings)
