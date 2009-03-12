@@ -8,11 +8,14 @@ namespace Machine.UoW.NHibernate
   {
     public static ISession Session(this IUnitOfWork scope)
     {
-      if (scope == null)
-      {
-        throw new InvalidOperationException("No current UoW");
-      }
-      return scope.Scope.Get<CurrentSession>().Session;
+      if (scope == null) throw new ArgumentException("scope");
+      return scope.Scope.Session();
+    }
+    
+    public static ISession Session(this IUnitOfWorkScope scope)
+    {
+      if (scope == null) throw new ArgumentException("scope");
+      return scope.Get<CurrentSession>().Session;
     }
   }
 }
