@@ -32,11 +32,8 @@ namespace Machine.UoW.AmbientTransactions
 
     public IUnitOfWork GetUnitOfWork()
     {
-      if (!AmbientTransactionHelpers.InAmbientTransaction())
-      {
-        throw new InvalidOperationException("Ambient transaction scope invalid unless inside transaction!");
-      }
-      return AmbientTransactionUnitOfWorkProxy.Active;
+      TransactionState state = TransactionState.ForCurrentTransaction();
+      return state.Get<IUnitOfWork>();
     }
   }
 

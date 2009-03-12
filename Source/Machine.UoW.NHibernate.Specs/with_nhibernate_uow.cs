@@ -13,7 +13,7 @@ namespace Machine.UoW.NHibernate.Specs
     Establish context = () =>
     {
       IUnitOfWorkManagement unitOfWorkManagement = new UnitOfWorkManagement();
-      unitOfWorkManagement.AddEvents(new AdoNetConnectionUoWEvents(SqlHelper.Provider));
+      unitOfWorkManagement.AddEvents(new AdoNetConnectionScopeEvents(SqlHelper.Provider));
       unitOfWorkManagement.AddEvents(new NHibernateUoWEvents(database.SessionFactory));
       IUnitOfWorkFactory factory = new UnitOfWorkFactory(unitOfWorkManagement);
       UoW.Provider = new HybridUnitOfWorkProvider(factory);

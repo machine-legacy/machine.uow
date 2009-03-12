@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adding_objects.cs" />
+    <Compile Include="AdoDotNetSpecs.cs" />
     <Compile Include="Ambient_transactions_thread_static_provider.cs" />
     <Compile Include="DatabaseAndNhSessionFactory.cs">
       <SubType>Code</SubType>

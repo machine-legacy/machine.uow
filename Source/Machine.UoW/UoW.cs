@@ -5,12 +5,24 @@ namespace Machine.UoW
 {
   public static class UoW
   {
-    private static IUnitOfWorkProvider _provider;
+    static IUnitOfWorkProvider _provider;
+    static IUnitOfWorkScopeProvider _scopeProvider;
 
     public static IUnitOfWorkProvider Provider
     {
       get { return _provider; }
       set { _provider = value; }
+    }
+
+    public static IUnitOfWorkScopeProvider ScopeProvider
+    {
+      get { return _scopeProvider; }
+      set { _scopeProvider = value; }
+    }
+
+    public static IUnitOfWorkScope Scope
+    {
+      get { return _scopeProvider.GetUnitOfWorkScope(); }
     }
 
     public static IUnitOfWork Current

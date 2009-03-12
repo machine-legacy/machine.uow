@@ -3,47 +3,23 @@ using System.Collections.Generic;
 
 namespace Machine.UoW.AdoDotNet
 {
-  public class AdoNetConnectionUoWEvents : IUnitOfWorkEvents
+  public class AdoNetConnectionScopeEvents : IScopeEvents, IScopeProvider
   {
     readonly IConnectionProvider _connectionProvider;
 
-    public AdoNetConnectionUoWEvents(IConnectionProvider connectionProvider)
+    public AdoNetConnectionScopeEvents(IConnectionProvider connectionProvider)
     {
       _connectionProvider = connectionProvider;
     }
 
-    public void Start(IUnitOfWork unitOfWork)
+    public void Start(IUnitOfWorkScope scope)
     {
-      unitOfWork.Scope.Set(new CurrentConnection(_connectionProvider));
+      scope.Add(typeof(CurrentConnection), this);
     }
 
-    public void AddNew(IUnitOfWork unitOfWork, object obj)
+    public IDisposable Create()
     {
-    }
-
-    public void Save(IUnitOfWork unitOfWork, object obj)
-    {
-    }
-
-    public void Delete(IUnitOfWork unitOfWork, object obj)
-    {
-    }
-
-    public void Rollback(IUnitOfWork unitOfWork, object obj)
-    {
-    }
-
-    public void Rollback(IUnitOfWork unitOfWork)
-    {
-    }
-
-    public void Commit(IUnitOfWork unitOfWork)
-    {
-    }
-
-    public void Dispose(IUnitOfWork unitOfWork)
-    {
-      unitOfWork.Scope.Get<CurrentConnection>().Close();
+      return new CurrentConnection(_connectionProvider);
     }
   }
 }

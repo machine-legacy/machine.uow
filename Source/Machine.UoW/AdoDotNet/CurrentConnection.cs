@@ -7,33 +7,22 @@ namespace Machine.UoW.AdoDotNet
   public class CurrentConnection : IDisposable
   {
     readonly IConnectionProvider _connectionProvider;
-    IDbConnection _connection;
+    readonly IDbConnection _connection;
 
     public CurrentConnection(IConnectionProvider connectionProvider)
     {
       _connectionProvider = connectionProvider;
+      _connection = _connectionProvider.OpenConnection();
     }
 
     public IDbConnection Connection()
     {
-      if (_connection == null)
-      {
-        _connection = _connectionProvider.OpenConnection();
-      }
       return _connection;
-    }
-
-    public void Close()
-    {
-      if (_connection != null)
-      {
-        _connection.Close();
-        _connection = null;
-      }
     }
 
     public void Dispose()
     {
+      _connection.Close();
     }
   }
 }
