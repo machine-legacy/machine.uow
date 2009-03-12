@@ -102,7 +102,7 @@ namespace Machine.UoW.AmbientTransactions
       }
       Get<IUnitOfWork>().Dispose();
       _transaction.Dispose();
-      base.Dispose();
+      // base.Dispose();
     }
   }
 }

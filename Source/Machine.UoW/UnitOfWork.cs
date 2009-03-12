@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Machine.UoW
 {
@@ -174,7 +175,9 @@ namespace Machine.UoW
 
   public abstract class UnitOfWorkScopeBase : IUnitOfWorkScope
   {
-    readonly Dictionary<Type, IDisposable> _state = new Dictionary<Type, IDisposable>();
+    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(UnitOfWorkScopeBase));
+    readonly IDictionary<Type, IDisposable> _state = new Dictionary<Type, IDisposable>();
+    readonly List<IDisposable> _additions = new List<IDisposable>();
 
     public T Get<T>(T defaultValue) where T : IDisposable
     {
@@ -193,6 +196,7 @@ namespace Machine.UoW
     public void Set(Type key, IDisposable value)
     {
       _state[key] = value;
+      _additions.Add(value);
     }
 
     public void Set<T>(T value) where T : IDisposable
@@ -202,8 +206,10 @@ namespace Machine.UoW
 
     public virtual void Dispose()
     {
-      foreach (IDisposable disposable in _state.Values)
+      IEnumerable<IDisposable> order = _additions;
+      foreach (IDisposable disposable in order.Reverse())
       {
+        _log.Info("Disposing: " + disposable);
         disposable.Dispose();
       }
     }
