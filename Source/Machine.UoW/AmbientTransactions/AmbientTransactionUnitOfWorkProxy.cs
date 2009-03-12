@@ -6,21 +6,13 @@ namespace Machine.UoW.AmbientTransactions
 {
   public class AmbientTransactionUnitOfWorkProxy : IUnitOfWork
   {
-    [ThreadStatic]
-    static AmbientTransactionUnitOfWorkProxy _active;
     readonly IUnitOfWork _unitOfWork;
     readonly TransactionScope _scope;
-
-    public static AmbientTransactionUnitOfWorkProxy Active
-    {
-      get { return _active; }
-    }
 
     public AmbientTransactionUnitOfWorkProxy(IUnitOfWork unitOfWork, TransactionScope scope)
     {
       _unitOfWork = unitOfWork;
       _scope = scope;
-      _active = this;
     }
 
     public bool WasCommitted { get { return _unitOfWork.WasCommitted; } }
@@ -64,7 +56,6 @@ namespace Machine.UoW.AmbientTransactions
 
     public void Dispose()
     {
-      _active = null;
       _scope.Dispose();
     }
 
