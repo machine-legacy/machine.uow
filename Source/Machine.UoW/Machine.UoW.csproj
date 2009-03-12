@@ -72,6 +72,7 @@
     <Compile Include="IUnitOfWorkFactory.cs" />
     <Compile Include="IUnitOfWorkManagement.cs" />
     <Compile Include="IUnitOfWorkProvider.cs" />
+    <Compile Include="IUnitOfWorkScopeProvider.cs" />
     <Compile Include="IUnitOfWorkSettings.cs" />
     <Compile Include="IUnitOfWorkScope.cs" />
     <Compile Include="NullUnitOfWorkEvents.cs" />
