@@ -66,6 +66,7 @@
     <Compile Include="GenericUnitOfWorkEvents.cs" />
     <Compile Include="HttpContextUnitOfWorkProvider.cs" />
     <Compile Include="HybridUnitOfWorkProvider.cs" />
+    <Compile Include="IScopeEvents.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="IUnitOfWorkEvents.cs" />
     <Compile Include="IUnitOfWorkFactory.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="UnitOfWorkEntry.cs" />
     <Compile Include="UnitOfWorkFactory.cs" />
     <Compile Include="UnitOfWorkManagement.cs" />
+    <Compile Include="UnitOfWorkScope.cs" />
     <Compile Include="UoW.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

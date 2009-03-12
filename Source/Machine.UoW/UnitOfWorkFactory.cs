@@ -12,11 +12,27 @@ namespace Machine.UoW
       _unitOfWorkManagement = unitOfWorkManagement;
     }
 
-    public IUnitOfWork StartUnitOfWork(IUnitOfWorkSettings[] settings)
+    public IUnitOfWork StartUnitOfWork(IUnitOfWorkSettings[] allSettings)
     {
-      UnitOfWork unitOfWork = new UnitOfWork(_unitOfWorkManagement, new UnitOfWorkScope(), settings);
+      return StartUnitOfWork(StartScope(allSettings));
+    }
+
+    public IUnitOfWork StartUnitOfWork(IUnitOfWorkScope scope)
+    {
+      UnitOfWork unitOfWork = new UnitOfWork(_unitOfWorkManagement, scope);
       unitOfWork.Start();
       return unitOfWork;
+    }
+
+    public IUnitOfWorkScope StartScope(IUnitOfWorkSettings[] allSettings)
+    {
+      UnitOfWorkScope scope = new UnitOfWorkScope();
+      foreach (IUnitOfWorkSettings settings in allSettings)
+      {
+        scope.Set(settings.GetType(), settings);
+      }
+      _unitOfWorkManagement.GetScopeEventsProxy().Start(scope);
+      return scope;
     }
   }
 }

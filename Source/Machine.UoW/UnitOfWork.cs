@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Machine.UoW
 {
@@ -19,20 +18,16 @@ namespace Machine.UoW
     private bool _disposed;
     private bool _wasCommitted;
 
-    public UnitOfWork(IUnitOfWorkManagement unitOfWorkManagement, params IUnitOfWorkSettings[] startupSettings)
-      : this(unitOfWorkManagement, new UnitOfWorkScope(), startupSettings)
+    public UnitOfWork(IUnitOfWorkManagement unitOfWorkManagement)
+      : this(unitOfWorkManagement, new UnitOfWorkScope())
     {
     }
 
-    public UnitOfWork(IUnitOfWorkManagement unitOfWorkManagement, IUnitOfWorkScope scope, params IUnitOfWorkSettings[] startupSettings)
+    public UnitOfWork(IUnitOfWorkManagement unitOfWorkManagement, IUnitOfWorkScope scope)
     {
       _unitOfWorkManagement = unitOfWorkManagement;
       _open = true;
       _scope = scope;
-      foreach (IUnitOfWorkSettings settings in startupSettings)
-      {
-        _scope.Set(settings.GetType(), settings);
-      }
     }
 
     public bool IsClosed
@@ -182,47 +177,5 @@ namespace Machine.UoW
     }
 
     public event EventHandler<EventArgs> Closed = delegate(object sender, EventArgs e) { };
-  }
-
-  public class UnitOfWorkScope : IUnitOfWorkScope
-  {
-    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(UnitOfWorkScope));
-    readonly IDictionary<Type, IDisposable> _state = new Dictionary<Type, IDisposable>();
-    readonly List<IDisposable> _additions = new List<IDisposable>();
-
-    public T Get<T>(T defaultValue) where T : IDisposable
-    {
-      if (!_state.ContainsKey(typeof(T)))
-      {
-        return defaultValue;
-      }
-      return (T)_state[typeof(T)];
-    }
-
-    public T Get<T>() where T : IDisposable
-    {
-      return Get<T>(default(T));
-    }
-
-    public void Set(Type key, IDisposable value)
-    {
-      _state[key] = value;
-      _additions.Add(value);
-    }
-
-    public void Set<T>(T value) where T : IDisposable
-    {
-      Set(typeof(T), value);
-    }
-
-    public virtual void Dispose()
-    {
-      IEnumerable<IDisposable> order = _additions;
-      foreach (IDisposable disposable in order.Reverse())
-      {
-        _log.Info("Disposing: " + disposable);
-        disposable.Dispose();
-      }
-    }
   }
 }

@@ -5,11 +5,17 @@ namespace Machine.UoW
 {
   public class UnitOfWorkManagement : IUnitOfWorkManagement
   {
-    private readonly List<IUnitOfWorkEvents> _events = new List<IUnitOfWorkEvents>();
+    readonly List<IUnitOfWorkEvents> _events = new List<IUnitOfWorkEvents>();
+    readonly List<IScopeEvents> _scopeEvents = new List<IScopeEvents>();
 
     public void AddEvents(IUnitOfWorkEvents unitOfWorkEvents)
     {
       _events.Add(unitOfWorkEvents);
+    }
+
+    public void AddEvents(IScopeEvents scopeEvents)
+    {
+      _scopeEvents.Add(scopeEvents);
     }
 
     public UnitOfWorkEventsProxy GetUnitOfWorkEventsProxy()
@@ -20,10 +26,38 @@ namespace Machine.UoW
       }
       return new UnitOfWorkEventsProxy(_events);
     }
+
+    public ScopeEventsProxy GetScopeEventsProxy()
+    {
+      if (_scopeEvents.Count == 0)
+      {
+        throw new InvalidOperationException("No ScopeEvents have been registered! Nothing is happening!");
+      }
+      return new ScopeEventsProxy(_scopeEvents);
+    }
   }
+
+  public class ScopeEventsProxy  : IScopeEvents
+  {
+    readonly List<IScopeEvents> _events;
+
+    public ScopeEventsProxy(List<IScopeEvents> events)
+    {
+      _events = events;
+    }
+
+    public void Start(IUnitOfWorkScope scope)
+    {
+      foreach (IScopeEvents events in _events)
+      {
+        events.Start(scope);
+      }
+    }
+  }
+
   public class UnitOfWorkEventsProxy : IUnitOfWorkEvents
   {
-    private readonly List<IUnitOfWorkEvents> _events;
+    readonly List<IUnitOfWorkEvents> _events;
 
     public UnitOfWorkEventsProxy(List<IUnitOfWorkEvents> events)
     {
