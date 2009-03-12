@@ -64,6 +64,9 @@ namespace Machine.UoW
         _log.Info("Disposing: " + disposable);
         disposable.Dispose();
       }
+      Disposed(this, EventArgs.Empty);
     }
+
+    public event EventHandler<EventArgs> Disposed = delegate(object sender, EventArgs e) { };
   }
 }

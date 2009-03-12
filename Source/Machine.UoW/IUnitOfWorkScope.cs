@@ -10,12 +10,15 @@ namespace Machine.UoW
     T Get<T>() where T : IDisposable;
     void Set<T>(T value) where T : IDisposable;
     void Set(Type key, IDisposable value);
+
+    event EventHandler<EventArgs> Disposed;
   }
 
   public class NullScope : IUnitOfWorkScope
   {
     public void Dispose()
     {
+      Disposed(this, EventArgs.Empty);
     }
 
     public void Add(Type key, IScopeProvider provider)
@@ -41,5 +44,7 @@ namespace Machine.UoW
     {
       throw new NotSupportedException();
     }
+
+    public event EventHandler<EventArgs> Disposed;
   }
 }

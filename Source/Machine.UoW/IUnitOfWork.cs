@@ -18,6 +18,7 @@ namespace Machine.UoW
     void Delete<T>(T instance);
     void Commit();
     void Rollback();
+
     event EventHandler<EventArgs> Closed;
   }
 }
