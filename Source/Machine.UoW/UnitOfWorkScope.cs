@@ -30,7 +30,7 @@ namespace Machine.UoW
         if (_providers.ContainsKey(key))
         {
           _log.Info("Invoking Provider: " + key);
-          Set(key, _providers[key].Create());
+          Set(key, _providers[key].Create(this));
         }
         else
         {

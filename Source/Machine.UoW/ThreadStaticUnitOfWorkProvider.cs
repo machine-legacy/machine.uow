@@ -5,20 +5,18 @@ namespace Machine.UoW
   public class ThreadStaticUnitOfWorkProvider : IUnitOfWorkProvider
   {
     readonly IUnitOfWorkFactory _unitOfWorkFactory;
-    readonly IUnitOfWorkScopeProvider _unitOfWorkScopeProvider;
 
     [ThreadStatic]
     static IUnitOfWork _unitOfWork;
 
-    public ThreadStaticUnitOfWorkProvider(IUnitOfWorkFactory unitOfWorkFactory, IUnitOfWorkScopeProvider unitOfWorkScopeProvider)
+    public ThreadStaticUnitOfWorkProvider(IUnitOfWorkFactory unitOfWorkFactory)
     {
       _unitOfWorkFactory = unitOfWorkFactory;
-      _unitOfWorkScopeProvider = unitOfWorkScopeProvider;
     }
 
     public IUnitOfWork Start(IUnitOfWorkSettings[] settings)
     {
-      _unitOfWork = _unitOfWorkFactory.StartUnitOfWork(_unitOfWorkScopeProvider.GetUnitOfWorkScope(settings));
+      _unitOfWork = _unitOfWorkFactory.StartUnitOfWork(_unitOfWorkFactory.StartScope(settings));
       _unitOfWork.Closed += OnUnitOfWorkClosed;
       return GetUnitOfWork();
     }

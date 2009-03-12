@@ -17,7 +17,7 @@ namespace Machine.UoW.AdoDotNet
       scope.Add(typeof(CurrentConnection), this);
     }
 
-    public IDisposable Create()
+    public IDisposable Create(IUnitOfWorkScope scope)
     {
       return new CurrentConnection(_connectionProvider);
     }

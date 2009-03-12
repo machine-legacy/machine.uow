@@ -7,17 +7,15 @@ namespace Machine.UoW
   {
     static readonly string Key = typeof (HttpContextUnitOfWorkProvider).FullName;
     readonly IUnitOfWorkFactory _unitOfWorkFactory;
-    readonly IUnitOfWorkScopeProvider _unitOfWorkScopeProvider;
 
-    public HttpContextUnitOfWorkProvider(IUnitOfWorkFactory unitOfWorkFactory, IUnitOfWorkScopeProvider unitOfWorkScopeProvider)
+    public HttpContextUnitOfWorkProvider(IUnitOfWorkFactory unitOfWorkFactory)
     {
       _unitOfWorkFactory = unitOfWorkFactory;
-      _unitOfWorkScopeProvider = unitOfWorkScopeProvider;
     }
 
     public IUnitOfWork Start(IUnitOfWorkSettings[] settings)
     {
-      IUnitOfWork unitOfWork = _unitOfWorkFactory.StartUnitOfWork(_unitOfWorkScopeProvider.GetUnitOfWorkScope(settings));
+      IUnitOfWork unitOfWork = _unitOfWorkFactory.StartUnitOfWork(_unitOfWorkFactory.StartScope(settings));
       unitOfWork.Closed += OnClosed;
       CurrentUoW = unitOfWork;
       return CurrentUoW;

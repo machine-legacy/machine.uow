@@ -14,7 +14,8 @@ namespace Machine.UoW.NHibernate.Specs
     {
       IUnitOfWorkManagement unitOfWorkManagement = new UnitOfWorkManagement();
       unitOfWorkManagement.AddEvents(new AdoNetConnectionScopeEvents(SqlHelper.Provider));
-      unitOfWorkManagement.AddEvents(new NHibernateUoWEvents(database.SessionFactory));
+      unitOfWorkManagement.AddEvents(new NHibernateScopeEvents(database.SessionFactory));
+      unitOfWorkManagement.AddEvents(new NHibernateUoWEvents());
       IUnitOfWorkFactory factory = new UnitOfWorkFactory(unitOfWorkManagement);
       UoW.Provider = new HybridUnitOfWorkProvider(factory);
     };

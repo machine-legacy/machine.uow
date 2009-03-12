@@ -64,7 +64,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CurrentNhibernateTransaction.cs" />
     <Compile Include="CurrentSession.cs" />
+    <Compile Include="NHibernateScopeEvents.cs" />
     <Compile Include="NHibernateSessionSettings.cs" />
     <Compile Include="NHibernateUoWEvents.cs" />
     <Compile Include="NullTransaction.cs" />

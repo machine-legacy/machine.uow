@@ -7,12 +7,10 @@ namespace Machine.UoW.AmbientTransactions
   {
     readonly static log4net.ILog _log = log4net.LogManager.GetLogger(typeof(AmbientTransactionUoWProvider));
     readonly IUnitOfWorkFactory _unitOfWorkFactory;
-    readonly IUnitOfWorkScopeProvider _unitOfWorkScopeProvider;
 
-    public AmbientTransactionUoWProvider(IUnitOfWorkFactory unitOfWorkFactory, IUnitOfWorkScopeProvider unitOfWorkScopeProvider)
+    public AmbientTransactionUoWProvider(IUnitOfWorkFactory unitOfWorkFactory)
     {
       _unitOfWorkFactory = unitOfWorkFactory;
-      _unitOfWorkScopeProvider = unitOfWorkScopeProvider;
     }
 
     public IUnitOfWork Start(IUnitOfWorkSettings[] settings)
@@ -21,7 +19,7 @@ namespace Machine.UoW.AmbientTransactions
       IUnitOfWork unitOfWork = state.Get<IUnitOfWork>();
       if (unitOfWork == null)
       {
-        unitOfWork = _unitOfWorkFactory.StartUnitOfWork(_unitOfWorkScopeProvider.GetUnitOfWorkScope(settings));
+        unitOfWork = _unitOfWorkFactory.StartUnitOfWork(_unitOfWorkFactory.StartScope(settings));
         state.Set<IUnitOfWork>(unitOfWork);
         _log.Info("Starting UoW");
         EnlistmentNotifications.Enlist(unitOfWork);

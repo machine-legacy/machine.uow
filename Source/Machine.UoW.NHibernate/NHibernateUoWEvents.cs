@@ -1,43 +1,28 @@
 using System;
 using System.Collections.Generic;
 
-using Machine.UoW.AdoDotNet;
-
-using NHibernate;
-
 namespace Machine.UoW.NHibernate
 {
   public class NHibernateUoWEvents : IUnitOfWorkEvents
   {
-    private readonly ISessionFactory _sessionFactory;
-
-    public NHibernateUoWEvents(ISessionFactory sessionFactory)
-    {
-      _sessionFactory = sessionFactory;
-    }
-
     public void Start(IUnitOfWork unitOfWork)
     {
-      NHibernateSessionSettings settings = unitOfWork.Scope.Get(NHibernateSessionSettings.Default);
-      ISession session = _sessionFactory.OpenSession(unitOfWork.Connection());
-      session.FlushMode = settings.FlushMode;
-      ITransaction transaction = session.BeginTransaction(settings.IsolationLevel);
-      unitOfWork.Scope.Set(new CurrentSession(session, transaction));
+      unitOfWork.Scope.Get<CurrentNhibernateTransaction>().Begin();
     }
 
     public void AddNew(IUnitOfWork unitOfWork, object obj)
     {
-      unitOfWork.Scope.Get<CurrentSession>().Session.Save(obj);
+      unitOfWork.Scope.Session().Save(obj);
     }
 
     public void Save(IUnitOfWork unitOfWork, object obj)
     {
-      unitOfWork.Scope.Get<CurrentSession>().Session.Save(obj);
+      unitOfWork.Scope.Session().Save(obj);
     }
 
     public void Delete(IUnitOfWork unitOfWork, object obj)
     {
-      unitOfWork.Scope.Get<CurrentSession>().Session.Delete(obj);
+      unitOfWork.Scope.Session().Delete(obj);
     }
 
     public void Rollback(IUnitOfWork unitOfWork, object obj)
@@ -46,17 +31,16 @@ namespace Machine.UoW.NHibernate
 
     public void Rollback(IUnitOfWork unitOfWork)
     {
-      unitOfWork.Scope.Get<CurrentSession>().Rollback();
+      unitOfWork.Scope.Get<CurrentNhibernateTransaction>().Rollback(unitOfWork.Scope);
     }
 
     public void Commit(IUnitOfWork unitOfWork)
     {
-      unitOfWork.Scope.Get<CurrentSession>().Commit();
+      unitOfWork.Scope.Get<CurrentNhibernateTransaction>().Commit(unitOfWork.Scope);
     }
 
     public void Dispose(IUnitOfWork unitOfWork)
     {
-      // unitOfWork.Scope.Get<CurrentSession>().Dispose();
     }
   }
 }

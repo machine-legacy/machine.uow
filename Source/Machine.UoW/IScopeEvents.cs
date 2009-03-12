@@ -10,6 +10,6 @@ namespace Machine.UoW
 
   public interface IScopeProvider
   {
-    IDisposable Create();
+    IDisposable Create(IUnitOfWorkScope scope);
   }
 }
