@@ -10,6 +10,7 @@ namespace Machine.UoW
     T Get<T>() where T : IDisposable;
     void Set<T>(T value) where T : IDisposable;
     void Set(Type key, IDisposable value);
+    void Remove<T>();
 
     event EventHandler<EventArgs> Disposed;
   }
@@ -41,6 +42,11 @@ namespace Machine.UoW
     }
 
     public void Set(Type key, IDisposable value)
+    {
+      throw new NotSupportedException();
+    }
+
+    public void Remove<T>()
     {
       throw new NotSupportedException();
     }

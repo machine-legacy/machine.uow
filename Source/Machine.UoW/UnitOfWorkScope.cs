@@ -56,6 +56,11 @@ namespace Machine.UoW
       Set(typeof(T), value);
     }
 
+    public void Remove<T>()
+    {
+      _state.Remove(typeof(T));
+    }
+
     public virtual void Dispose()
     {
       IEnumerable<IDisposable> order = _additions;

@@ -63,6 +63,7 @@
     <Compile Include="AdoDotNet\SqlServerConnectionProvider.cs" />
     <Compile Include="AdoDotNet\SqlServerConnectionStringHelpers.cs" />
     <Compile Include="AmbientTransactions\TransactionState.cs" />
+    <Compile Include="CurrentScopeProvider.cs" />
     <Compile Include="EnlistmentNotifications.cs" />
     <Compile Include="GenericUnitOfWorkEvents.cs" />
     <Compile Include="HttpContextUnitOfWorkProvider.cs" />
