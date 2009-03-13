@@ -20,9 +20,9 @@ namespace Machine.UoW
       _ambientTransactionUoWProvider = new AmbientTransactionUoWProvider(unitOfWorkFactory);
     }
 
-    public IUnitOfWork Start(IUnitOfWorkSettings[] settings)
+    public IUnitOfWork Start(IUnitOfWorkScope scope, IUnitOfWorkSettings[] settings)
     {
-      return GetUnitOfWorkProviderToUse().Start(settings);
+      return GetUnitOfWorkProviderToUse().Start(scope, settings);
     }
 
     public IUnitOfWork GetUnitOfWork()

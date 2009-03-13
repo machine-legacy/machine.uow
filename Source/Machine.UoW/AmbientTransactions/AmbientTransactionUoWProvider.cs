@@ -13,7 +13,7 @@ namespace Machine.UoW.AmbientTransactions
       _unitOfWorkFactory = unitOfWorkFactory;
     }
 
-    public IUnitOfWork Start(IUnitOfWorkSettings[] settings)
+    public IUnitOfWork Start(IUnitOfWorkScope scope, IUnitOfWorkSettings[] settings)
     {
       throw new InvalidOperationException();
     }

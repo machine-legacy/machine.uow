@@ -32,7 +32,7 @@ namespace Machine.UoW
 
     public static IUnitOfWork Start(params IUnitOfWorkSettings[] settings)
     {
-      return _provider.Start(settings);
+      return _provider.Start(Scope, settings);
     }
   }
 }

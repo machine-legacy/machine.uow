@@ -12,11 +12,6 @@ namespace Machine.UoW
       _unitOfWorkManagement = unitOfWorkManagement;
     }
 
-    public IUnitOfWork StartUnitOfWork(IUnitOfWorkSettings[] allSettings)
-    {
-      return StartUnitOfWork(StartScope(allSettings));
-    }
-
     public IUnitOfWork StartUnitOfWork(IUnitOfWorkScope scope)
     {
       UnitOfWork unitOfWork = new UnitOfWork(_unitOfWorkManagement, scope);
