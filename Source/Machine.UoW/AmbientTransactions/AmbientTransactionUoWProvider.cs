@@ -15,23 +15,12 @@ namespace Machine.UoW.AmbientTransactions
 
     public IUnitOfWork Start(IUnitOfWorkSettings[] settings)
     {
-      TransactionState state = TransactionState.ForCurrentTransaction();
-      IUnitOfWork unitOfWork = state.Get<IUnitOfWork>();
-      if (unitOfWork == null)
-      {
-        unitOfWork = _unitOfWorkFactory.StartUnitOfWork(_unitOfWorkFactory.StartScope(settings));
-        state.Set<IUnitOfWork>(unitOfWork);
-        _log.Info("Starting UoW");
-        EnlistmentNotifications.Enlist(unitOfWork);
-      }
-      AmbientTransactionSettings ambientTransactionSettings = settings.AmbientSettings();
-      return new AmbientTransactionUnitOfWorkProxy(unitOfWork, ambientTransactionSettings.ToScope());
+      throw new InvalidOperationException();
     }
 
     public IUnitOfWork GetUnitOfWork()
     {
-      TransactionState state = TransactionState.ForCurrentTransaction();
-      return state.Get<IUnitOfWork>();
+      throw new InvalidOperationException();
     }
   }
 }

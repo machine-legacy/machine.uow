@@ -55,7 +55,6 @@
   <ItemGroup>
     <Compile Include="AmbientTransactions\AmbientTransactionHelpers.cs" />
     <Compile Include="AmbientTransactions\AmbientTransactionSettings.cs" />
-    <Compile Include="AmbientTransactions\AmbientTransactionUnitOfWorkProxy.cs" />
     <Compile Include="AmbientTransactions\AmbientTransactionUnitOfWorkScopeProvider.cs" />
     <Compile Include="AmbientTransactions\AmbientTransactionUoWProvider.cs" />
     <Compile Include="AdoDotNet\CurrentConnection.cs" />
