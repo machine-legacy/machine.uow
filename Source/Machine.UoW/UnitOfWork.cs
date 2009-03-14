@@ -19,7 +19,7 @@ namespace Machine.UoW
     private bool _wasCommitted;
 
     public UnitOfWork(IUnitOfWorkManagement unitOfWorkManagement)
-      : this(unitOfWorkManagement, new UnitOfWorkScope(new NullScope()))
+      : this(unitOfWorkManagement, new UnitOfWorkScope(NullScope.Null))
     {
     }
 

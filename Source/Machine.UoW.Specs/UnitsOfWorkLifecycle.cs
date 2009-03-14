@@ -22,7 +22,7 @@ namespace Machine.UoW.Specs
       unitOfWorkManagement = new UnitOfWorkManagement();
       unitOfWorkManagement.AddEvents(events);
       factory = new UnitOfWorkFactory(unitOfWorkManagement);
-      uow = (UnitOfWork)factory.StartUnitOfWork(new NullScope());
+      uow = (UnitOfWork)factory.StartUnitOfWork(NullScope.Null);
     };
 
     It should_have_no_entries = () =>

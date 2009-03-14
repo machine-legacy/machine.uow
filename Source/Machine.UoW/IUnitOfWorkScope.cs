@@ -17,6 +17,8 @@ namespace Machine.UoW
 
   public class NullScope : IUnitOfWorkScope
   {
+    public static readonly IUnitOfWorkScope Null = new NullScope();
+
     public void Dispose()
     {
       Disposed(this, EventArgs.Empty);
