@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using Machine.Specifications;
 using Machine.UoW.NHibernate.Specs.NorthwindModel;
+using NHibernate;
 
 namespace Machine.UoW.NHibernate.Specs
 {
@@ -10,8 +11,16 @@ namespace Machine.UoW.NHibernate.Specs
   public class when_querying_for_data : with_sqlite_database
   {
     static ICollection<NorthwindEmployee> employees;
+    static ISession session;
 
-    Establish context = () => database.AddDefaultData();
+    Establish context = () =>
+    {
+      session = database.SessionFactory.OpenSession();
+      database.AddDefaultData();
+    };
+
+    Cleanup after = () =>
+      session.Dispose();
 
     Because of = () =>
       employees = session.CreateQuery("FROM NorthwindEmployee").List<NorthwindEmployee>();

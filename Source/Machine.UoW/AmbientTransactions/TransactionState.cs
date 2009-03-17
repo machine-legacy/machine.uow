@@ -4,6 +4,7 @@ using System.Threading;
 using System.Transactions;
 
 using Machine.Core.Utility;
+using System.Linq;
 
 namespace Machine.UoW.AmbientTransactions
 {
@@ -34,6 +35,10 @@ namespace Machine.UoW.AmbientTransactions
           break;
         case TransactionStatus.InDoubt:
           break;
+      }
+      foreach (IDisposable value in _state.Values.ToArray())
+      {
+        value.Dispose();
       }
       _transaction.Dispose();
     }
@@ -85,6 +90,20 @@ namespace Machine.UoW.AmbientTransactions
         TransactionState scope = _map[e.Transaction];
         scope.Dispose();
         _map.Remove(e.Transaction);
+      }
+    }
+
+    public static void ClearFromEveryScope(IUnitOfWorkScope unitOfWorkScope)
+    {
+      using (RWLock.AsWriter(_lock))
+      {
+        foreach (TransactionState state in _map.Values)
+        {
+          if (state.Get<IUnitOfWorkScope>() == unitOfWorkScope)
+          {
+            state.Set<IUnitOfWorkScope>();
+          }
+        }
       }
     }
   }

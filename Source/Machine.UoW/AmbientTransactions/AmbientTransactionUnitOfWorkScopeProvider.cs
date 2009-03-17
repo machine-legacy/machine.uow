@@ -27,8 +27,7 @@ namespace Machine.UoW.AmbientTransactions
 
     private static void OnUnitOfWorkScopeDisposed(object sender, EventArgs e)
     {
-      TransactionState state = TransactionState.ForCurrentTransaction();
-      state.Set<IUnitOfWorkScope>();
+      TransactionState.ClearFromEveryScope((IUnitOfWorkScope)sender);
     }
   }
 }

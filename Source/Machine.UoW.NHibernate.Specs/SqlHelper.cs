@@ -172,8 +172,7 @@ namespace Machine.UoW.NHibernate.Specs
 
     public IDbConnection OpenConnection()
     {
-      string connectionString = "Server=127.0.0.1;Initial Catalog=northwind;Integrated Security=true";
-      IDbConnection connection = new SqlConnection(connectionString);
+      IDbConnection connection = new SqlConnection("Server=127.0.0.1;Initial Catalog=northwind;Integrated Security=true;Pooling=False");
       connection.Open();
       return connection;
     }

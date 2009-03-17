@@ -82,6 +82,7 @@
   <ItemGroup>
     <Compile Include="Adding_objects.cs" />
     <Compile Include="AdoDotNetSpecs.cs" />
+    <Compile Include="AmbientTransactions\WithScope.cs" />
     <Compile Include="DatabaseAndNhSessionFactory.cs">
       <SubType>Code</SubType>
     </Compile>

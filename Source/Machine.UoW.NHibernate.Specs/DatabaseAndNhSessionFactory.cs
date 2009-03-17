@@ -33,6 +33,7 @@ namespace Machine.UoW.NHibernate.Specs
       IDictionary<string, string> properties = SqlHelper.Provider.CreateNhibernateProperties();
       properties["connection.provider"] = "NHibernate.Connection.DriverConnectionProvider";
       properties["connection.connection_string"] = _database.Connection.ConnectionString;
+      properties["connection.release_mode"] = "on_close";
       properties["proxyfactory.factory_class"] = "NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle";
 
       Configuration configuration = new Configuration();

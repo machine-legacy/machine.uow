@@ -11,7 +11,6 @@ namespace Machine.UoW.NHibernate.Specs
   public abstract class with_sqlite_database
   {
     protected static DatabaseAndNhSessionFactory database;
-    protected static ISession session;
 
     Establish context = () =>
     {
@@ -19,7 +18,6 @@ namespace Machine.UoW.NHibernate.Specs
       loggingStartup.Start();
       database = new DatabaseAndNhSessionFactory();
       database.Open();
-      session = database.SessionFactory.OpenSession();
     };
 
     Cleanup after = () =>
