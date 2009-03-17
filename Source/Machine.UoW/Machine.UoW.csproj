@@ -78,8 +78,10 @@
     <Compile Include="IUnitOfWorkScopeProvider.cs" />
     <Compile Include="IUnitOfWorkSettings.cs" />
     <Compile Include="IUnitOfWorkScope.cs" />
+    <Compile Include="NullScopeProvider.cs" />
     <Compile Include="NullUnitOfWork.cs" />
     <Compile Include="NullUnitOfWorkEvents.cs" />
+    <Compile Include="NullUnitOfWorkProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AdoDotNet\UnitOfWorkExtensions.cs" />
     <Compile Include="ThreadStaticUnitOfWorkProvider.cs" />
