@@ -19,7 +19,6 @@ namespace Machine.UoW.NHibernate
 
     public void Commit(IUnitOfWorkScope scope)
     {
-      scope.Session().Flush();
       _transaction.Commit();
     }
 

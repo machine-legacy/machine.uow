@@ -17,7 +17,7 @@ namespace Machine.UoW
 
     public IUnitOfWork Start(IUnitOfWorkScope scope, IUnitOfWorkSettings[] settings)
     {
-      _unitOfWork = _unitOfWorkFactory.StartUnitOfWork(_unitOfWorkFactory.StartScope(settings));
+      _unitOfWork = _unitOfWorkFactory.StartUnitOfWork(_unitOfWorkFactory.StartScope(scope, settings));
       _unitOfWork.Closed += OnUnitOfWorkClosed;
       return GetUnitOfWork();
     }
