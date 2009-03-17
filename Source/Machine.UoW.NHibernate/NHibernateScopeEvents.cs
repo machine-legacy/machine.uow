@@ -45,10 +45,7 @@ namespace Machine.UoW.NHibernate
   {
     public IDisposable Create(IUnitOfWorkScope scope)
     {
-      NHibernateSessionSettings settings = scope.Get(NHibernateSessionSettings.Default);
-      ISession session = scope.Session();
-      ITransaction transaction = session.BeginTransaction(settings.IsolationLevel);
-      return new CurrentNhibernateTransaction(transaction);
+      return scope.StartTransaction();
     }
   }
 }

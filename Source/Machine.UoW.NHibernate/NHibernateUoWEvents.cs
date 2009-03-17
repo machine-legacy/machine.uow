@@ -31,12 +31,12 @@ namespace Machine.UoW.NHibernate
 
     public void Rollback(IUnitOfWork unitOfWork)
     {
-      unitOfWork.Scope.Get<CurrentNhibernateTransaction>().Rollback(unitOfWork.Scope);
+      unitOfWork.Scope.Get<CurrentNhibernateTransaction>().Rollback();
     }
 
     public void Commit(IUnitOfWork unitOfWork)
     {
-      unitOfWork.Scope.Get<CurrentNhibernateTransaction>().Commit(unitOfWork.Scope);
+      unitOfWork.Scope.Get<CurrentNhibernateTransaction>().Commit();
     }
 
     public void Dispose(IUnitOfWork unitOfWork)

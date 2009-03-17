@@ -70,6 +70,7 @@
     <Compile Include="HttpContextUnitOfWorkScopeProvider.cs" />
     <Compile Include="HybridUnitOfWorkProvider.cs" />
     <Compile Include="IScopeEvents.cs" />
+    <Compile Include="ITransaction.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="IUnitOfWorkEvents.cs" />
     <Compile Include="IUnitOfWorkFactory.cs" />

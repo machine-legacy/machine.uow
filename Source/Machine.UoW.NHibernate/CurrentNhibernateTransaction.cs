@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
-using NHibernate;
+
+using INHibernateTransaction = NHibernate.ITransaction;
 
 namespace Machine.UoW.NHibernate
 {
-  public class CurrentNhibernateTransaction : IDisposable
+  public class CurrentNhibernateTransaction : ITransaction
   {
-    readonly ITransaction _transaction;
+    readonly INHibernateTransaction _transaction;
 
-    public CurrentNhibernateTransaction(ITransaction transaction)
+    public CurrentNhibernateTransaction(INHibernateTransaction transaction)
     {
       _transaction = transaction;
     }
@@ -17,12 +18,12 @@ namespace Machine.UoW.NHibernate
     {
     }
 
-    public void Commit(IUnitOfWorkScope scope)
+    public void Commit()
     {
       _transaction.Commit();
     }
 
-    public void Rollback(IUnitOfWorkScope scope)
+    public void Rollback()
     {
       _transaction.Rollback();
     }
