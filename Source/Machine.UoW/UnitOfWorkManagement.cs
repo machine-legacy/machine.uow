@@ -20,10 +20,6 @@ namespace Machine.UoW
 
     public UnitOfWorkEventsProxy GetUnitOfWorkEventsProxy()
     {
-      if (_events.Count == 0)
-      {
-        throw new InvalidOperationException("No UnitOfWorkEvents have been registered! Nothing is happening!");
-      }
       return new UnitOfWorkEventsProxy(_events);
     }
 
