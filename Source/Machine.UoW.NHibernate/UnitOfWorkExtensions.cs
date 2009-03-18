@@ -17,13 +17,5 @@ namespace Machine.UoW.NHibernate
       if (scope == null) throw new ArgumentException("scope");
       return scope.Get<CurrentSession>().Session;
     }
-
-    public static ITransaction StartTransaction(this IUnitOfWorkScope scope)
-    {
-      if (scope == null) throw new ArgumentException("scope");
-      NHibernateSessionSettings settings = scope.Get(NHibernateSessionSettings.Default);
-      ISession session = scope.Session();
-      return new CurrentNhibernateTransaction(session.BeginTransaction(settings.IsolationLevel));
-    }
   }
 }

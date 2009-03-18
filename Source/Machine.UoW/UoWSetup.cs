@@ -7,14 +7,12 @@ namespace Machine.UoW
   {
     public static void NullThreadStaticUoW()
     {
-      UoW.Provider = new ThreadStaticUnitOfWorkProvider(NullFactory());
-      UoW.ScopeProvider = new NullScopeProvider();
+      UoW.Startup(new ThreadStaticUnitOfWorkProvider(NullFactory()), new NullScopeProvider(), new NullTransactionProvider());
     }
 
     public static void NullHttpUoW()
     {
-      UoW.Provider = new HttpContextUnitOfWorkProvider(NullFactory());
-      UoW.ScopeProvider = new NullScopeProvider();
+      UoW.Startup(new HttpContextUnitOfWorkProvider(NullFactory()), new NullScopeProvider(), new NullTransactionProvider());
     }
 
     public static IUnitOfWorkFactory NullFactory()

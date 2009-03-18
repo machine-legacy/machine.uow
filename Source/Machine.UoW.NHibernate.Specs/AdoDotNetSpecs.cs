@@ -26,8 +26,7 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
       IUnitOfWorkManagement unitOfWorkManagement = new UnitOfWorkManagement();
       unitOfWorkManagement.AddEvents(new AdoNetConnectionScopeEvents(SqlHelper.Provider));
       factory = new UnitOfWorkFactory(unitOfWorkManagement);
-      UoW.Provider = new HybridUnitOfWorkProvider(factory);
-      UoW.ScopeProvider = new ThreadStaticUnitOfWorkScopeProvider(factory);
+      UoW.Startup(new HybridUnitOfWorkProvider(factory), new ThreadStaticUnitOfWorkScopeProvider(factory), new NullTransactionProvider());
       first = null;
       second = null;
       connection = null;
@@ -39,9 +38,9 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
   {
     Because of = () =>
     {
-      using (UoW.Scope)
+      using (UoW.Scope())
       {
-        connection = UoW.Scope.Connection();
+        connection = UoW.Scope().Connection();
       }
     };
 
@@ -54,10 +53,10 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
   {
     Because of = () =>
     {
-      using (UoW.Scope)
+      using (UoW.Scope())
       {
-        first = UoW.Scope.Connection();
-        second = UoW.Scope.Connection();
+        first = UoW.Scope().Connection();
+        second = UoW.Scope().Connection();
       }
     };
 
@@ -73,13 +72,13 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
   {
     Because of = () =>
     {
-      using (UoW.Scope)
+      using (UoW.Scope())
       {
-        first = UoW.Scope.Connection();
+        first = UoW.Scope().Connection();
       }
-      using (UoW.Scope)
+      using (UoW.Scope())
       {
-        second = UoW.Scope.Connection();
+        second = UoW.Scope().Connection();
       }
     };
 
@@ -95,19 +94,19 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
   {
     Establish context = () =>
     {
-      UoW.ScopeProvider = new AmbientTransactionUnitOfWorkScopeProvider(factory);
+      UoW.Startup(new NullUnitOfWorkProvider(), new AmbientTransactionUnitOfWorkScopeProvider(factory), new NullTransactionProvider());
     };
     
     Because of = () =>
     {
       using (new TransactionScope())
       {
-        first = UoW.Scope.Connection();
+        first = UoW.Scope().Connection();
       }
-      exception = Catch.Exception(() => UoW.Scope.Connection());
+      exception = Catch.Exception(() => UoW.Scope().Connection());
       using (new TransactionScope())
       {
-        second = UoW.Scope.Connection();
+        second = UoW.Scope().Connection();
       }
     };
 

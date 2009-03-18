@@ -10,6 +10,7 @@ using Machine.UoW.NHibernate.Specs.NorthwindModel;
 using Machine.Specifications;
 using Machine.UoW.Specs;
 using NHibernate;
+using IsolationLevel=System.Data.IsolationLevel;
 
 namespace Machine.UoW.NHibernate.Specs.AmbientTransactions
 {
@@ -30,9 +31,9 @@ namespace Machine.UoW.NHibernate.Specs.AmbientTransactions
     {
       using (TransactionScope scope = new TransactionScope())
       {
-        using (var transaction = UoW.Scope.StartTransaction())
+        using (var transaction = UoW.BeginTransaction(IsolationLevel.Unspecified))
         {
-          employee = UoW.Scope.Session().Get<NorthwindEmployee>(id);
+          employee = UoW.Scope().Session().Get<NorthwindEmployee>(id);
           employee.FirstName = "Steve Van";
           transaction.Commit();
         }
@@ -40,7 +41,7 @@ namespace Machine.UoW.NHibernate.Specs.AmbientTransactions
       }
       using (new TransactionScope())
       {
-        employee = UoW.Scope.Session().Get<NorthwindEmployee>(id);
+        employee = UoW.Scope().Session().Get<NorthwindEmployee>(id);
       }
     };
 
@@ -59,9 +60,9 @@ namespace Machine.UoW.NHibernate.Specs.AmbientTransactions
         {
           sql.Query("SELECT @@TRANCOUNT");
         }
-        using (var transaction = UoW.Scope.StartTransaction())
+        using (var transaction = UoW.BeginTransaction(IsolationLevel.Unspecified))
         {
-          employee = UoW.Scope.Session().Get<NorthwindEmployee>(id);
+          employee = UoW.Scope().Session().Get<NorthwindEmployee>(id);
           employee.FirstName = "Steve Van";
           transaction.Commit();
         }
@@ -69,7 +70,7 @@ namespace Machine.UoW.NHibernate.Specs.AmbientTransactions
       }
       using (new TransactionScope())
       {
-        employee = UoW.Scope.Session().Get<NorthwindEmployee>(id);
+        employee = UoW.Scope().Session().Get<NorthwindEmployee>(id);
       }
     };
 
@@ -84,16 +85,16 @@ namespace Machine.UoW.NHibernate.Specs.AmbientTransactions
     {
       using (TransactionScope scope = new TransactionScope())
       {
-        using (var transaction = UoW.Scope.StartTransaction())
+        using (var transaction = UoW.BeginTransaction(IsolationLevel.Unspecified))
         {
-          employee = UoW.Scope.Session().Get<NorthwindEmployee>(id);
+          employee = UoW.Scope().Session().Get<NorthwindEmployee>(id);
           employee.FirstName = "Steve Van";
           transaction.Commit();
         }
       }
       using (new TransactionScope())
       {
-        employee = UoW.Scope.Session().Get<NorthwindEmployee>(id);
+        employee = UoW.Scope().Session().Get<NorthwindEmployee>(id);
       }
     };
 
@@ -127,8 +128,8 @@ namespace Machine.UoW.NHibernate.Specs.AmbientTransactions
       unitOfWorkManagement.AddEvents(new AdoNetConnectionScopeEvents(SqlHelper.Provider));
       unitOfWorkManagement.AddEvents(new NHibernateScopeEvents(sessionFactory));
       IUnitOfWorkFactory factory = new UnitOfWorkFactory(unitOfWorkManagement);
-      UoW.ScopeProvider = new AmbientTransactionUnitOfWorkScopeProvider(factory);
-      UoW.Provider = new NullUnitOfWorkProvider(UoW.ScopeProvider);
+      IUnitOfWorkScopeProvider scopeProvider = new AmbientTransactionUnitOfWorkScopeProvider(factory);
+      UoW.Startup(new NullUnitOfWorkProvider(scopeProvider), scopeProvider, new NHibernateTransactionProvider(scopeProvider));
     };
   }
 }

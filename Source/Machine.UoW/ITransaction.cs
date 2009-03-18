@@ -8,4 +8,19 @@ namespace Machine.UoW
     void Commit();
     void Rollback();
   }
+
+  public class NullTransaction : ITransaction
+  {
+    public void Dispose()
+    {
+    }
+
+    public void Commit()
+    {
+    }
+
+    public void Rollback()
+    {
+    }
+  }
 }

@@ -19,7 +19,6 @@ namespace Machine.UoW.NHibernate
     public void Start(IUnitOfWorkScope scope)
     {
       scope.Add(typeof(CurrentSession), new CurrentSessionProvider(_sessionFactory));
-      scope.Add(typeof(CurrentNhibernateTransaction), new CurrentTransactionProvider());
     }
   }
 
@@ -38,14 +37,6 @@ namespace Machine.UoW.NHibernate
       ISession session = _sessionFactory.OpenSession(scope.Connection());
       session.FlushMode = settings.FlushMode;
       return new CurrentSession(session);
-    }
-  }
-
-  public class CurrentTransactionProvider : IScopeProvider
-  {
-    public IDisposable Create(IUnitOfWorkScope scope)
-    {
-      return scope.StartTransaction();
     }
   }
 }
