@@ -1,0 +1,71 @@
+require 'rake'
+require 'rake/testtask'
+require 'pathname'
+require 'rubygems'
+require 'fileutils'
+include FileUtils
+
+class String
+  def slash(path)
+    if self =~ /\/$/
+      return self + path
+    end
+
+    return self + '/' + path
+  end
+end
+
+version = 'v3.5'
+compileTarget = 'debug'
+project = "Machine.UoW"
+frameworkDir = File.join(ENV['windir'].dup, 'Microsoft.NET', 'Framework', version)
+msbuild = File.join(frameworkDir, 'msbuild.exe')
+
+task :setup => [ "setup:all" ]
+
+file ".setup-done" => [ "rakefile" ] do
+  Rake::Task["setup:all"].invoke
+end
+
+namespace :setup do
+  task :all do
+    touch ".setup-done"
+  end
+end
+
+desc "Build and run specs"
+task :default => [ "build", "specs:run" ]
+
+desc "Build"
+task :build => [ ".setup-done" ] do
+  sh "#{msbuild} Source/#{project}.sln"
+end
+
+namespace :specs do
+  task :view => :run do
+    system "start Specs/#{project}.Specs.html"
+  end
+
+  task :run do
+    puts 'Running Specs...'
+    sh "Libraries/Machine/Specifications/Machine.Specifications.ConsoleRunner.exe", "Build/Debug/#{project}.Specs.dll", "--html", "Specs/#{project}.Specs.html"
+    puts "Wrote specs to Specs/#{project}.Specs.html, run 'rake specs:view' to see them"
+  end
+end
+
+desc "Open solution in VS"
+task :sln do
+  Thread.new do
+    system "devenv Source/#{project}.sln"
+  end
+end
+
+desc "Rebuild"
+task :rebuild => [ ".setup-done" ] do
+  sh "#{msbuild} #{project}.sln /t:Rebuild"
+end
+
+desc "Clean"
+task :clean do
+  sh "#{msbuild} #{project}.sln /t:Clean"
+end

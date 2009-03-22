@@ -4,10 +4,8 @@
 *.resharper
 *.swp
 *.sln.cache
+.setup-done
 Build
 obj
 bin
 _ReSharper.*
-InstallUtil.InstallLog
-NDependOut
-Specifications.html
