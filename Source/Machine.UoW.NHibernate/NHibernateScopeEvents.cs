@@ -34,7 +34,7 @@ namespace Machine.UoW.NHibernate
     public IDisposable Create(IUnitOfWorkScope scope)
     {
       NHibernateSessionSettings settings = scope.Get(NHibernateSessionSettings.Default);
-      ISession session = _sessionFactory.OpenSession(scope.Connection());
+      ISession session = _sessionFactory.OpenSession();
       session.FlushMode = settings.FlushMode;
       return new CurrentSession(session);
     }
