@@ -6,9 +6,11 @@ namespace Machine.UoW.AmbientTransactions
   public class AmbientTransactionUnitOfWorkScopeProvider : IUnitOfWorkScopeProvider
   {
     readonly IUnitOfWorkFactory _unitOfWorkFactory;
+    readonly IUnitOfWorkScope _globalScope;
 
-    public AmbientTransactionUnitOfWorkScopeProvider(IUnitOfWorkFactory unitOfWorkFactory)
+    public AmbientTransactionUnitOfWorkScopeProvider(IUnitOfWorkScope globalScope, IUnitOfWorkFactory unitOfWorkFactory)
     {
+      _globalScope = globalScope;
       _unitOfWorkFactory = unitOfWorkFactory;
     }
 
@@ -18,7 +20,7 @@ namespace Machine.UoW.AmbientTransactions
       IUnitOfWorkScope scope = state.Get<IUnitOfWorkScope>();
       if (scope == null)
       {
-        scope = _unitOfWorkFactory.StartScope(settings);
+        scope = _unitOfWorkFactory.StartScope(_globalScope, settings);
         scope.Disposed += OnUnitOfWorkScopeDisposed;
         state.Set<IUnitOfWorkScope>(scope);
       }

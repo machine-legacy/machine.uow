@@ -128,7 +128,7 @@ namespace Machine.UoW.NHibernate.Specs.AmbientTransactions
       unitOfWorkManagement.AddEvents(new AdoNetConnectionScopeEvents(SqlHelper.Provider));
       unitOfWorkManagement.AddEvents(new NHibernateScopeEvents(sessionFactory));
       IUnitOfWorkFactory factory = new UnitOfWorkFactory(unitOfWorkManagement);
-      IUnitOfWorkScopeProvider scopeProvider = new AmbientTransactionUnitOfWorkScopeProvider(factory);
+      IUnitOfWorkScopeProvider scopeProvider = new AmbientTransactionUnitOfWorkScopeProvider(NullScope.Null, factory);
       UoW.Startup(new NullUnitOfWorkProvider(scopeProvider), scopeProvider, new NHibernateTransactionProvider(scopeProvider));
     };
   }

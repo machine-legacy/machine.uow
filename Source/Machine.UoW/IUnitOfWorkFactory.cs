@@ -6,6 +6,5 @@ namespace Machine.UoW
   {
     IUnitOfWork StartUnitOfWork(IUnitOfWorkScope scope);
     IUnitOfWorkScope StartScope(IUnitOfWorkScope parentScope, IUnitOfWorkSettings[] allSettings);
-    IUnitOfWorkScope StartScope(IUnitOfWorkSettings[] allSettings);
   }
 }

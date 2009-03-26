@@ -7,9 +7,11 @@ namespace Machine.UoW
   {
     static readonly string Key = typeof (HttpContextUnitOfWorkScopeProvider).FullName;
     readonly IUnitOfWorkFactory _unitOfWorkFactory;
+    readonly IUnitOfWorkScope _globalScope;
 
-    public HttpContextUnitOfWorkScopeProvider(IUnitOfWorkFactory unitOfWorkFactory)
+    public HttpContextUnitOfWorkScopeProvider(IUnitOfWorkScope globalScope, IUnitOfWorkFactory unitOfWorkFactory)
     {
+      _globalScope = globalScope;
       _unitOfWorkFactory = unitOfWorkFactory;
     }
 
@@ -17,7 +19,7 @@ namespace Machine.UoW
     {
       if (CurrentScope == null)
       {
-        CurrentScope = _unitOfWorkFactory.StartScope(settings);
+        CurrentScope = _unitOfWorkFactory.StartScope(_globalScope, settings);
         CurrentScope.Disposed += OnUnitOfWorkScopeDisposed;
       }
       return CurrentScope;

@@ -6,11 +6,13 @@ namespace Machine.UoW
   public class ThreadStaticUnitOfWorkScopeProvider : IUnitOfWorkScopeProvider
   {
     readonly IUnitOfWorkFactory _unitOfWorkFactory;
+    readonly IUnitOfWorkScope _globalScope;
     [ThreadStatic]
     static IUnitOfWorkScope _unitOfWorkScope;
 
-    public ThreadStaticUnitOfWorkScopeProvider(IUnitOfWorkFactory unitOfWorkFactory)
+    public ThreadStaticUnitOfWorkScopeProvider(IUnitOfWorkScope globalScope, IUnitOfWorkFactory unitOfWorkFactory)
     {
+      _globalScope = globalScope;
       _unitOfWorkFactory = unitOfWorkFactory;
     }
 
@@ -18,7 +20,7 @@ namespace Machine.UoW
     {
       if (_unitOfWorkScope == null)
       {
-        _unitOfWorkScope = _unitOfWorkFactory.StartScope(settings);
+        _unitOfWorkScope = _unitOfWorkFactory.StartScope(_globalScope, settings);
         _unitOfWorkScope.Disposed += OnUnitOfWorkScopeDisposed;
       }
       return _unitOfWorkScope;

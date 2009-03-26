@@ -26,7 +26,7 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
       IUnitOfWorkManagement unitOfWorkManagement = new UnitOfWorkManagement();
       unitOfWorkManagement.AddEvents(new AdoNetConnectionScopeEvents(SqlHelper.Provider));
       factory = new UnitOfWorkFactory(unitOfWorkManagement);
-      UoW.Startup(new HybridUnitOfWorkProvider(factory), new ThreadStaticUnitOfWorkScopeProvider(factory), new NullTransactionProvider());
+      UoW.Startup(new HybridUnitOfWorkProvider(factory), new ThreadStaticUnitOfWorkScopeProvider(NullScope.Null, factory), new NullTransactionProvider());
       first = null;
       second = null;
       connection = null;
@@ -94,7 +94,7 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
   {
     Establish context = () =>
     {
-      UoW.Startup(new NullUnitOfWorkProvider(), new AmbientTransactionUnitOfWorkScopeProvider(factory), new NullTransactionProvider());
+      UoW.Startup(new NullUnitOfWorkProvider(), new AmbientTransactionUnitOfWorkScopeProvider(NullScope.Null, factory), new NullTransactionProvider());
     };
     
     Because of = () =>
