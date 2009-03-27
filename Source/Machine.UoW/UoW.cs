@@ -27,4 +27,29 @@ namespace Machine.UoW
       BeginTransaction = (isolationLevel) => transactionProvider.BeginTransaction(isolationLevel);
     }
   }
+
+  public static class NewUoW
+  {
+    private static ITransactionProvider _transactionProvider;
+
+    public static ITransaction BeginTransaction()
+    {
+      return BeginTransaction(IsolationLevel.Unspecified);
+    }
+
+    public static ITransaction BeginTransaction(IsolationLevel isolationLevel)
+    {
+      return _transactionProvider.BeginTransaction(isolationLevel);
+    }
+
+    public static IUnitOfWorkScope Scope()
+    {
+      return null;
+    }
+
+    public static void Startup(ITransactionProvider transactionProvider)
+    {
+      _transactionProvider = transactionProvider;
+    }
+  }
 }
