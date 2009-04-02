@@ -27,5 +27,27 @@ namespace Machine.UoW.AdoDotNet
         _connection = value;
       }
     }
+    
+    [ThreadStatic]
+    static IDbTransaction _transaction;
+
+    public static IDbTransaction Transaction
+    {
+      get
+      {
+        return _transaction;
+      }
+      set
+      {
+        if (_transaction != value)
+        {
+          if (_transaction != null && value != null)
+          {
+            throw new InvalidOperationException("Trying to use another Transaction when one is already in use!");
+          }
+        }
+        _transaction = value;
+      }
+    }
   }
 }

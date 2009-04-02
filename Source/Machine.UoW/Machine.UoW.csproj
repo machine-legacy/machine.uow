@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdoDotNet\Database.cs" />
+    <Compile Include="AdoDotNet\ManagedConnection.cs" />
     <Compile Include="AmbientTransactions\AmbientTransactionHelpers.cs" />
     <Compile Include="AmbientTransactions\AmbientTransactionSettings.cs" />
     <Compile Include="AmbientTransactions\AmbientTransactionUnitOfWorkScopeProvider.cs" />
