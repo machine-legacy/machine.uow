@@ -5,11 +5,13 @@ namespace Machine.UoW
 {
   public class UnitOfWorkFactory : IUnitOfWorkFactory
   {
-    private readonly IUnitOfWorkManagement _unitOfWorkManagement;
+    readonly IUnitOfWorkManagement _unitOfWorkManagement;
+    readonly IUnitOfWorkScopeFactory _unitOfWorkScopeFactory;
 
     public UnitOfWorkFactory(IUnitOfWorkManagement unitOfWorkManagement)
     {
       _unitOfWorkManagement = unitOfWorkManagement;
+      _unitOfWorkScopeFactory = new UnitOfWorkScopeFactory();
     }
 
     public IUnitOfWork StartUnitOfWork(IUnitOfWorkScope scope)
@@ -19,6 +21,16 @@ namespace Machine.UoW
       return unitOfWork;
     }
 
+    public IUnitOfWorkScope StartScope(IUnitOfWorkScope parentScope, IUnitOfWorkSettings[] allSettings)
+    {
+      IUnitOfWorkScope scope = _unitOfWorkScopeFactory.StartScope(parentScope, allSettings);
+      _unitOfWorkManagement.GetScopeEventsProxy().Start(scope);
+      return scope;
+    }
+  }
+
+  public class UnitOfWorkScopeFactory : IUnitOfWorkScopeFactory
+  {
     public IUnitOfWorkScope StartScope(IUnitOfWorkSettings[] allSettings)
     {
       return StartScope(NullScope.Null, allSettings);
@@ -31,7 +43,6 @@ namespace Machine.UoW
       {
         scope.Set(settings.GetType(), settings);
       }
-      _unitOfWorkManagement.GetScopeEventsProxy().Start(scope);
       return scope;
     }
   }

@@ -19,7 +19,7 @@ namespace Machine.UoW
 
     public IUnitOfWork Start(IUnitOfWorkScope scope, params IUnitOfWorkSettings[] settings)
     {
-      return new NullUnitOfWork(_unitOfWorkScopeProvider.GetUnitOfWorkScope(settings));
+      return new NullUnitOfWork(_unitOfWorkScopeProvider.GetUnitOfWorkScope());
     }
 
     public IUnitOfWork GetUnitOfWork()

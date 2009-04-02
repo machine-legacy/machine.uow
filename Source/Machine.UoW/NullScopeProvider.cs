@@ -5,7 +5,7 @@ namespace Machine.UoW
 {
   public class NullScopeProvider : IUnitOfWorkScopeProvider
   {
-    public IUnitOfWorkScope GetUnitOfWorkScope(params IUnitOfWorkSettings[] settings)
+    public IUnitOfWorkScope GetUnitOfWorkScope()
     {
       return NullScope.Null;
     }

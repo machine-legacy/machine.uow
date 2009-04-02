@@ -16,11 +16,11 @@ namespace Machine.UoW
       _unitOfWorkFactory = unitOfWorkFactory;
     }
 
-    public IUnitOfWorkScope GetUnitOfWorkScope(IUnitOfWorkSettings[] settings)
+    public IUnitOfWorkScope GetUnitOfWorkScope()
     {
       if (_unitOfWorkScope == null)
       {
-        _unitOfWorkScope = _unitOfWorkFactory.StartScope(_globalScope, settings);
+        _unitOfWorkScope = _unitOfWorkFactory.StartScope(_globalScope, new IUnitOfWorkSettings[0]);
         _unitOfWorkScope.Disposed += OnUnitOfWorkScopeDisposed;
       }
       return _unitOfWorkScope;

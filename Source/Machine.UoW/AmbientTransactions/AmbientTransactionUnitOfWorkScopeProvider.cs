@@ -5,22 +5,22 @@ namespace Machine.UoW.AmbientTransactions
 {
   public class AmbientTransactionUnitOfWorkScopeProvider : IUnitOfWorkScopeProvider
   {
-    readonly IUnitOfWorkFactory _unitOfWorkFactory;
+    readonly IUnitOfWorkScopeFactory _unitOfWorkScopeFactory;
     readonly IUnitOfWorkScope _globalScope;
 
-    public AmbientTransactionUnitOfWorkScopeProvider(IUnitOfWorkScope globalScope, IUnitOfWorkFactory unitOfWorkFactory)
+    public AmbientTransactionUnitOfWorkScopeProvider(IUnitOfWorkScope globalScope, IUnitOfWorkScopeFactory unitOfWorkScopeFactory)
     {
       _globalScope = globalScope;
-      _unitOfWorkFactory = unitOfWorkFactory;
+      _unitOfWorkScopeFactory = unitOfWorkScopeFactory;
     }
 
-    public IUnitOfWorkScope GetUnitOfWorkScope(params IUnitOfWorkSettings[] settings)
+    public IUnitOfWorkScope GetUnitOfWorkScope()
     {
       TransactionState state = TransactionState.ForCurrentTransaction();
       IUnitOfWorkScope scope = state.Get<IUnitOfWorkScope>();
       if (scope == null)
       {
-        scope = _unitOfWorkFactory.StartScope(_globalScope, settings);
+        scope = _unitOfWorkScopeFactory.StartScope(_globalScope, new IUnitOfWorkSettings[0]);
         scope.Disposed += OnUnitOfWorkScopeDisposed;
         state.Set<IUnitOfWorkScope>(scope);
       }
