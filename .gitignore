@@ -8,4 +8,5 @@
 Build
 obj
 bin
+Specs/*.html
 _ReSharper.*
