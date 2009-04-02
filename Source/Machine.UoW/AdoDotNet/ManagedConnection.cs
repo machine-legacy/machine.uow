@@ -61,10 +61,10 @@ namespace Machine.UoW.AdoDotNet
       _unitOfWorkScopeProvider = new AmbientTransactionUnitOfWorkScopeProvider(NullScope.Null, new UnitOfWorkScopeFactory());
     }
 
-    public IManagedConnection OpenConnection()
+    public IManagedConnection OpenConnection(object key)
     {
       IUnitOfWorkScope scope = _unitOfWorkScopeProvider.GetUnitOfWorkScope();
-      IDbConnection connection = scope.Get(() => {
+      IDbConnection connection = scope.Get(key, () => {
         return _connectionProvider.OpenConnection();
       });
       return new ManagedConnection(connection, true);
@@ -73,6 +73,6 @@ namespace Machine.UoW.AdoDotNet
 
   public interface IConnectionManager
   {
-    IManagedConnection OpenConnection();
+    IManagedConnection OpenConnection(object key);
   }
 }

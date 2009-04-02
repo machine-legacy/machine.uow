@@ -17,15 +17,17 @@ namespace Machine.UoW.NHibernate.Specs
 
     Because of = () =>
     {
-      using (IUnitOfWork uow = UoW.Start())
+      using (var uow = SpecUoW.Start())
+      using (var session = SpecUoW.OpenSession())
       {
-        employee = uow.Session().Get<NorthwindEmployee>(id);
+        employee = NH.Session.Get<NorthwindEmployee>(id);
         employee.FirstName = "Steve Van";
-        uow.Commit();
+        session.Commit();
       }
-      using (IUnitOfWork uow = UoW.Start())
+      using (var uow = SpecUoW.Start())
+      using (var session = SpecUoW.OpenSession())
       {
-        employee = uow.Session().Get<NorthwindEmployee>(id);
+        employee = NH.Session.Get<NorthwindEmployee>(id);
       }
     };
 
@@ -43,14 +45,16 @@ namespace Machine.UoW.NHibernate.Specs
 
     Because of = () =>
     {
-      using (IUnitOfWork uow = UoW.Start())
+      using (var uow = SpecUoW.Start())
+      using (var session = SpecUoW.OpenSession())
       {
-        employee = uow.Session().Get<NorthwindEmployee>(id);
+        employee = NH.Session.Get<NorthwindEmployee>(id);
         employee.FirstName = "Steve Van";
       }
-      using (IUnitOfWork uow = UoW.Start())
+      using (var uow = SpecUoW.Start())
+      using (var session = SpecUoW.OpenSession())
       {
-        employee = uow.Session().Get<NorthwindEmployee>(id);
+        employee = NH.Session.Get<NorthwindEmployee>(id);
       }
     };
 

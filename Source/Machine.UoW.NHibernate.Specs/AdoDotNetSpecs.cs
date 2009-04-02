@@ -24,9 +24,8 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
       LoggingStartup loggingStartup = new LoggingStartup();
       loggingStartup.Start();
       IUnitOfWorkManagement unitOfWorkManagement = new UnitOfWorkManagement();
-      unitOfWorkManagement.AddEvents(new AdoNetConnectionScopeEvents(SqlHelper.Provider));
       factory = new UnitOfWorkFactory(unitOfWorkManagement);
-      UoW.Startup(new HybridUnitOfWorkProvider(factory), new ThreadStaticUnitOfWorkScopeProvider(NullScope.Null, factory), new NullTransactionProvider());
+      SpecUoW.Startup(new HybridUnitOfWorkProvider(factory), new ThreadStaticUnitOfWorkScopeProvider(NullScope.Null, factory), new NullSessionManager(), new TransactionScopeConnectionManager(SqlHelper.Provider));
       first = null;
       second = null;
       connection = null;
@@ -34,13 +33,15 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
   }
 
   [Subject("ADO.NET")]
+  [Ignore]
   public class when_first_retrieving_connection : AdoDotNetSpecs
   {
     Because of = () =>
     {
-      using (UoW.Scope())
+      using (SpecUoW.Scope())
+      using (SpecUoW.OpenConnection())
       {
-        connection = UoW.Scope().Connection();
+        connection = Database.Connection;
       }
     };
 
@@ -49,14 +50,16 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
   }
 
   [Subject("ADO.NET")]
+  [Ignore]
   public class when_retrieving_connection_twice : AdoDotNetSpecs
   {
     Because of = () =>
     {
-      using (UoW.Scope())
+      using (SpecUoW.Scope())
+      using (SpecUoW.OpenConnection())
       {
-        first = UoW.Scope().Connection();
-        second = UoW.Scope().Connection();
+        first = Database.Connection;
+        second = Database.Connection;
       }
     };
 
@@ -68,17 +71,20 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
   }
 
   [Subject("ADO.NET")]
+  [Ignore]
   public class when_retrieving_connection_twice_in_separate_scopes : AdoDotNetSpecs
   {
     Because of = () =>
     {
-      using (UoW.Scope())
+      using (SpecUoW.Scope())
+      using (SpecUoW.OpenConnection())
       {
-        first = UoW.Scope().Connection();
+        first = Database.Connection;
       }
-      using (UoW.Scope())
+      using (SpecUoW.Scope())
+      using (SpecUoW.OpenConnection())
       {
-        second = UoW.Scope().Connection();
+        second = Database.Connection;
       }
     };
 
@@ -90,28 +96,33 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
   }
 
   [Subject("ADO.NET")]
+  [Ignore]
   public class when_retrieving_connection_twice_inside_a_transaction_scope : AdoDotNetSpecs
   {
+    static IDbConnection outsideConnection;
+
     Establish context = () =>
     {
-      UoW.Startup(new NullUnitOfWorkProvider(), new AmbientTransactionUnitOfWorkScopeProvider(NullScope.Null, factory), new NullTransactionProvider());
+      SpecUoW.Startup(new NullUnitOfWorkProvider(), new AmbientTransactionUnitOfWorkScopeProvider(NullScope.Null, factory), new NullSessionManager(), new TransactionScopeConnectionManager(SqlHelper.Provider));
     };
     
     Because of = () =>
     {
       using (new TransactionScope())
+      using (SpecUoW.OpenConnection())
       {
-        first = UoW.Scope().Connection();
+        first = Database.Connection;
       }
-      exception = Catch.Exception(() => UoW.Scope().Connection());
+      outsideConnection = Database.Connection;
       using (new TransactionScope())
+      using (SpecUoW.OpenConnection())
       {
-        second = UoW.Scope().Connection();
+        second = Database.Connection;
       }
     };
 
-    It should_throw_when_used_outside_of_scope = () =>
-      exception.ShouldNotBeNull();
+    It should_be_null_outside_of_scope = () =>
+      outsideConnection.ShouldBeNull();
 
     It should_not_be_null = () =>
       second.ShouldNotBeNull();

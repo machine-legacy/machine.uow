@@ -13,12 +13,10 @@ namespace Machine.UoW.NHibernate.Specs
     Establish context = () =>
     {
       IUnitOfWorkManagement unitOfWorkManagement = new UnitOfWorkManagement();
-      unitOfWorkManagement.AddEvents(new AdoNetConnectionScopeEvents(SqlHelper.Provider));
-      unitOfWorkManagement.AddEvents(new NHibernateScopeEvents(database.SessionFactory));
       unitOfWorkManagement.AddEvents(new NHibernateUoWEvents());
       IUnitOfWorkFactory factory = new UnitOfWorkFactory(unitOfWorkManagement);
       IUnitOfWorkScopeProvider unitOfWorkScopeProvider = new ThreadStaticUnitOfWorkScopeProvider(NullScope.Null, factory);
-      UoW.Startup(new HybridUnitOfWorkProvider(factory), unitOfWorkScopeProvider, new NHibernateTransactionProvider(unitOfWorkScopeProvider));
+      SpecUoW.Startup(new HybridUnitOfWorkProvider(factory), unitOfWorkScopeProvider, new TransientSessionManager(database.SessionFactory), new TransactionScopeConnectionManager(SqlHelper.Provider));
     };
   }
 }

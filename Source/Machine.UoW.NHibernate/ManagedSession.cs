@@ -130,7 +130,7 @@ namespace Machine.UoW.NHibernate
     public IManagedSession OpenSession(object key)
     {
       IUnitOfWorkScope scope = _unitOfWorkScopeProvider.GetUnitOfWorkScope();
-      ISession session = scope.Get(() => {
+      ISession session = scope.Get(key, () => {
         return _sessionFactory.OpenSession();
       });
       return new ManagedSession(session);

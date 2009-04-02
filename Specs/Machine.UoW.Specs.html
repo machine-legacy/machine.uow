@@ -57,7 +57,7 @@
 		</style>
 	</head>
 	<body>
-		<h1>Machine.UoW.Specs&nbsp;&nbsp;&nbsp;&nbsp;</h1><span class="count"><h2>5 concerns, 34 contexts, 54 specifications, <span class="failure">2 failures</span> </h2><br></span><hr>
+		<h1>Machine.UoW.Specs&nbsp;&nbsp;&nbsp;&nbsp;</h1><span class="count"><h2>5 concerns, 34 contexts, 54 specifications </h2><br></span><h1>Machine.UoW.NHibernate.Specs&nbsp;&nbsp;&nbsp;&nbsp;</h1><span class="count"><h2>7 concerns, 19 contexts, 25 specifications </h2><br></span><hr>
 <hr>
 <h2 class="concern">Starting a unit of work specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class="count">2 contexts, 2 specifications</span></h3>
 
@@ -69,31 +69,15 @@
 </ul>
 
 <hr>
-<h2 class="concern">Rolling back a unit of work specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class="count">1 context, 1 specification, <span class="failure">1 failure</span></span></h3>
+<h2 class="concern">Rolling back a unit of work specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class="count">1 context, 1 specification</span></h3>
 
-<h3 class="context">when rolling back a unit of work with no events&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification, <span class="failure">1 failure</span></span></h4><ul>	<li>should fail <div class="failure">&lt;--FAILED</div><br/><p class="exception_type">Machine.Specifications.ExceptionResult<pre class="exception_message">NUnit.Framework.AssertionException:   Expected: instance of <System.InvalidOperationException>
-  But was:  null
-
-   at NUnit.Framework.Assert.That(Object actual, Constraint constraint, String message, Object[] args)
-   at NUnit.Framework.Assert.IsInstanceOfType(Type expected, Object actual)
-   at Machine.Specifications.NUnitShouldExtensionMethods.ShouldBeOfType[T](Object actual) in e:\Source\Machine\Source\Specifications\Machine.Specifications.NUnit\ExtensionMethods.cs:line 74
-   at Machine.UoW.Specs.when_rolling_back_a_unit_of_work_with_no_events.<.ctor>b__3() in E:\Source\Machine.UoW\Source\Machine.UoW.Specs\UnitsOfWorkLifecycle.cs:line 84
-   at Machine.Specifications.Model.Specification.InvokeSpecificationField() in e:\Source\Machine\Source\Specifications\Machine.Specifications\Model\Specification.cs:line 75
-   at Machine.Specifications.Model.Specification.Verify() in e:\Source\Machine\Source\Specifications\Machine.Specifications\Model\Specification.cs:line 53</pre></p></li>
+<h3 class="context">when rolling back a unit of work with no events&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should fail</li>
 </ul>
 
 <hr>
-<h2 class="concern">Committing a unit of work specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class="count">10 contexts, 19 specifications, <span class="failure">1 failure</span></span></h3>
+<h2 class="concern">Committing a unit of work specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class="count">10 contexts, 19 specifications</span></h3>
 
-<h3 class="context">when committing a unit of work with no events&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification, <span class="failure">1 failure</span></span></h4><ul>	<li>should fail <div class="failure">&lt;--FAILED</div><br/><p class="exception_type">Machine.Specifications.ExceptionResult<pre class="exception_message">NUnit.Framework.AssertionException:   Expected: instance of <System.InvalidOperationException>
-  But was:  null
-
-   at NUnit.Framework.Assert.That(Object actual, Constraint constraint, String message, Object[] args)
-   at NUnit.Framework.Assert.IsInstanceOfType(Type expected, Object actual)
-   at Machine.Specifications.NUnitShouldExtensionMethods.ShouldBeOfType[T](Object actual) in e:\Source\Machine\Source\Specifications\Machine.Specifications.NUnit\ExtensionMethods.cs:line 74
-   at Machine.UoW.Specs.when_committing_a_unit_of_work_with_no_events.<.ctor>b__3() in E:\Source\Machine.UoW\Source\Machine.UoW.Specs\UnitsOfWorkLifecycle.cs:line 112
-   at Machine.Specifications.Model.Specification.InvokeSpecificationField() in e:\Source\Machine\Source\Specifications\Machine.Specifications\Model\Specification.cs:line 75
-   at Machine.Specifications.Model.Specification.Verify() in e:\Source\Machine\Source\Specifications\Machine.Specifications\Model\Specification.cs:line 53</pre></p></li>
+<h3 class="context">when committing a unit of work with no events&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should fail</li>
 </ul>
 
 
@@ -238,6 +222,103 @@
 
 
 <h3 class="context">when deleting and then adding object&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should fail</li>
+</ul>
+
+<hr>
+<br><br>
+<h2 class="concern">Adding objects specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class="count">2 contexts, 2 specifications</span></h3>
+
+<h3 class="context">when adding new object&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should appear in database</li>
+</ul>
+
+
+<h3 class="context">when adding new object and rolling back&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should not appear in database</li>
+</ul>
+
+<hr>
+<h2 class="concern">ADO.NET specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class="count">4 contexts, 8 specifications</span></h3>
+
+<h3 class="context">when first retrieving connection&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul></li>
+</ul>
+
+
+<h3 class="context">when retrieving connection twice&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul></li>
+</li>
+</ul>
+
+
+<h3 class="context">when retrieving connection twice in separate scopes&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul></li>
+</li>
+</ul>
+
+
+<h3 class="context">when retrieving connection twice inside a transaction scope&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">3 specifications</span></h4><ul></li>
+</li>
+</li>
+</ul>
+
+<hr>
+<h2 class="concern">Ambient Scope, Saving objects specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class="count">3 contexts, 3 specifications</span></h3>
+
+<h3 class="context">when saving an object&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should be changed in database</li>
+</ul>
+
+
+<h3 class="context">when saving an object inside distributed transaction&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should be changed in database</li>
+</ul>
+
+
+<h3 class="context">when saving an object but not completing scope&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should not be changed in database</li>
+</ul>
+
+<hr>
+<h2 class="concern">Deleting objects specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class="count">2 contexts, 2 specifications</span></h3>
+
+<h3 class="context">when deleting an object&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should disappear from database</li>
+</ul>
+
+
+<h3 class="context">when deleting an object and rolling back&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should appear in database</li>
+</ul>
+
+<hr>
+<h2 class="concern">Querying specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class="count">2 contexts, 2 specifications</span></h3>
+
+<h3 class="context">when querying for data&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should return objects</li>
+</ul>
+
+
+<h3 class="context">when querying with in a uow&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should return objects</li>
+</ul>
+
+<hr>
+<h2 class="concern">Saving objects specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class="count">2 contexts, 2 specifications</span></h3>
+
+<h3 class="context">when saving an object&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should be changed in database</li>
+</ul>
+
+
+<h3 class="context">when saving an object and rolling back&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should be unchanged in database</li>
+</ul>
+
+<hr>
+<h2 class="concern">Connection and Session Manager specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class="count">4 contexts, 6 specifications</span></h3>
+
+<h3 class="context">when using a session&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should use a session</li>
+</ul>
+
+
+<h3 class="context">when using a session twice&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul>	<li>should use a session</li>
+	<li>should use one session</li>
+</ul>
+
+
+<h3 class="context">when using a connection&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should use a connection</li>
+</ul>
+
+
+<h3 class="context">when using a connection twice&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul>	<li>should use a connection</li>
+	<li>should use one connection</li>
 </ul>
 
 <hr>

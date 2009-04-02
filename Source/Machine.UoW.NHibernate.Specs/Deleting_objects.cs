@@ -16,14 +16,17 @@ namespace Machine.UoW.NHibernate.Specs
 
     Because of = () =>
     {
-      using (IUnitOfWork uow = UoW.Start())
+      using (var uow = SpecUoW.Start())
+      using (var session = SpecUoW.OpenSession())
       {
-        uow.Delete(uow.Session().Get<NorthwindEmployee>(id));
+        uow.Delete(NH.Session.Get<NorthwindEmployee>(id));
         uow.Commit();
+        session.Commit();
       }
-      using (IUnitOfWork uow = UoW.Start())
+      using (var uow = SpecUoW.Start())
+      using (var session = SpecUoW.OpenSession())
       {
-        employees = uow.Session().CreateQuery("FROM NorthwindEmployee").List<NorthwindEmployee>();
+        employees = NH.Session.CreateQuery("FROM NorthwindEmployee").List<NorthwindEmployee>();
       }
     };
 
@@ -41,13 +44,15 @@ namespace Machine.UoW.NHibernate.Specs
 
     Because of = () =>
     {
-      using (IUnitOfWork uow = UoW.Start())
+      using (var uow = SpecUoW.Start())
+      using (var session = SpecUoW.OpenSession())
       {
-        uow.Delete(uow.Session().Get<NorthwindEmployee>(id));
+        uow.Delete(NH.Session.Get<NorthwindEmployee>(id));
       }
-      using (IUnitOfWork uow = UoW.Start())
+      using (var uow = SpecUoW.Start())
+      using (var session = SpecUoW.OpenSession())
       {
-        employees = uow.Session().CreateQuery("FROM NorthwindEmployee").List<NorthwindEmployee>();
+        employees = NH.Session.CreateQuery("FROM NorthwindEmployee").List<NorthwindEmployee>();
       }
     };
 

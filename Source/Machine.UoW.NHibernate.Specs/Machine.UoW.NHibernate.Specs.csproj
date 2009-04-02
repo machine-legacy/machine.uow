@@ -100,6 +100,7 @@
     <Compile Include="Querying.cs" />
     <Compile Include="Saving_objects.cs" />
     <Compile Include="ScopingAndOtherScenarios.cs" />
+    <Compile Include="SpecUoW.cs" />
     <Compile Include="SqlHelper.cs" />
     <Compile Include="DatabaseManager.cs">
       <SubType>Code</SubType>

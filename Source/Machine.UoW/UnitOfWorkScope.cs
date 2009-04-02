@@ -7,8 +7,8 @@ namespace Machine.UoW
   public class UnitOfWorkScope : IUnitOfWorkScope
   {
     static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(UnitOfWorkScope));
-    readonly IDictionary<Type, IScopeProvider> _providers = new Dictionary<Type, IScopeProvider>();
-    readonly IDictionary<Type, IDisposable> _state = new Dictionary<Type, IDisposable>();
+    readonly IDictionary<object, IScopeProvider> _providers = new Dictionary<object, IScopeProvider>();
+    readonly IDictionary<object, IDisposable> _state = new Dictionary<object, IDisposable>();
     readonly List<IDisposable> _additions = new List<IDisposable>();
     readonly IUnitOfWorkScope _parentScope;
 
@@ -17,14 +17,13 @@ namespace Machine.UoW
       _parentScope = parentScope;
     }
 
-    public void Add(Type key, IScopeProvider provider)
+    public void Add(object key, IScopeProvider provider)
     {
       _providers[key] = provider;
     }
 
-    public T Get<T>(T defaultValue) where T : IDisposable
+    public T Get<T>(object key, T defaultValue) where T : IDisposable
     {
-      Type key = typeof(T);
       if (!_state.ContainsKey(key))
       {
         if (_providers.ContainsKey(key))
@@ -34,15 +33,14 @@ namespace Machine.UoW
         }
         else
         {
-          return _parentScope.Get(defaultValue);
+          return _parentScope.Get<T>(key, defaultValue);
         }
       }
       return (T)_state[key];
     }
 
-    public T Get<T>(Func<T> factory) where T : IDisposable
+    public T Get<T>(object key, Func<T> factory) where T : IDisposable
     {
-      Type key = typeof(T);
       if (!_state.ContainsKey(key))
       {
         T value = factory();
@@ -51,26 +49,26 @@ namespace Machine.UoW
       return (T)_state[key];
     }
 
-    public T Get<T>() where T : IDisposable
+    public T Get<T>(object key) where T : IDisposable
     {
-      return Get(default(T));
+      return Get(key, default(T));
     }
 
-    public void Set(Type key, IDisposable value)
+    public void Set(object key, IDisposable value)
     {
       if (value == null) throw new ArgumentException(key + " has NULL scope value", "value");
       _state[key] = value;
       _additions.Add(value);
     }
 
-    public void Set<T>(T value) where T : IDisposable
+    public void Set<T>(object key, T value) where T : IDisposable
     {
-      Set(typeof(T), value);
+      Set(key, (IDisposable)value);
     }
 
-    public void Remove<T>()
+    public void Remove(object key)
     {
-      _state.Remove(typeof(T));
+      _state.Remove(key);
     }
 
     public virtual void Dispose()

@@ -159,12 +159,12 @@ namespace Machine.UoW.NHibernate.ManagerSpecs
 
     public static IManagedSession OpenSession()
     {
-      return _sessionManager.OpenSession(null);
+      return _sessionManager.OpenSession(String.Empty);
     }
 
     public static IManagedConnection OpenConnection()
     {
-      return _connectionManager.OpenConnection();
+      return _connectionManager.OpenConnection(String.Empty);
     }
 
     public static void Startup(ISessionFactory sessionFactory)
