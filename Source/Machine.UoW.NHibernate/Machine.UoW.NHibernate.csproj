@@ -70,6 +70,7 @@
   <ItemGroup>
     <Compile Include="CurrentNhibernateTransaction.cs" />
     <Compile Include="CurrentSession.cs" />
+    <Compile Include="NH.cs" />
     <Compile Include="NHibernateScopeEvents.cs" />
     <Compile Include="NHibernateSessionSettings.cs" />
     <Compile Include="NHibernateTransactionProvider.cs" />
