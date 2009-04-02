@@ -16,7 +16,7 @@ namespace Machine.UoW.NHibernate.Specs
       unitOfWorkManagement.AddEvents(new NHibernateUoWEvents());
       IUnitOfWorkFactory factory = new UnitOfWorkFactory(unitOfWorkManagement);
       IUnitOfWorkScopeProvider unitOfWorkScopeProvider = new ThreadStaticUnitOfWorkScopeProvider(NullScope.Null, factory);
-      SpecUoW.Startup(new HybridUnitOfWorkProvider(factory), unitOfWorkScopeProvider, new TransientSessionManager(database.SessionFactory), new TransactionScopeConnectionManager(SqlHelper.Provider));
+      SpecUoW.Startup(new HybridUnitOfWorkProvider(factory), unitOfWorkScopeProvider, new TransientSessionManager(database.SessionFactory), new AmbientScopeConnectionManager(SqlHelper.Provider));
     };
   }
 }

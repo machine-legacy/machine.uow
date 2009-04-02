@@ -50,12 +50,12 @@ namespace Machine.UoW.AdoDotNet
     void Commit();
   }
 
-  public class TransactionScopeConnectionManager : IConnectionManager
+  public class AmbientScopeConnectionManager : IConnectionManager
   {
     readonly IConnectionProvider _connectionProvider;
     readonly AmbientTransactionUnitOfWorkScopeProvider _unitOfWorkScopeProvider;
 
-    public TransactionScopeConnectionManager(IConnectionProvider connectionProvider)
+    public AmbientScopeConnectionManager(IConnectionProvider connectionProvider)
     {
       _connectionProvider = connectionProvider;
       _unitOfWorkScopeProvider = new AmbientTransactionUnitOfWorkScopeProvider(NullScope.Null, new UnitOfWorkScopeFactory());

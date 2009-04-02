@@ -136,7 +136,7 @@ namespace Machine.UoW.NHibernate.Specs.AmbientTransactions
       IUnitOfWorkManagement unitOfWorkManagement = new UnitOfWorkManagement();
       IUnitOfWorkFactory factory = new UnitOfWorkFactory(unitOfWorkManagement);
       IUnitOfWorkScopeProvider scopeProvider = new AmbientTransactionUnitOfWorkScopeProvider(NullScope.Null, factory);
-      SpecUoW.Startup(new NullUnitOfWorkProvider(scopeProvider), scopeProvider, new TransientSessionManager(sessionFactory), new TransactionScopeConnectionManager(SqlHelper.Provider));
+      SpecUoW.Startup(new NullUnitOfWorkProvider(scopeProvider), scopeProvider, new TransientSessionManager(sessionFactory), new AmbientScopeConnectionManager(SqlHelper.Provider));
     };
   }
 }

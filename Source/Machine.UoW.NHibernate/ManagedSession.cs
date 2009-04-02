@@ -115,13 +115,13 @@ namespace Machine.UoW.NHibernate
     }
   }
 
-  public class TransactionScopeSessionManager : ISessionManager
+  public class AmbientScopeSessionManager : ISessionManager
   {
     readonly object _key = new object();
     readonly ISessionFactory _sessionFactory;
     readonly AmbientTransactionUnitOfWorkScopeProvider _unitOfWorkScopeProvider;
 
-    public TransactionScopeSessionManager(ISessionFactory sessionFactory)
+    public AmbientScopeSessionManager(ISessionFactory sessionFactory)
     {
       _sessionFactory = sessionFactory;
       _unitOfWorkScopeProvider = new AmbientTransactionUnitOfWorkScopeProvider(NullScope.Null, new UnitOfWorkScopeFactory());
