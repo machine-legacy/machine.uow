@@ -7,6 +7,7 @@ namespace Machine.UoW
   {
     void Add(Type key, IScopeProvider provider);
     T Get<T>(T defaultValue) where T : IDisposable;
+    T Get<T>(Func<T> factory) where T : IDisposable;
     T Get<T>() where T : IDisposable;
     void Set<T>(T value) where T : IDisposable;
     void Set(Type key, IDisposable value);
@@ -31,6 +32,11 @@ namespace Machine.UoW
     public T Get<T>(T defaultValue) where T : IDisposable
     {
       return defaultValue;
+    }
+
+    public T Get<T>(Func<T> factory) where T : IDisposable
+    {
+      return default(T);
     }
 
     public T Get<T>() where T : IDisposable

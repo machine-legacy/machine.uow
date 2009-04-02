@@ -29,13 +29,24 @@ namespace Machine.UoW
       {
         if (_providers.ContainsKey(key))
         {
-          _log.Info("Invoking Provider: " + key);
+          _log.Debug("Invoking Provider: " + key);
           Set(key, _providers[key].Create(this));
         }
         else
         {
           return _parentScope.Get(defaultValue);
         }
+      }
+      return (T)_state[key];
+    }
+
+    public T Get<T>(Func<T> factory) where T : IDisposable
+    {
+      Type key = typeof(T);
+      if (!_state.ContainsKey(key))
+      {
+        T value = factory();
+        Set(key, value);
       }
       return (T)_state[key];
     }
@@ -47,6 +58,7 @@ namespace Machine.UoW
 
     public void Set(Type key, IDisposable value)
     {
+      if (value == null) throw new ArgumentException(key + " has NULL scope value", "value");
       _state[key] = value;
       _additions.Add(value);
     }
@@ -66,7 +78,7 @@ namespace Machine.UoW
       IEnumerable<IDisposable> order = _additions;
       foreach (IDisposable disposable in order.Reverse())
       {
-        _log.Info("Disposing: " + disposable);
+        _log.Debug("Disposing: " + disposable);
         disposable.Dispose();
       }
       Disposed(this, EventArgs.Empty);
