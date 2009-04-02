@@ -6,8 +6,6 @@ namespace Machine.UoW.NHibernate.Specs
 {
   public static class SpecUoW
   {
-    public static Func<IUnitOfWorkScope> Scope;
-    
     public static Func<IUnitOfWorkSettings[], IUnitOfWork> StartUoW;
 
     public static IUnitOfWork Start(params IUnitOfWorkSettings[] settings)
@@ -21,8 +19,7 @@ namespace Machine.UoW.NHibernate.Specs
 
     public static void Startup(IUnitOfWorkProvider provider, IUnitOfWorkScopeProvider scopeProvider, ISessionManager sessionManager, IConnectionManager connectionManager)
     {
-      Scope = () => scopeProvider.GetUnitOfWorkScope();
-      StartUoW = (settings) => provider.Start(Scope(), settings);
+      StartUoW = (settings) => provider.Start(scopeProvider.GetUnitOfWorkScope(), settings);
       OpenSession = () => sessionManager.OpenSession(String.Empty);
       OpenConnection = () => connectionManager.OpenConnection(String.Empty);
     }
