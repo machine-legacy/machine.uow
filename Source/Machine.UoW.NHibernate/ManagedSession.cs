@@ -115,16 +115,15 @@ namespace Machine.UoW.NHibernate
     }
   }
 
-  public class AmbientScopeSessionManager : ISessionManager
+  public class UnitOfWorkScopeSessionManager : ISessionManager
   {
-    readonly object _key = new object();
     readonly ISessionFactory _sessionFactory;
-    readonly AmbientTransactionUnitOfWorkScopeProvider _unitOfWorkScopeProvider;
+    readonly IUnitOfWorkScopeProvider _unitOfWorkScopeProvider;
 
-    public AmbientScopeSessionManager(ISessionFactory sessionFactory)
+    public UnitOfWorkScopeSessionManager(ISessionFactory sessionFactory, IUnitOfWorkScopeProvider unitOfWorkScopeProvider)
     {
       _sessionFactory = sessionFactory;
-      _unitOfWorkScopeProvider = new AmbientTransactionUnitOfWorkScopeProvider(NullScope.Null, new UnitOfWorkScopeFactory());
+      _unitOfWorkScopeProvider = unitOfWorkScopeProvider;
     }
 
     public IManagedSession OpenSession(object key)
@@ -136,6 +135,23 @@ namespace Machine.UoW.NHibernate
       return new ManagedSession(session);
     }
   }
+
+  public class UnitOfWorkSessionManager : UnitOfWorkScopeSessionManager
+  {
+    public UnitOfWorkSessionManager(ISessionFactory sessionFactory, IUnitOfWorkProvider unitOfWorkProvider)
+      : base(sessionFactory, new CurrentUnitOfWorkScopeProvider(unitOfWorkProvider))
+    {
+    }
+  }
+
+  public class AmbientScopeSessionManager : UnitOfWorkScopeSessionManager
+  {
+    public AmbientScopeSessionManager(ISessionFactory sessionFactory)
+      : base(sessionFactory, new AmbientTransactionUnitOfWorkScopeProvider(NullScope.Null, new UnitOfWorkScopeFactory()))
+    {
+    }
+  }
+  
   public interface ISessionManager
   {
     IManagedSession OpenSession(object key);
