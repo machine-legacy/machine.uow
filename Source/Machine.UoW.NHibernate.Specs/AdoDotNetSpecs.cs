@@ -24,8 +24,10 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
       LoggingStartup loggingStartup = new LoggingStartup();
       loggingStartup.Start();
       IUnitOfWorkManagement unitOfWorkManagement = new UnitOfWorkManagement();
+      unitOfWorkManagement.AddEvents(new NullUnitOfWorkEvents());
       factory = new UnitOfWorkFactory(unitOfWorkManagement);
-      SpecUoW.Startup(new HybridUnitOfWorkProvider(factory), new ThreadStaticUnitOfWorkScopeProvider(NullScope.Null, factory), new NullSessionManager(), new AmbientScopeConnectionManager(SqlHelper.Provider));
+      IUnitOfWorkProvider unitOfWorkProvider = new HybridUnitOfWorkProvider(factory);
+      SpecUoW.Startup(unitOfWorkProvider, new ThreadStaticUnitOfWorkScopeProvider(NullScope.Null, factory), new NullSessionManager(), new UnitOfWorkConnectionManager(SqlHelper.Provider, unitOfWorkProvider));
       first = null;
       second = null;
       connection = null;
@@ -33,12 +35,11 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
   }
 
   [Subject("ADO.NET")]
-  [Ignore]
   public class when_first_retrieving_connection : AdoDotNetSpecs
   {
     Because of = () =>
     {
-      using (SpecUoW.Scope())
+      using (SpecUoW.Start())
       using (SpecUoW.OpenConnection())
       {
         connection = Database.Connection;
@@ -50,12 +51,11 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
   }
 
   [Subject("ADO.NET")]
-  [Ignore]
   public class when_retrieving_connection_twice : AdoDotNetSpecs
   {
     Because of = () =>
     {
-      using (SpecUoW.Scope())
+      using (SpecUoW.Start())
       using (SpecUoW.OpenConnection())
       {
         first = Database.Connection;
@@ -71,17 +71,16 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
   }
 
   [Subject("ADO.NET")]
-  [Ignore]
   public class when_retrieving_connection_twice_in_separate_scopes : AdoDotNetSpecs
   {
     Because of = () =>
     {
-      using (SpecUoW.Scope())
+      using (SpecUoW.Start())
       using (SpecUoW.OpenConnection())
       {
         first = Database.Connection;
       }
-      using (SpecUoW.Scope())
+      using (SpecUoW.Start())
       using (SpecUoW.OpenConnection())
       {
         second = Database.Connection;
@@ -96,7 +95,6 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
   }
 
   [Subject("ADO.NET")]
-  [Ignore]
   public class when_retrieving_connection_twice_inside_a_transaction_scope : AdoDotNetSpecs
   {
     static IDbConnection outsideConnection;

@@ -50,15 +50,15 @@ namespace Machine.UoW.AdoDotNet
     void Commit();
   }
 
-  public class AmbientScopeConnectionManager : IConnectionManager
+  public class UnitOfWorkScopeConnectionManager : IConnectionManager
   {
     readonly IConnectionProvider _connectionProvider;
-    readonly AmbientTransactionUnitOfWorkScopeProvider _unitOfWorkScopeProvider;
+    readonly IUnitOfWorkScopeProvider _unitOfWorkScopeProvider;
 
-    public AmbientScopeConnectionManager(IConnectionProvider connectionProvider)
+    public UnitOfWorkScopeConnectionManager(IConnectionProvider connectionProvider, IUnitOfWorkScopeProvider unitOfWorkScopeProvider)
     {
       _connectionProvider = connectionProvider;
-      _unitOfWorkScopeProvider = new AmbientTransactionUnitOfWorkScopeProvider(NullScope.Null, new UnitOfWorkScopeFactory());
+      _unitOfWorkScopeProvider = unitOfWorkScopeProvider;
     }
 
     public IManagedConnection OpenConnection(object key)
@@ -68,6 +68,22 @@ namespace Machine.UoW.AdoDotNet
         return _connectionProvider.OpenConnection();
       });
       return new ManagedConnection(connection, true);
+    }
+  }
+
+  public class UnitOfWorkConnectionManager : UnitOfWorkScopeConnectionManager
+  {
+    public UnitOfWorkConnectionManager(IConnectionProvider connectionProvider, IUnitOfWorkProvider unitOfWorkProvider)
+      : base(connectionProvider, new CurrentUnitOfWorkScopeProvider(unitOfWorkProvider))
+    {
+    }
+  }
+
+  public class AmbientScopeConnectionManager : UnitOfWorkScopeConnectionManager
+  {
+    public AmbientScopeConnectionManager(IConnectionProvider connectionProvider)
+      : base(connectionProvider, new AmbientTransactionUnitOfWorkScopeProvider(NullScope.Null, new UnitOfWorkScopeFactory()))
+    {
     }
   }
 
