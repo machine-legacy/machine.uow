@@ -39,6 +39,8 @@ namespace Machine.UoW.NHibernate
 
   public class NullManagedSession : IManagedSession
   {
+    public static IManagedSession Null = new NullManagedSession();
+
     public void Dispose()
     {
     }
@@ -72,7 +74,7 @@ namespace Machine.UoW.NHibernate
   {
     public IManagedSession OpenSession(object key)
     {
-      return new NullManagedSession();
+      return NullManagedSession.Null;
     }
   }
 

@@ -36,6 +36,8 @@ namespace Machine.UoW.AdoDotNet
 
   public class NullManagedConnection : IManagedConnection
   {
+    public static IManagedConnection Null = new NullManagedConnection();
+
     public void Dispose()
     {
     }
@@ -84,6 +86,14 @@ namespace Machine.UoW.AdoDotNet
     public AmbientScopeConnectionManager(IConnectionProvider connectionProvider)
       : base(connectionProvider, new AmbientTransactionUnitOfWorkScopeProvider(NullScope.Null, new UnitOfWorkScopeFactory()))
     {
+    }
+  }
+
+  public class NullConnectionManager : IConnectionManager
+  {
+    public IManagedConnection OpenConnection(object key)
+    {
+      return NullManagedConnection.Null;
     }
   }
 
