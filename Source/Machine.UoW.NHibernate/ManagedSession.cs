@@ -22,6 +22,13 @@ namespace Machine.UoW.NHibernate
       NH.Session = session;
     }
 
+    public void Rollback()
+    {
+      NH.Session = null;
+      _connection.Rollback();
+      _transaction.Rollback();
+    }
+
     public void Commit()
     {
       NH.Session = null;
@@ -41,17 +48,22 @@ namespace Machine.UoW.NHibernate
   {
     public static IManagedSession Null = new NullManagedSession();
 
-    public void Dispose()
+    public void Rollback()
     {
     }
 
     public void Commit()
     {
     }
+
+    public void Dispose()
+    {
+    }
   }
 
   public interface IManagedSession : IDisposable
   {
+    void Rollback();
     void Commit();
   }
   

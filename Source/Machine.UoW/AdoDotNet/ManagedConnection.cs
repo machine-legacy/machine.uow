@@ -19,6 +19,13 @@ namespace Machine.UoW.AdoDotNet
       Database.Transaction = _transaction;
     }
 
+    public void Rollback()
+    {
+      Database.Transaction = null;
+      Database.Connection = null;
+      if (_transaction != null) _transaction.Rollback();
+    }
+
     public void Commit()
     {
       Database.Transaction = null;
@@ -38,17 +45,22 @@ namespace Machine.UoW.AdoDotNet
   {
     public static IManagedConnection Null = new NullManagedConnection();
 
-    public void Dispose()
+    public void Rollback()
     {
     }
 
     public void Commit()
     {
     }
+
+    public void Dispose()
+    {
+    }
   }
 
   public interface IManagedConnection : IDisposable
   {
+    void Rollback();
     void Commit();
   }
 
