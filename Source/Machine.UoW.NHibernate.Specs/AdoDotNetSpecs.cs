@@ -97,8 +97,6 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
   [Subject("ADO.NET")]
   public class when_retrieving_connection_twice_inside_a_transaction_scope : AdoDotNetSpecs
   {
-    static IDbConnection outsideConnection;
-
     Establish context = () =>
     {
       SpecDatabase.Startup(new NullUnitOfWorkProvider(), new AmbientTransactionUnitOfWorkScopeProvider(NullScope.Null, factory), new NullSessionManager(), new AmbientScopeConnectionManager(SqlHelper.Provider));
@@ -111,16 +109,12 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
       {
         first = Database.Connection;
       }
-      outsideConnection = Database.Connection;
       using (new TransactionScope())
       using (SpecDatabase.OpenConnection())
       {
         second = Database.Connection;
       }
     };
-
-    It should_be_null_outside_of_scope = () =>
-      outsideConnection.ShouldBeNull();
 
     It should_not_be_null = () =>
       second.ShouldNotBeNull();
