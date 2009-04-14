@@ -68,13 +68,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CurrentSession.cs" />
+    <Compile Include="AmbientScopeSessionManager.cs" />
+    <Compile Include="KeyedSessionManager.cs" />
     <Compile Include="ManagedSession.cs" />
     <Compile Include="NH.cs" />
-    <Compile Include="NHibernateSessionSettings.cs" />
     <Compile Include="NHibernateUoWEvents.cs" />
+    <Compile Include="NoNHibernateSessionException.cs" />
+    <Compile Include="NullSessionManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SessionWrapper.cs" />
+    <Compile Include="SingletonSessionManager.cs" />
+    <Compile Include="TransientSessionManager.cs" />
+    <Compile Include="UnitOfWorkScopeSessionManager.cs" />
+    <Compile Include="UnitOfWorkSessionManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.UoW\Machine.UoW.csproj">
