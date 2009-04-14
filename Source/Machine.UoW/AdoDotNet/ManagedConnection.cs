@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 
-using Machine.UoW.AmbientTransactions;
-
 namespace Machine.UoW.AdoDotNet
 {
   public class ManagedConnection : IManagedConnection
@@ -41,87 +39,10 @@ namespace Machine.UoW.AdoDotNet
     }
   }
 
-  public class NullManagedConnection : IManagedConnection
-  {
-    public static IManagedConnection Null = new NullManagedConnection();
-
-    public void Rollback()
-    {
-    }
-
-    public void Commit()
-    {
-    }
-
-    public void Dispose()
-    {
-    }
-  }
-
   public interface IManagedConnection : IDisposable
   {
     void Rollback();
     void Commit();
-  }
-
-  public class UnitOfWorkScopeConnectionManager : IConnectionManager
-  {
-    readonly IConnectionProvider _connectionProvider;
-    readonly IUnitOfWorkScopeProvider _unitOfWorkScopeProvider;
-
-    public UnitOfWorkScopeConnectionManager(IConnectionProvider connectionProvider, IUnitOfWorkScopeProvider unitOfWorkScopeProvider)
-    {
-      _connectionProvider = connectionProvider;
-      _unitOfWorkScopeProvider = unitOfWorkScopeProvider;
-    }
-
-    public IManagedConnection OpenConnection(object key)
-    {
-      IUnitOfWorkScope scope = _unitOfWorkScopeProvider.GetUnitOfWorkScope();
-      IDbConnection connection = scope.Get(key, () => {
-        return _connectionProvider.OpenConnection();
-      });
-      return new ManagedConnection(connection, true);
-    }
-  }
-
-  public class UnitOfWorkConnectionManager : UnitOfWorkScopeConnectionManager
-  {
-    public UnitOfWorkConnectionManager(IConnectionProvider connectionProvider, IUnitOfWorkProvider unitOfWorkProvider)
-      : base(connectionProvider, new CurrentUnitOfWorkScopeProvider(unitOfWorkProvider))
-    {
-    }
-  }
-
-  public class AmbientScopeConnectionManager : UnitOfWorkScopeConnectionManager
-  {
-    public AmbientScopeConnectionManager(IConnectionProvider connectionProvider)
-      : base(connectionProvider, new AmbientTransactionUnitOfWorkScopeProvider(NullScope.Null, new UnitOfWorkScopeFactory()))
-    {
-    }
-  }
-
-  public class TransientConnectionManager : IConnectionManager
-  {
-    readonly IConnectionProvider _connectionProvider;
-
-    public TransientConnectionManager(IConnectionProvider connectionProvider)
-    {
-      _connectionProvider = connectionProvider;
-    }
-
-    public IManagedConnection OpenConnection(object key)
-    {
-      return new ManagedConnection(_connectionProvider.OpenConnection(), true);
-    }
-  }
-
-  public class NullConnectionManager : IConnectionManager
-  {
-    public IManagedConnection OpenConnection(object key)
-    {
-      return NullManagedConnection.Null;
-    }
   }
 
   public interface IConnectionManager
