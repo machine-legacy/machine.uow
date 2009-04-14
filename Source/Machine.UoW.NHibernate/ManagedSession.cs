@@ -22,6 +22,16 @@ namespace Machine.UoW.NHibernate
       NH.Session = session;
     }
 
+    public void Save<T>(T value)
+    {
+      NH.Session.Save(value);
+    }
+
+    public void Delete<T>(T value)
+    {
+      NH.Session.Delete(value);
+    }
+
     public void Rollback()
     {
       NH.Session = null;
@@ -48,6 +58,14 @@ namespace Machine.UoW.NHibernate
   {
     public static IManagedSession Null = new NullManagedSession();
 
+    public void Delete<T>(T value)
+    {
+    }
+
+    public void Save<T>(T value)
+    {
+    }
+
     public void Rollback()
     {
     }
@@ -63,6 +81,8 @@ namespace Machine.UoW.NHibernate
 
   public interface IManagedSession : IDisposable
   {
+    void Save<T>(T value);
+    void Delete<T>(T value);
     void Rollback();
     void Commit();
   }
