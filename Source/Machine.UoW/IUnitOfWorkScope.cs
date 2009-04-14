@@ -5,7 +5,6 @@ namespace Machine.UoW
 {
   public interface IUnitOfWorkScope : IDisposable
   {
-    void Add(object key, IScopeProvider provider);
     T Get<T>(object key, T defaultValue) where T : IDisposable;
     T Get<T>(object key, Func<T> factory) where T : IDisposable;
     T Get<T>(object key) where T : IDisposable;
@@ -23,10 +22,6 @@ namespace Machine.UoW
     public void Dispose()
     {
       Disposed(this, EventArgs.Empty);
-    }
-
-    public void Add(object key, IScopeProvider provider)
-    {
     }
 
     public T Get<T>(object key, T defaultValue) where T : IDisposable

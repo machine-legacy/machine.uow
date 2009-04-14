@@ -7,9 +7,4 @@ namespace Machine.UoW
   {
     void Start(IUnitOfWorkScope scope);
   }
-
-  public interface IScopeProvider
-  {
-    IDisposable Create(IUnitOfWorkScope scope);
-  }
 }

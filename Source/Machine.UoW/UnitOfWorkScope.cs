@@ -7,7 +7,6 @@ namespace Machine.UoW
   public class UnitOfWorkScope : IUnitOfWorkScope
   {
     static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(UnitOfWorkScope));
-    readonly IDictionary<object, IScopeProvider> _providers = new Dictionary<object, IScopeProvider>();
     readonly IDictionary<object, IDisposable> _state = new Dictionary<object, IDisposable>();
     readonly List<IDisposable> _additions = new List<IDisposable>();
     readonly IUnitOfWorkScope _parentScope;
@@ -17,24 +16,11 @@ namespace Machine.UoW
       _parentScope = parentScope;
     }
 
-    public void Add(object key, IScopeProvider provider)
-    {
-      _providers[key] = provider;
-    }
-
     public T Get<T>(object key, T defaultValue) where T : IDisposable
     {
       if (!_state.ContainsKey(key))
       {
-        if (_providers.ContainsKey(key))
-        {
-          _log.Debug("Invoking Provider: " + key);
-          Set(key, _providers[key].Create(this));
-        }
-        else
-        {
-          return _parentScope.Get<T>(key, defaultValue);
-        }
+        return _parentScope.Get<T>(key, defaultValue);
       }
       return (T)_state[key];
     }
