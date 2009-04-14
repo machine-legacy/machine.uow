@@ -27,7 +27,7 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
       unitOfWorkManagement.AddEvents(new NullUnitOfWorkEvents());
       factory = new UnitOfWorkFactory(unitOfWorkManagement);
       IUnitOfWorkProvider unitOfWorkProvider = new HybridUnitOfWorkProvider(factory);
-      SpecUoW.Startup(unitOfWorkProvider, new ThreadStaticUnitOfWorkScopeProvider(NullScope.Null, factory), new NullSessionManager(), new UnitOfWorkConnectionManager(SqlHelper.Provider, unitOfWorkProvider));
+      SpecDatabase.Startup(unitOfWorkProvider, new ThreadStaticUnitOfWorkScopeProvider(NullScope.Null, factory), new NullSessionManager(), new UnitOfWorkConnectionManager(SqlHelper.Provider, unitOfWorkProvider));
       first = null;
       second = null;
       connection = null;
@@ -39,8 +39,8 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
   {
     Because of = () =>
     {
-      using (SpecUoW.Start())
-      using (SpecUoW.OpenConnection())
+      using (SpecDatabase.Start())
+      using (SpecDatabase.OpenConnection())
       {
         connection = Database.Connection;
       }
@@ -55,8 +55,8 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
   {
     Because of = () =>
     {
-      using (SpecUoW.Start())
-      using (SpecUoW.OpenConnection())
+      using (SpecDatabase.Start())
+      using (SpecDatabase.OpenConnection())
       {
         first = Database.Connection;
         second = Database.Connection;
@@ -75,13 +75,13 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
   {
     Because of = () =>
     {
-      using (SpecUoW.Start())
-      using (SpecUoW.OpenConnection())
+      using (SpecDatabase.Start())
+      using (SpecDatabase.OpenConnection())
       {
         first = Database.Connection;
       }
-      using (SpecUoW.Start())
-      using (SpecUoW.OpenConnection())
+      using (SpecDatabase.Start())
+      using (SpecDatabase.OpenConnection())
       {
         second = Database.Connection;
       }
@@ -101,19 +101,19 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
 
     Establish context = () =>
     {
-      SpecUoW.Startup(new NullUnitOfWorkProvider(), new AmbientTransactionUnitOfWorkScopeProvider(NullScope.Null, factory), new NullSessionManager(), new AmbientScopeConnectionManager(SqlHelper.Provider));
+      SpecDatabase.Startup(new NullUnitOfWorkProvider(), new AmbientTransactionUnitOfWorkScopeProvider(NullScope.Null, factory), new NullSessionManager(), new AmbientScopeConnectionManager(SqlHelper.Provider));
     };
     
     Because of = () =>
     {
       using (new TransactionScope())
-      using (SpecUoW.OpenConnection())
+      using (SpecDatabase.OpenConnection())
       {
         first = Database.Connection;
       }
       outsideConnection = Database.Connection;
       using (new TransactionScope())
-      using (SpecUoW.OpenConnection())
+      using (SpecDatabase.OpenConnection())
       {
         second = Database.Connection;
       }

@@ -14,8 +14,8 @@ namespace Machine.UoW.NHibernate.Specs
 
     Because of = () =>
     {
-      using (var uow = SpecUoW.Start())
-      using (var session = SpecUoW.OpenSession())
+      using (var uow = SpecDatabase.Start())
+      using (var session = SpecDatabase.OpenSession())
       {
         NorthwindEmployee employee = new NorthwindEmployee();
         employee.FirstName = "Steve";
@@ -26,8 +26,8 @@ namespace Machine.UoW.NHibernate.Specs
         uow.Commit();
         session.Commit();
       }
-      using (var uow = SpecUoW.Start())
-      using (var session = SpecUoW.OpenSession())
+      using (var uow = SpecDatabase.Start())
+      using (var session = SpecDatabase.OpenSession())
       {
         employees = NH.Session.CreateQuery("FROM NorthwindEmployee").List<NorthwindEmployee>();
       }
@@ -44,8 +44,8 @@ namespace Machine.UoW.NHibernate.Specs
 
     Because of = () =>
     {
-      using (var uow = SpecUoW.Start())
-      using (var session = SpecUoW.OpenSession())
+      using (var uow = SpecDatabase.Start())
+      using (var session = SpecDatabase.OpenSession())
       {
         NorthwindEmployee employee = new NorthwindEmployee();
         employee.FirstName = "Steve";
@@ -54,8 +54,8 @@ namespace Machine.UoW.NHibernate.Specs
         employee.IsAlive = true;
         uow.AddNew(employee);
       }
-      using (var uow = SpecUoW.Start())
-      using (var session = SpecUoW.OpenSession())
+      using (var uow = SpecDatabase.Start())
+      using (var session = SpecDatabase.OpenSession())
       {
         employees = NH.Session.CreateQuery("FROM NorthwindEmployee").List<NorthwindEmployee>();
       }

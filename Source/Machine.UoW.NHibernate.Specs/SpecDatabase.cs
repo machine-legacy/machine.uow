@@ -5,7 +5,7 @@ using Machine.UoW.AdoDotNet;
 
 namespace Machine.UoW.NHibernate.Specs
 {
-  public static class SpecUoW
+  public static class SpecDatabase
   {
     public static Func<IUnitOfWork> StartUoW;
 

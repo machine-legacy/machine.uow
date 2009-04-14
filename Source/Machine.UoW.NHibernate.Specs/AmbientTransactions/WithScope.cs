@@ -31,7 +31,7 @@ namespace Machine.UoW.NHibernate.Specs.AmbientTransactions
     {
       using (TransactionScope scope = new TransactionScope())
       {
-        using (var transaction = SpecUoW.OpenSession())
+        using (var transaction = SpecDatabase.OpenSession())
         {
           employee = NH.Session.Get<NorthwindEmployee>(id);
           employee.FirstName = "Steve Van";
@@ -41,7 +41,7 @@ namespace Machine.UoW.NHibernate.Specs.AmbientTransactions
       }
       using (new TransactionScope())
       {
-        using (SpecUoW.OpenSession())
+        using (SpecDatabase.OpenSession())
         {
           employee = NH.Session.Get<NorthwindEmployee>(id);
         }
@@ -63,7 +63,7 @@ namespace Machine.UoW.NHibernate.Specs.AmbientTransactions
         {
           sql.Query("SELECT @@TRANCOUNT");
         }
-        using (var transaction = SpecUoW.OpenSession())
+        using (var transaction = SpecDatabase.OpenSession())
         {
           employee = NH.Session.Get<NorthwindEmployee>(id);
           employee.FirstName = "Steve Van";
@@ -73,7 +73,7 @@ namespace Machine.UoW.NHibernate.Specs.AmbientTransactions
       }
       using (new TransactionScope())
       {
-        using (SpecUoW.OpenSession())
+        using (SpecDatabase.OpenSession())
         {
           employee = NH.Session.Get<NorthwindEmployee>(id);
         }
@@ -91,7 +91,7 @@ namespace Machine.UoW.NHibernate.Specs.AmbientTransactions
     {
       using (TransactionScope scope = new TransactionScope())
       {
-        using (var transaction = SpecUoW.OpenSession())
+        using (var transaction = SpecDatabase.OpenSession())
         {
           employee = NH.Session.Get<NorthwindEmployee>(id);
           employee.FirstName = "Steve Van";
@@ -100,7 +100,7 @@ namespace Machine.UoW.NHibernate.Specs.AmbientTransactions
       }
       using (new TransactionScope())
       {
-        using (SpecUoW.OpenSession())
+        using (SpecDatabase.OpenSession())
         {
           employee = NH.Session.Get<NorthwindEmployee>(id);
         }
@@ -136,7 +136,7 @@ namespace Machine.UoW.NHibernate.Specs.AmbientTransactions
       IUnitOfWorkManagement unitOfWorkManagement = new UnitOfWorkManagement();
       IUnitOfWorkFactory factory = new UnitOfWorkFactory(unitOfWorkManagement);
       IUnitOfWorkScopeProvider scopeProvider = new AmbientTransactionUnitOfWorkScopeProvider(NullScope.Null, factory);
-      SpecUoW.Startup(new NullUnitOfWorkProvider(scopeProvider), scopeProvider, new TransientSessionManager(sessionFactory), new AmbientScopeConnectionManager(SqlHelper.Provider));
+      SpecDatabase.Startup(new NullUnitOfWorkProvider(scopeProvider), scopeProvider, new TransientSessionManager(sessionFactory), new AmbientScopeConnectionManager(SqlHelper.Provider));
     };
   }
 }
