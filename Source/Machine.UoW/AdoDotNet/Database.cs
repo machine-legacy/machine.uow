@@ -13,6 +13,10 @@ namespace Machine.UoW.AdoDotNet
     {
       get
       {
+        if (_connection == null)
+        {
+          throw new NoDatabaseConnectionException();
+        }
         return _connection;
       }
       set
@@ -27,6 +31,11 @@ namespace Machine.UoW.AdoDotNet
         _connection = value;
       }
     }
+
+    public static bool HasConnection
+    {
+      get { return _connection != null; }
+    }
     
     [ThreadStatic]
     static IDbTransaction _transaction;
@@ -35,6 +44,10 @@ namespace Machine.UoW.AdoDotNet
     {
       get
       {
+        if (_transaction == null)
+        {
+          throw new NoDatabaseTransactionException();
+        }
         return _transaction;
       }
       set
@@ -48,6 +61,11 @@ namespace Machine.UoW.AdoDotNet
         }
         _transaction = value;
       }
+    }
+
+    public static bool HasTransaction
+    {
+      get { return _transaction != null; }
     }
   }
 }

@@ -31,5 +31,10 @@ namespace Machine.UoW.NHibernate
         _session = value;
       }
     }
+
+    public static bool HasSession
+    {
+      get { return _session != null; }
+    }
   }
 }

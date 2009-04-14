@@ -56,6 +56,8 @@
     <Compile Include="AdoDotNet\AmbientScopeConnectionManager.cs" />
     <Compile Include="AdoDotNet\Database.cs" />
     <Compile Include="AdoDotNet\ManagedConnection.cs" />
+    <Compile Include="AdoDotNet\NoDatabaseConnectionException.cs" />
+    <Compile Include="AdoDotNet\NoDatabaseTransactionException.cs" />
     <Compile Include="AdoDotNet\NullConnectionManager.cs" />
     <Compile Include="AdoDotNet\TransientConnectionManager.cs" />
     <Compile Include="AdoDotNet\UnitOfWorkConnectionManager.cs" />
