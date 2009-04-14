@@ -84,6 +84,8 @@
     <Compile Include="NullUnitOfWorkEvents.cs" />
     <Compile Include="NullUnitOfWorkProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scoping\SystemTransactionScope.cs" />
+    <Compile Include="Scoping\TransactionScope.cs" />
     <Compile Include="ThreadStaticUnitOfWorkProvider.cs" />
     <Compile Include="ThreadStaticUnitOfWorkScopeProvider.cs" />
     <Compile Include="UnitOfWork.cs" />
