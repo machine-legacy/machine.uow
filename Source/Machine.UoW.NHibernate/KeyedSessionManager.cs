@@ -22,12 +22,23 @@ namespace Machine.UoW.NHibernate
     {
       using (RWLock.AsReader(_lock))
       {
-        if (RWLock.UpgradeToWriterIf(_lock, () => !_sessions.ContainsKey(key)))
+        if (RWLock.UpgradeToWriterIf(_lock, () => NeedsNewSession(key)))
         {
+          if (_sessions.ContainsKey(key))
+          {
+            _sessions[key].Dispose();
+          }
           _sessions[key] = _sessionFactory.OpenSession();
         }
         return new ManagedSession(_sessions[key], false);
       }
+    }
+
+    private bool NeedsNewSession(object key)
+    {
+      if (!_sessions.ContainsKey(key))
+        return true;
+      return !_sessions[key].IsOpen;
     }
   }
 }
