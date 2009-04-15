@@ -26,7 +26,7 @@ namespace Machine.UoW.NHibernate
         {
           _sessions[key] = _sessionFactory.OpenSession();
         }
-        return new ManagedSession(_sessions[key]);
+        return new ManagedSession(_sessions[key], false);
       }
     }
   }

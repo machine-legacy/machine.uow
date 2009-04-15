@@ -19,7 +19,7 @@ namespace Machine.UoW.NHibernate
       ISession session = scope.Get(key, () => {
         return _sessionFactory.OpenSession();
       });
-      return new ManagedSession(session);
+      return new ManagedSession(session, false);
     }
   }
 }

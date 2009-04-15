@@ -13,7 +13,7 @@ namespace Machine.UoW.NHibernate
 
     public IManagedSession OpenSession(object key)
     {
-      return new ManagedSession(_sessionFactory.OpenSession());
+      return new ManagedSession(_sessionFactory.OpenSession(), true);
     }
   }
 }

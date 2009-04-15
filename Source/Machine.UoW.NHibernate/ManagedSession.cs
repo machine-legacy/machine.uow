@@ -58,12 +58,14 @@ namespace Machine.UoW.NHibernate
   public class ManagedSession : IManagedSession
   {
     readonly ISession _session;
+    readonly bool _shouldDispose;
     ManagedTransactionSession _transaction;
     bool _inFirstTransaction = true;
 
-    public ManagedSession(ISession session)
+    public ManagedSession(ISession session, bool shouldDispose)
     {
       _session = session;
+      _shouldDispose = shouldDispose;
       _transaction = new ManagedTransactionSession(this, session);
       NH.Session = _session;
     }
@@ -112,10 +114,13 @@ namespace Machine.UoW.NHibernate
     public void Dispose()
     {
       NH.Session = null;
-      _session.Dispose();
       if (_transaction != null)
       {
         _transaction.Dispose();
+      }
+      if (_shouldDispose)
+      {
+        _session.Dispose();
       }
     }
 
