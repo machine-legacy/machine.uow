@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 using NHibernate;
@@ -8,47 +9,119 @@ using Machine.UoW.AdoDotNet;
 
 namespace Machine.UoW.NHibernate
 {
-  public class ManagedSession : IManagedSession
+  public class ManagedTransactionSession : IManagedSession
   {
-    readonly global::NHibernate.ITransaction _transaction;
+    readonly ManagedSession _parent;
+    readonly ITransaction _transaction;
     readonly ManagedConnection _connection;
 
-    public ManagedSession(ISession session)
+    public ManagedTransactionSession(ManagedSession parent, ISession session)
     {
+      _parent = parent;
       _transaction = session.BeginTransaction();
       _connection = new ManagedConnection(session.Connection, false);
-      NH.Session = session;
     }
 
     public void Save<T>(T value)
     {
-      NH.Session.Save(value);
+      _parent.Save(value);
     }
 
     public void Delete<T>(T value)
     {
-      NH.Session.Delete(value);
+      _parent.Delete(value);
+    }
+
+    public IManagedSession Begin()
+    {
+      throw new InvalidOperationException();
     }
 
     public void Rollback()
     {
-      NH.Session = null;
-      _connection.Rollback();
       _transaction.Rollback();
     }
 
     public void Commit()
     {
-      NH.Session = null;
-      _connection.Commit();
       _transaction.Commit();
     }
 
     public void Dispose()
     {
-      NH.Session = null;
-      _connection.Dispose();
       _transaction.Dispose();
+      _connection.Dispose();
+      _parent.ClearTransaction();
+    }
+  }
+  
+  public class ManagedSession : IManagedSession
+  {
+    readonly ISession _session;
+    ManagedTransactionSession _transaction;
+    bool _inFirstTransaction = true;
+
+    public ManagedSession(ISession session)
+    {
+      _session = session;
+      _transaction = new ManagedTransactionSession(this, session);
+      NH.Session = _session;
+    }
+
+    public void Save<T>(T value)
+    {
+      _session.Save(value);
+    }
+
+    public void Delete<T>(T value)
+    {
+      _session.Delete(value);
+    }
+
+    public IManagedSession Begin()
+    {
+      if (_transaction != null)
+      {
+        if (_inFirstTransaction)
+        {
+          _inFirstTransaction = false;
+          return _transaction;
+        }
+        throw new InvalidOperationException("can't open multiple transactions");
+      }
+      _transaction = new ManagedTransactionSession(this, _session);
+      return _transaction;
+    }
+
+    public void Rollback()
+    {
+      if (_transaction == null) throw new InvalidOperationException("No transaction");
+      _transaction.Rollback();
+      _transaction.Dispose();
+      ClearTransaction();
+    }
+
+    public void Commit()
+    {
+      if (_transaction == null) throw new InvalidOperationException("No transaction");
+      _transaction.Commit();
+      _transaction.Dispose();
+      ClearTransaction();
+    }
+
+    public void Dispose()
+    {
+      NH.Session = null;
+      _session.Dispose();
+      if (_transaction != null)
+      {
+        _transaction.Dispose();
+      }
+    }
+
+    public void ClearTransaction()
+    {
+      _transaction = null;
     }
   }
 
@@ -56,6 +129,7 @@ namespace Machine.UoW.NHibernate
   {
     void Save<T>(T value);
     void Delete<T>(T value);
+    IManagedSession Begin();
     void Rollback();
     void Commit();
   }
