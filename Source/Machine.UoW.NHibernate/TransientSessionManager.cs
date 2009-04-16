@@ -1,3 +1,4 @@
+using System;
 using NHibernate;
 
 namespace Machine.UoW.NHibernate
@@ -14,6 +15,11 @@ namespace Machine.UoW.NHibernate
     public IManagedSession OpenSession(object key)
     {
       return new ManagedSession(_sessionFactory.OpenSession(), true);
+    }
+
+    public void DisposeAndRemoveSession(object key)
+    {
+      throw new InvalidOperationException("Cannot dispose and remove from TransientSessionManager");
     }
   }
 }

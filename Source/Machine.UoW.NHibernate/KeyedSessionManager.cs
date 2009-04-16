@@ -40,5 +40,17 @@ namespace Machine.UoW.NHibernate
         return true;
       return !_sessions[key].IsOpen;
     }
+
+    public void DisposeAndRemoveSession(object key)
+    {
+      using (RWLock.AsWriter(_lock))
+      { 
+        if (_sessions.ContainsKey(key))
+        {
+          _sessions[key].Dispose();
+          _sessions.Remove(key);
+        }
+      }
+    }
   }
 }

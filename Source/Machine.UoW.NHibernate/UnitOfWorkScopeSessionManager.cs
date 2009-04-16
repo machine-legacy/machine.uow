@@ -1,3 +1,5 @@
+using System;
+
 using NHibernate;
 
 namespace Machine.UoW.NHibernate
@@ -20,6 +22,11 @@ namespace Machine.UoW.NHibernate
         return _sessionFactory.OpenSession();
       });
       return new ManagedSession(session, false);
+    }
+
+    public void DisposeAndRemoveSession(object key)
+    {
+      throw new InvalidOperationException("Cannot dispose and remove from UnitOFWorkScopeSessionManager");
     }
   }
 }

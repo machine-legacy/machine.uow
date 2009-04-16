@@ -1,3 +1,5 @@
+using System;
+
 namespace Machine.UoW.NHibernate
 {
   public class NullSessionManager : ISessionManager
@@ -5,6 +7,10 @@ namespace Machine.UoW.NHibernate
     public IManagedSession OpenSession(object key)
     {
       return NullManagedSession.Null;
+    }
+
+    public void DisposeAndRemoveSession(object key)
+    {
     }
   }
 
