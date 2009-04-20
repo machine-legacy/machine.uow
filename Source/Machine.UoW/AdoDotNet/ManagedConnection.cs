@@ -9,9 +9,17 @@ namespace Machine.UoW.AdoDotNet
     readonly IDbConnection _connection;
     readonly IDbTransaction _transaction;
 
-    public ManagedConnection(IDbConnection connection, bool transactional)
+    public ManagedConnection(IDbConnection connection, IDbTransaction transaction)
     {
-      _transaction = transactional ? connection.BeginTransaction() : null;
+      _connection = connection;
+      _transaction = transaction;
+      Database.Connection = _connection;
+      Database.Transaction = _transaction;
+    }
+
+    public ManagedConnection(IDbConnection connection)
+    {
+      _transaction = connection.BeginTransaction();
       _connection = connection;
       Database.Connection = _connection;
       Database.Transaction = _transaction;

@@ -19,7 +19,7 @@ namespace Machine.UoW.AdoDotNet
       IDbConnection connection = scope.Get(key, () => {
                                                         return _connectionProvider.OpenConnection();
       });
-      return new ManagedConnection(connection, true);
+      return new ManagedConnection(connection);
     }
   }
 }

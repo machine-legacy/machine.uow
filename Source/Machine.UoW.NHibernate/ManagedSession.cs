@@ -1,14 +1,38 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 
 using NHibernate;
 
 using Machine.UoW.AdoDotNet;
+using NHibernate.Transaction;
 
 namespace Machine.UoW.NHibernate
 {
+  public class SorryAboutThisHackToGetTransactionsFromNH
+  {
+    readonly static System.Func<ITransaction, IDbTransaction> _extractAdoTransaction;
+
+    static SorryAboutThisHackToGetTransactionsFromNH()
+    {
+      FieldInfo field = typeof(AdoTransaction).GetField("trans", BindingFlags.Instance | BindingFlags.NonPublic);
+      if (field == null) throw new ArgumentException();
+      _extractAdoTransaction = (nh) => {
+        return (IDbTransaction)field.GetValue(nh);
+      };
+    }
+
+    public static IDbTransaction GetAdoNetTransaction(ISession session)
+    {
+      if (session.Transaction == null)
+        return null;
+      return _extractAdoTransaction(session.Transaction);
+    }
+  }
+
   public class ManagedTransactionSession : IManagedSession
   {
     readonly ManagedSession _parent;
@@ -19,7 +43,7 @@ namespace Machine.UoW.NHibernate
     {
       _parent = parent;
       _transaction = session.BeginTransaction();
-      _connection = new ManagedConnection(session.Connection, false);
+      _connection = new ManagedConnection(session.Connection, SorryAboutThisHackToGetTransactionsFromNH.GetAdoNetTransaction(session));
     }
 
     public void Save<T>(T value)

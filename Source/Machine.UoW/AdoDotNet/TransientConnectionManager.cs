@@ -11,7 +11,7 @@ namespace Machine.UoW.AdoDotNet
 
     public IManagedConnection OpenConnection(object key)
     {
-      return new ManagedConnection(_connectionProvider.OpenConnection(), true);
+      return new ManagedConnection(_connectionProvider.OpenConnection());
     }
   }
 }
