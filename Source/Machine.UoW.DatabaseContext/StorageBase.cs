@@ -13,7 +13,7 @@ namespace Machine.UoW.DatabaseContext
       {
         if (InternalValue == null)
         {
-          throw new NoDatabaseConnectionException();
+          throw new NoStoredValueException("There is no " + typeof(T) + " available!");
         }
         return InternalValue;
       }
@@ -23,7 +23,7 @@ namespace Machine.UoW.DatabaseContext
         {
           if (InternalValue != null && value != null)
           {
-            throw new InvalidOperationException("Trying to use another value when one is already in use!");
+            throw new InvalidOperationException("Trying to use another " + typeof(T) + " when one is already in use!");
           }
         }
         InternalValue = value;
