@@ -54,10 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdoDotNet\AmbientScopeConnectionManager.cs" />
-    <Compile Include="AdoDotNet\Database.cs" />
     <Compile Include="AdoDotNet\ManagedConnection.cs" />
-    <Compile Include="AdoDotNet\NoDatabaseConnectionException.cs" />
-    <Compile Include="AdoDotNet\NoDatabaseTransactionException.cs" />
     <Compile Include="AdoDotNet\NullConnectionManager.cs" />
     <Compile Include="AdoDotNet\TransientConnectionManager.cs" />
     <Compile Include="AdoDotNet\UnitOfWorkConnectionManager.cs" />
@@ -100,6 +97,16 @@
     <Compile Include="UnitOfWorkFactory.cs" />
     <Compile Include="UnitOfWorkManagement.cs" />
     <Compile Include="UnitOfWorkScope.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Machine.UoW.DatabaseContext.Web\Machine.UoW.DatabaseContext.Web.csproj">
+      <Project>{B4EA833D-A8E3-45E0-B4E3-56880EB8A146}</Project>
+      <Name>Machine.UoW.DatabaseContext.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Machine.UoW.DatabaseContext\Machine.UoW.DatabaseContext.csproj">
+      <Project>{45B6AF1E-5CD5-4FD6-B6B1-6A5F02AFFEE0}</Project>
+      <Name>Machine.UoW.DatabaseContext</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

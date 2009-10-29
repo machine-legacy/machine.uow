@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using Machine.UoW.AdoDotNet;
-
+using Machine.UoW.DatabaseContext;
 using NHibernate;
 
 namespace Machine.UoW.NHibernate

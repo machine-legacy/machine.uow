@@ -6,6 +6,7 @@ using System.Transactions;
 using Machine.Specifications;
 using Machine.UoW.AdoDotNet;
 using Machine.UoW.AmbientTransactions;
+using Machine.UoW.DatabaseContext;
 using Machine.UoW.NHibernate.Specs;
 using Machine.UoW.Specs;
 

@@ -8,6 +8,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.UoW.NHibernate", "M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.UoW.NHibernate.Specs", "Machine.UoW.NHibernate.Specs\Machine.UoW.NHibernate.Specs.csproj", "{A77D1B04-C4F2-44EC-9938-BFD7B4D9425C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.UoW.DatabaseContext", "Machine.UoW.DatabaseContext\Machine.UoW.DatabaseContext.csproj", "{45B6AF1E-5CD5-4FD6-B6B1-6A5F02AFFEE0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.UoW.DatabaseContext.Web", "Machine.UoW.DatabaseContext.Web\Machine.UoW.DatabaseContext.Web.csproj", "{B4EA833D-A8E3-45E0-B4E3-56880EB8A146}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +34,14 @@ Global
 		{A77D1B04-C4F2-44EC-9938-BFD7B4D9425C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A77D1B04-C4F2-44EC-9938-BFD7B4D9425C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A77D1B04-C4F2-44EC-9938-BFD7B4D9425C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45B6AF1E-5CD5-4FD6-B6B1-6A5F02AFFEE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45B6AF1E-5CD5-4FD6-B6B1-6A5F02AFFEE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45B6AF1E-5CD5-4FD6-B6B1-6A5F02AFFEE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45B6AF1E-5CD5-4FD6-B6B1-6A5F02AFFEE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4EA833D-A8E3-45E0-B4E3-56880EB8A146}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4EA833D-A8E3-45E0-B4E3-56880EB8A146}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4EA833D-A8E3-45E0-B4E3-56880EB8A146}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4EA833D-A8E3-45E0-B4E3-56880EB8A146}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

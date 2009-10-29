@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using Machine.UoW.DatabaseContext;
 
 namespace Machine.UoW.AdoDotNet
 {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace Machine.UoW.AdoDotNet
+namespace Machine.UoW.DatabaseContext
 {
   public class NoDatabaseConnectionException : Exception
   {

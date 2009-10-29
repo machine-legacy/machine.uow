@@ -117,6 +117,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Machine.UoW.DatabaseContext\Machine.UoW.DatabaseContext.csproj">
+      <Project>{45B6AF1E-5CD5-4FD6-B6B1-6A5F02AFFEE0}</Project>
+      <Name>Machine.UoW.DatabaseContext</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Machine.UoW.NHibernate\Machine.UoW.NHibernate.csproj">
       <Project>{6ECA60D2-FD90-4CED-ABDF-515E26517BBB}</Project>
       <Name>Machine.UoW.NHibernate</Name>

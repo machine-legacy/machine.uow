@@ -6,7 +6,7 @@ using System.Transactions;
 using Machine.Specifications;
 using Machine.Specifications.Utility;
 using Machine.UoW.AdoDotNet;
-
+using Machine.UoW.DatabaseContext;
 using NHibernate;
 using NHibernate.Engine;
 using NHibernate.Metadata;
