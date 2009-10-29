@@ -1,39 +1,45 @@
 using System.Collections.Generic;
 using System.Data;
-using System.Web;
 
 namespace Machine.UoW.DatabaseContext
 {
   public static class Database
   {
-    static IDatabaseAndTransactionStorage _databaseAndTransactionStorage = new ThreadStaticDatabaseAndTransactionStorage();
+    static IContextStorage<IDbConnection> _connectionStorage = new ThreadStaticStorage<IDbConnection>();
+    static IContextStorage<IDbTransaction> _transactionStorage = new ThreadStaticStorage<IDbTransaction>();
 
-    public static IDatabaseAndTransactionStorage Storage
+    public static IContextStorage<IDbConnection> ConnectionStorage
     {
-      get { return _databaseAndTransactionStorage; }
-      set { _databaseAndTransactionStorage = value; }
+      get { return _connectionStorage; }
+      set { _connectionStorage = value; }
+    }
+
+    public static IContextStorage<IDbTransaction> TransactionStorage
+    {
+      get { return _transactionStorage; }
+      set { _transactionStorage = value; }
     }
 
     public static IDbConnection Connection
     {
-      get { return _databaseAndTransactionStorage.Connection; }
-      set { _databaseAndTransactionStorage.Connection = value; }
+      get { return _connectionStorage.StoredValue; }
+      set { _connectionStorage.StoredValue = value; }
     }
 
     public static bool HasConnection
     {
-      get { return _databaseAndTransactionStorage.HasConnection; }
+      get { return _connectionStorage.HasValue; }
     }
     
     public static IDbTransaction Transaction
     {
-      get { return _databaseAndTransactionStorage.Transaction; }
-      set { _databaseAndTransactionStorage.Transaction = value; }
+      get { return _transactionStorage.StoredValue; }
+      set { _transactionStorage.StoredValue = value; }
     }
 
     public static bool HasTransaction
     {
-      get { return _databaseAndTransactionStorage.HasTransaction; }
+      get { return _transactionStorage.HasValue; }
     }
   }
 }

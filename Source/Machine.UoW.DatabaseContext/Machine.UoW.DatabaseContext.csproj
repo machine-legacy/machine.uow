@@ -38,15 +38,16 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database.cs" />
-    <Compile Include="DatabaseAndTransactionStorageBase.cs" />
-    <Compile Include="IDatabaseAndTransactionStorage.cs" />
+    <Compile Include="StorageBase.cs" />
+    <Compile Include="IContextStorage.cs" />
     <Compile Include="NoDatabaseConnectionException.cs" />
     <Compile Include="NoDatabaseTransactionException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ThreadStaticDatabaseAndTransactionStorage.cs" />
+    <Compile Include="ThreadStaticStorage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

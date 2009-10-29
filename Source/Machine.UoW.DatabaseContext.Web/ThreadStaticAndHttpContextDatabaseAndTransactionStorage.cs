@@ -4,41 +4,30 @@ using System.Web;
 
 namespace Machine.UoW.DatabaseContext.Web
 {
-  public class ThreadStaticAndHttpContextDatabaseAndTransactionStorage : IDatabaseAndTransactionStorage
+  public class ThreadStaticAndHttpContextStorage<T> : IContextStorage<T> where T : class
   {
-    public IDbConnection Connection
+    public T StoredValue
     {
-      get { return this.CurrentStorage.Connection; }
-      set { this.CurrentStorage.Connection = value; }
+      get { return this.CurrentStorage.StoredValue; }
+      set { this.CurrentStorage.StoredValue = value; }
     }
 
-    public bool HasConnection
+    public bool HasValue
     {
-      get { return this.CurrentStorage.HasConnection; }
+      get { return this.CurrentStorage.HasValue; }
     }
 
-    public IDbTransaction Transaction
-    {
-      get { return this.CurrentStorage.Transaction; }
-      set { this.CurrentStorage.Transaction = value; }
-    }
-
-    public bool HasTransaction
-    {
-      get { return this.CurrentStorage.HasTransaction; }
-    }
-
-    IDatabaseAndTransactionStorage CurrentStorage
+    IContextStorage<T> CurrentStorage
     {
       get
       {
         if (HttpContext.Current == null)
-          return _threadStaticAndHttpContextDatabaseAndTransactionStorage;
-        return _httpContextDatabaseAndTransactionStorage;
+          return _threadStaticAndHttpContextContextStorage;
+        return _httpContextContextStorage;
       }
     }
 
-    readonly IDatabaseAndTransactionStorage _threadStaticAndHttpContextDatabaseAndTransactionStorage = new ThreadStaticDatabaseAndTransactionStorage();
-    readonly IDatabaseAndTransactionStorage _httpContextDatabaseAndTransactionStorage = new HttpContextDatabaseAndTransactionStorage();
+    readonly IContextStorage<T> _threadStaticAndHttpContextContextStorage = new ThreadStaticStorage<T>();
+    readonly IContextStorage<T> _httpContextContextStorage = new HttpContextStorage<T>();
   }
 }

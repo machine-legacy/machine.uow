@@ -4,18 +4,12 @@ using System.Web;
 
 namespace Machine.UoW.DatabaseContext.Web
 {
-  public class HttpContextDatabaseAndTransactionStorage : DatabaseAndTransactionStorageBase
+  public class HttpContextStorage<T> : StorageBase<T> where T : class
   {
-    protected override IDbConnection InternalConnection
+    protected override T InternalValue
     {
-      get { return (IDbConnection)HttpContext.Current.Items[typeof(HttpContextDatabaseAndTransactionStorage).FullName + "-Connection"]; }
-      set { HttpContext.Current.Items[typeof(HttpContextDatabaseAndTransactionStorage).FullName + "-Connection"] = value; }
-    }
-
-    protected override IDbTransaction InternalTransaction
-    {
-      get { return (IDbTransaction)HttpContext.Current.Items[typeof(HttpContextDatabaseAndTransactionStorage).FullName + "-Transaction"]; }
-      set { HttpContext.Current.Items[typeof(HttpContextDatabaseAndTransactionStorage).FullName + "-Transaction"] = value; }
+      get { return (T)HttpContext.Current.Items[typeof(HttpContextStorage<T>).FullName]; }
+      set { HttpContext.Current.Items[typeof(HttpContextStorage<T>).FullName] = value; }
     }
   }
 }
