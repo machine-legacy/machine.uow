@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 
 using Machine.UoW.DatabaseContext;
-using Machine.UoW.DatabaseContext.Web;
 
 using NHibernate;
 
@@ -10,7 +9,7 @@ namespace Machine.UoW.NHibernate
 {
   public static class NH
   {
-    static IContextStorage<ISession> _sessionStorage = new ThreadStaticAndHttpContextStorage<ISession>();
+    static IContextStorage<ISession> _sessionStorage = new ThreadStaticStorage<ISession>();
 
     public static IContextStorage<ISession> Storage
     {

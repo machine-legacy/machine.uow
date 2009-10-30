@@ -73,7 +73,6 @@
     <Compile Include="KeyedSessionManager.cs" />
     <Compile Include="ManagedSession.cs" />
     <Compile Include="NestAndRestoreSessionManager.cs" />
-    <Compile Include="NH.cs" />
     <Compile Include="NHibernateUoWEvents.cs" />
     <Compile Include="NullSessionManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -92,6 +91,10 @@
     <ProjectReference Include="..\Machine.UoW.DatabaseContext\Machine.UoW.DatabaseContext.csproj">
       <Project>{45B6AF1E-5CD5-4FD6-B6B1-6A5F02AFFEE0}</Project>
       <Name>Machine.UoW.DatabaseContext</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Machine.UoW.NHibernateContext\Machine.UoW.NHibernateContext.csproj">
+      <Project>{8850A2A3-738E-48D6-BB9C-2729AFB98BD6}</Project>
+      <Name>Machine.UoW.NHibernateContext</Name>
     </ProjectReference>
     <ProjectReference Include="..\Machine.UoW\Machine.UoW.csproj">
       <Project>{2B83DA69-260F-41E3-975F-D96C3ECD24B0}</Project>

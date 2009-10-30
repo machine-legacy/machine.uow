@@ -5,19 +5,21 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{517672A8-22FB-46D1-8DE9-2B66070D4555}</ProjectGuid>
+    <ProjectGuid>{8850A2A3-738E-48D6-BB9C-2729AFB98BD6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Machine.UoW.Specs</RootNamespace>
-    <AssemblyName>Machine.UoW.Specs</AssemblyName>
+    <RootNamespace>Machine.UoW.NHibernate</RootNamespace>
+    <AssemblyName>Machine.UoW.NHibernateContext</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\Machine.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\Build\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -25,27 +27,15 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Build\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+    <Reference Include="NHibernate, Version=2.1.0.1001, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libraries\Machine\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Machine.Specifications, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libraries\Machine\Specifications\Machine.Specifications.dll</HintPath>
-    </Reference>
-    <Reference Include="Machine.Specifications.NUnit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libraries\Machine\Specifications\Machine.Specifications.NUnit.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.Mocks, Version=3.5.0.2, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libraries\Machine\Rhino.Mocks.dll</HintPath>
+      <HintPath>..\..\Libraries\NHibernate\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -55,23 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LoggingStartup.cs" />
-    <Compile Include="UnitsOfWorkLifecycle.cs" />
-    <Compile Include="UnitOfWork.cs" />
+    <Compile Include="NH.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.UoW.DatabaseContext\Machine.UoW.DatabaseContext.csproj">
       <Project>{45B6AF1E-5CD5-4FD6-B6B1-6A5F02AFFEE0}</Project>
       <Name>Machine.UoW.DatabaseContext</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Machine.UoW.NHibernateContext\Machine.UoW.NHibernateContext.csproj">
-      <Project>{8850A2A3-738E-48D6-BB9C-2729AFB98BD6}</Project>
-      <Name>Machine.UoW.NHibernateContext</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Machine.UoW\Machine.UoW.csproj">
-      <Project>{2B83DA69-260F-41E3-975F-D96C3ECD24B0}</Project>
-      <Name>Machine.UoW</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
