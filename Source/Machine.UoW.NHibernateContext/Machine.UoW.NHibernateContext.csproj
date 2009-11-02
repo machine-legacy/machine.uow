@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="NH.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SorryAboutThisHackToGetTransactionsFromNH.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.UoW.DatabaseContext\Machine.UoW.DatabaseContext.csproj">
