@@ -144,6 +144,7 @@ namespace Machine.UoW.NHibernate
 
   public interface ISessionManager
   {
+    IManagedSession OpenSession();
     IManagedSession OpenSession(object key);
     void DisposeAndRemoveSession(object key);
   }

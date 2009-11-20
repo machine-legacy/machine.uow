@@ -12,6 +12,11 @@ namespace Machine.UoW.NHibernate
       _sessionFactory = sessionFactory;
     }
 
+    public IManagedSession OpenSession()
+    {
+      return OpenSession(String.Empty);
+    }
+
     public IManagedSession OpenSession(object key)
     {
       return new ManagedSession(_sessionFactory.OpenSession(), true);

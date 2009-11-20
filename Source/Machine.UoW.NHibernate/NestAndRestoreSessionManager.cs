@@ -16,6 +16,11 @@ namespace Machine.UoW.NHibernate
       _sessionManager = sessionManager;
     }
 
+    public IManagedSession OpenSession()
+    {
+      return OpenSession(String.Empty);
+    }
+
     public IManagedSession OpenSession(object key)
     {
       IDbConnection previousConnection = null;

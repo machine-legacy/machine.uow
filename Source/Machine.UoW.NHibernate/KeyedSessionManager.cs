@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -16,6 +17,11 @@ namespace Machine.UoW.NHibernate
     public KeyedSessionManager(ISessionFactory sessionFactory)
     {
       _sessionFactory = sessionFactory;
+    }
+
+    public IManagedSession OpenSession()
+    {
+      return OpenSession(String.Empty);
     }
 
     public virtual IManagedSession OpenSession(object key)

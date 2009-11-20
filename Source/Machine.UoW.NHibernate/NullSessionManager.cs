@@ -4,6 +4,11 @@ namespace Machine.UoW.NHibernate
 {
   public class NullSessionManager : ISessionManager
   {
+    public IManagedSession OpenSession()
+    {
+      return OpenSession(String.Empty);
+    }
+
     public IManagedSession OpenSession(object key)
     {
       return NullManagedSession.Null;
