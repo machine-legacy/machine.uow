@@ -14,7 +14,7 @@ namespace Machine.UoW.NHibernate.Specs
 
     Because of = () =>
     {
-      using (var uow = SpecDatabase.Start())
+      // using (var uow = SpecDatabase.Start())
       using (var session = SpecDatabase.OpenSession())
       {
         NorthwindEmployee employee = new NorthwindEmployee();
@@ -22,11 +22,11 @@ namespace Machine.UoW.NHibernate.Specs
         employee.LastName = "Zandt";
         employee.BirthDate = DateTime.Now;
         employee.IsAlive = true;
-        uow.AddNew(employee);
-        uow.Commit();
+        // uow.AddNew(employee);
+        // uow.Commit();
         session.Commit();
       }
-      using (var uow = SpecDatabase.Start())
+      // using (var uow = SpecDatabase.Start())
       using (var session = SpecDatabase.OpenSession())
       {
         employees = NH.Session.CreateQuery("FROM NorthwindEmployee").List<NorthwindEmployee>();
@@ -44,7 +44,7 @@ namespace Machine.UoW.NHibernate.Specs
 
     Because of = () =>
     {
-      using (var uow = SpecDatabase.Start())
+      // using (var uow = SpecDatabase.Start())
       using (var session = SpecDatabase.OpenSession())
       {
         NorthwindEmployee employee = new NorthwindEmployee();
@@ -52,9 +52,9 @@ namespace Machine.UoW.NHibernate.Specs
         employee.LastName = "Zandt";
         employee.BirthDate = DateTime.Now;
         employee.IsAlive = true;
-        uow.AddNew(employee);
+        // uow.AddNew(employee);
       }
-      using (var uow = SpecDatabase.Start())
+      // using (var uow = SpecDatabase.Start())
       using (var session = SpecDatabase.OpenSession())
       {
         employees = NH.Session.CreateQuery("FROM NorthwindEmployee").List<NorthwindEmployee>();

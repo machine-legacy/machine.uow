@@ -53,50 +53,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdoDotNet\AmbientScopeConnectionManager.cs" />
     <Compile Include="AdoDotNet\ManagedConnection.cs" />
     <Compile Include="AdoDotNet\NullConnectionManager.cs" />
     <Compile Include="AdoDotNet\TransientConnectionManager.cs" />
-    <Compile Include="AdoDotNet\UnitOfWorkConnectionManager.cs" />
-    <Compile Include="AdoDotNet\UnitOfWorkScopeConnectionManager.cs" />
-    <Compile Include="AmbientTransactions\AmbientTransactionHelpers.cs" />
-    <Compile Include="AmbientTransactions\AmbientTransactionSettings.cs" />
-    <Compile Include="AmbientTransactions\AmbientTransactionUnitOfWorkScopeProvider.cs" />
-    <Compile Include="AmbientTransactions\AmbientTransactionUoWProvider.cs" />
     <Compile Include="AdoDotNet\IConnectionProvider.cs" />
     <Compile Include="AdoDotNet\SqlServerConnectionProvider.cs" />
     <Compile Include="AdoDotNet\SqlServerConnectionStringHelpers.cs" />
-    <Compile Include="AmbientTransactions\TransactionState.cs" />
-    <Compile Include="CurrentUnitOfWorkScopeProvider.cs" />
-    <Compile Include="EnlistmentNotifications.cs" />
-    <Compile Include="GenericUnitOfWorkEvents.cs" />
-    <Compile Include="HttpContextUnitOfWorkProvider.cs" />
-    <Compile Include="HttpContextUnitOfWorkScopeProvider.cs" />
-    <Compile Include="HybridUnitOfWorkProvider.cs" />
-    <Compile Include="IScopeEvents.cs" />
-    <Compile Include="IUnitOfWork.cs" />
-    <Compile Include="IUnitOfWorkEvents.cs" />
-    <Compile Include="IUnitOfWorkFactory.cs" />
-    <Compile Include="IUnitOfWorkManagement.cs" />
-    <Compile Include="IUnitOfWorkProvider.cs" />
-    <Compile Include="IUnitOfWorkScopeProvider.cs" />
-    <Compile Include="IUnitOfWorkSettings.cs" />
-    <Compile Include="IUnitOfWorkScope.cs" />
-    <Compile Include="NullScopeProvider.cs" />
-    <Compile Include="NullUnitOfWork.cs" />
-    <Compile Include="NullUnitOfWorkEvents.cs" />
-    <Compile Include="NullUnitOfWorkProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scoping\SystemTransactionScope.cs" />
-    <Compile Include="Scoping\TransactionScope.cs" />
-    <Compile Include="ThreadStaticUnitOfWorkProvider.cs" />
-    <Compile Include="ThreadStaticUnitOfWorkScopeProvider.cs" />
-    <Compile Include="UnitOfWork.cs" />
-    <Compile Include="UnitOfWorkChangeType.cs" />
-    <Compile Include="UnitOfWorkEntry.cs" />
-    <Compile Include="UnitOfWorkFactory.cs" />
-    <Compile Include="UnitOfWorkManagement.cs" />
-    <Compile Include="UnitOfWorkScope.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.UoW.DatabaseContext.Web\Machine.UoW.DatabaseContext.Web.csproj">

@@ -5,7 +5,6 @@ using System.Transactions;
 
 using Machine.Specifications;
 using Machine.UoW.AdoDotNet;
-using Machine.UoW.AmbientTransactions;
 using Machine.UoW.DatabaseContext;
 using Machine.UoW.NHibernate.Specs;
 using Machine.UoW.Specs;
@@ -14,7 +13,6 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
 {
   public class AdoDotNetSpecs
   {
-    protected static IUnitOfWorkFactory factory;
     protected static IDbConnection connection;
     protected static Exception exception;
     protected static IDbConnection first;
@@ -24,11 +22,7 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
     {
       LoggingStartup loggingStartup = new LoggingStartup();
       loggingStartup.Start();
-      IUnitOfWorkManagement unitOfWorkManagement = new UnitOfWorkManagement();
-      unitOfWorkManagement.AddEvents(new NullUnitOfWorkEvents());
-      factory = new UnitOfWorkFactory(unitOfWorkManagement);
-      IUnitOfWorkProvider unitOfWorkProvider = new HybridUnitOfWorkProvider(factory);
-      SpecDatabase.Startup(unitOfWorkProvider, new ThreadStaticUnitOfWorkScopeProvider(NullScope.Null, factory), new NullSessionManager(), new UnitOfWorkConnectionManager(SqlHelper.Provider, unitOfWorkProvider));
+      SpecDatabase.Startup(new NullSessionManager(), new TransientConnectionManager(SqlHelper.Provider));
       first = null;
       second = null;
       connection = null;
@@ -40,7 +34,6 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
   {
     Because of = () =>
     {
-      using (SpecDatabase.Start())
       using (SpecDatabase.OpenConnection())
       {
         connection = Database.Connection;
@@ -56,7 +49,6 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
   {
     Because of = () =>
     {
-      using (SpecDatabase.Start())
       using (SpecDatabase.OpenConnection())
       {
         first = Database.Connection;
@@ -76,12 +68,10 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
   {
     Because of = () =>
     {
-      using (SpecDatabase.Start())
       using (SpecDatabase.OpenConnection())
       {
         first = Database.Connection;
       }
-      using (SpecDatabase.Start())
       using (SpecDatabase.OpenConnection())
       {
         second = Database.Connection;
@@ -100,7 +90,7 @@ namespace Machine.UoW.NHibernate.AdoNetSpecs
   {
     Establish context = () =>
     {
-      SpecDatabase.Startup(new NullUnitOfWorkProvider(), new AmbientTransactionUnitOfWorkScopeProvider(NullScope.Null, factory), new NullSessionManager(), new AmbientScopeConnectionManager(SqlHelper.Provider));
+      SpecDatabase.Startup(new NullSessionManager(), new TransientConnectionManager(SqlHelper.Provider));
     };
     
     Because of = () =>

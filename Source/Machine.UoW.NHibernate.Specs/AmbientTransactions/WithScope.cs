@@ -4,13 +4,11 @@ using System.Data;
 using System.Transactions;
 
 using Machine.UoW.AdoDotNet;
-using Machine.UoW.AmbientTransactions;
 using Machine.UoW.NHibernate.Specs.NorthwindModel;
 
 using Machine.Specifications;
 using Machine.UoW.Specs;
 using NHibernate;
-using IsolationLevel=System.Data.IsolationLevel;
 
 namespace Machine.UoW.NHibernate.Specs.AmbientTransactions
 {
@@ -133,10 +131,7 @@ namespace Machine.UoW.NHibernate.Specs.AmbientTransactions
         scope.Complete();
       }
 
-      IUnitOfWorkManagement unitOfWorkManagement = new UnitOfWorkManagement();
-      IUnitOfWorkFactory factory = new UnitOfWorkFactory(unitOfWorkManagement);
-      IUnitOfWorkScopeProvider scopeProvider = new AmbientTransactionUnitOfWorkScopeProvider(NullScope.Null, factory);
-      SpecDatabase.Startup(new NullUnitOfWorkProvider(scopeProvider), scopeProvider, new TransientSessionManager(sessionFactory), new AmbientScopeConnectionManager(SqlHelper.Provider));
+      SpecDatabase.Startup(new TransientSessionManager(sessionFactory), new TransientConnectionManager(SqlHelper.Provider));
     };
   }
 }

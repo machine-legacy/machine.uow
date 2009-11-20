@@ -12,11 +12,7 @@ namespace Machine.UoW.NHibernate.Specs
 
     Establish context = () =>
     {
-      IUnitOfWorkManagement unitOfWorkManagement = new UnitOfWorkManagement();
-      unitOfWorkManagement.AddEvents(new NHibernateUoWEvents());
-      IUnitOfWorkFactory factory = new UnitOfWorkFactory(unitOfWorkManagement);
-      IUnitOfWorkScopeProvider unitOfWorkScopeProvider = new ThreadStaticUnitOfWorkScopeProvider(NullScope.Null, factory);
-      SpecDatabase.Startup(new HybridUnitOfWorkProvider(factory), unitOfWorkScopeProvider, new TransientSessionManager(database.SessionFactory), new AmbientScopeConnectionManager(SqlHelper.Provider));
+      SpecDatabase.Startup(new TransientSessionManager(database.SessionFactory), new TransientConnectionManager(SqlHelper.Provider));
     };
   }
 }

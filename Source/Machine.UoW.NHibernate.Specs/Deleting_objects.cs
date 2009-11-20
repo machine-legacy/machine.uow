@@ -16,14 +16,14 @@ namespace Machine.UoW.NHibernate.Specs
 
     Because of = () =>
     {
-      using (var uow = SpecDatabase.Start())
+      // using (var uow = SpecDatabase.Start())
       using (var session = SpecDatabase.OpenSession())
       {
-        uow.Delete(NH.Session.Get<NorthwindEmployee>(id));
-        uow.Commit();
+        // uow.Delete(NH.Session.Get<NorthwindEmployee>(id));
+        // uow.Commit();
         session.Commit();
       }
-      using (var uow = SpecDatabase.Start())
+      // using (var uow = SpecDatabase.Start())
       using (var session = SpecDatabase.OpenSession())
       {
         employees = NH.Session.CreateQuery("FROM NorthwindEmployee").List<NorthwindEmployee>();
@@ -44,12 +44,12 @@ namespace Machine.UoW.NHibernate.Specs
 
     Because of = () =>
     {
-      using (var uow = SpecDatabase.Start())
+      // using (var uow = SpecDatabase.Start())
       using (var session = SpecDatabase.OpenSession())
       {
-        uow.Delete(NH.Session.Get<NorthwindEmployee>(id));
+        // uow.Delete(NH.Session.Get<NorthwindEmployee>(id));
       }
-      using (var uow = SpecDatabase.Start())
+      // using (var uow = SpecDatabase.Start())
       using (var session = SpecDatabase.OpenSession())
       {
         employees = NH.Session.CreateQuery("FROM NorthwindEmployee").List<NorthwindEmployee>();

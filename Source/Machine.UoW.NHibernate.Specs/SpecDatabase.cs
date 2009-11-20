@@ -7,20 +7,12 @@ namespace Machine.UoW.NHibernate.Specs
 {
   public static class SpecDatabase
   {
-    public static Func<IUnitOfWork> StartUoW;
-
-    public static IUnitOfWork Start()
-    {
-      return StartUoW();
-    }
-
     public static Func<IManagedSession> OpenSession;
 
     public static Func<IManagedConnection> OpenConnection;
 
-    public static void Startup(IUnitOfWorkProvider provider, IUnitOfWorkScopeProvider scopeProvider, ISessionManager sessionManager, IConnectionManager connectionManager)
+    public static void Startup(ISessionManager sessionManager, IConnectionManager connectionManager)
     {
-      StartUoW = () => provider.Start(scopeProvider.GetUnitOfWorkScope(), new IUnitOfWorkSettings[0]);
       OpenSession = () => sessionManager.OpenSession(String.Empty);
       OpenConnection = () => connectionManager.OpenConnection(String.Empty);
     }

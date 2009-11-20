@@ -170,8 +170,8 @@ namespace Machine.UoW.NHibernate.ManagerSpecs
     public static void Startup(ISessionFactory sessionFactory)
     {
       _connectionProvider = new MockConnectionProvider(); 
-      _sessionManager = new AmbientScopeSessionManager(sessionFactory);
-      _connectionManager = new AmbientScopeConnectionManager(_connectionProvider);
+      _sessionManager = new TransientSessionManager(sessionFactory);
+      _connectionManager = new TransientConnectionManager(_connectionProvider);
     }
   }
 

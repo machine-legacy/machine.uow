@@ -38,7 +38,7 @@ namespace Machine.UoW.NHibernate.Specs
 
     Because of = () =>
     {
-      using (var uow = SpecDatabase.Start())
+      // using (var uow = SpecDatabase.Start())
       using (var session = SpecDatabase.OpenSession())
       {
         employees = NH.Session.CreateQuery("FROM NorthwindEmployee").List<NorthwindEmployee>();

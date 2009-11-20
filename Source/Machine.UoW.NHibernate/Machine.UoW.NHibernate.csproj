@@ -69,19 +69,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AmbientScopeSessionManager.cs" />
     <Compile Include="KeyedSessionManager.cs" />
     <Compile Include="ManagedSession.cs" />
     <Compile Include="NestAndRestoreSessionManager.cs" />
-    <Compile Include="NHibernateUoWEvents.cs" />
     <Compile Include="NullSessionManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScopedSessionManager.cs" />
     <Compile Include="SessionWrapper.cs" />
     <Compile Include="SingletonSessionManager.cs" />
     <Compile Include="TransientSessionManager.cs" />
-    <Compile Include="UnitOfWorkScopeSessionManager.cs" />
-    <Compile Include="UnitOfWorkSessionManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.UoW.DatabaseContext.Web\Machine.UoW.DatabaseContext.Web.csproj">
