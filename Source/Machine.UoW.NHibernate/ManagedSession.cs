@@ -1,68 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
 
 using NHibernate;
 
-using Machine.UoW.AdoDotNet;
-using NHibernate.Transaction;
-
 namespace Machine.UoW.NHibernate
 {
-  public class ManagedTransactionSession : IManagedSession
-  {
-    readonly static log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ManagedTransactionSession));
-    readonly ManagedSession _parent;
-    readonly ITransaction _transaction;
-    readonly ManagedConnection _connection;
-
-    public ManagedTransactionSession(ManagedSession parent, ISession session)
-    {
-      _log.Debug("Begin");
-      _parent = parent;
-      _transaction = session.BeginTransaction();
-      _connection = new ManagedConnection(session.Connection, SorryAboutThisHackToGetTransactionsFromNH.GetAdoNetTransaction(session));
-    }
-
-    public void Save<T>(T value)
-    {
-      _parent.Save(value);
-    }
-
-    public void Delete<T>(T value)
-    {
-      _parent.Delete(value);
-    }
-
-    public IManagedSession Begin()
-    {
-      throw new InvalidOperationException();
-    }
-
-    public void Rollback()
-    {
-      _log.Debug("Rollback");
-      _transaction.Rollback();
-    }
-
-    public void Commit()
-    {
-      _log.Debug("Commit");
-      _transaction.Commit();
-    }
-
-    public void Dispose()
-    {
-      _log.Debug("Dispose");
-      _transaction.Dispose();
-      _connection.Dispose();
-      _parent.ClearTransaction();
-    }
-  }
-  
   public class ManagedSession : IManagedSession
   {
     readonly static log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ManagedSession));

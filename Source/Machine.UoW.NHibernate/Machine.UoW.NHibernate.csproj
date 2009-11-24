@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ISessionManager.cs" />
+    <Compile Include="ManagedTransactionSession.cs" />
     <Compile Include="SessionContextSessionManager.cs" />
     <Compile Include="ManagedSession.cs" />
     <Compile Include="NullSessionManager.cs" />
