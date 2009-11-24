@@ -13,7 +13,7 @@ namespace Machine.UoW.NHibernate.Specs
 
     public static void Startup(ISessionManager sessionManager, IConnectionManager connectionManager)
     {
-      OpenSession = () => sessionManager.OpenSession(String.Empty);
+      OpenSession = () => sessionManager.OpenSession();
       OpenConnection = () => connectionManager.OpenConnection(String.Empty);
     }
   }

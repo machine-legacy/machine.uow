@@ -69,14 +69,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="KeyedSessionManager.cs" />
+    <Compile Include="ISessionManager.cs" />
+    <Compile Include="SessionContextSessionManager.cs" />
     <Compile Include="ManagedSession.cs" />
-    <Compile Include="NestAndRestoreSessionManager.cs" />
     <Compile Include="NullSessionManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScopedSessionManager.cs" />
-    <Compile Include="SessionWrapper.cs" />
-    <Compile Include="SingletonSessionManager.cs" />
+    <Compile Include="SessionFactories.cs" />
     <Compile Include="TransientSessionManager.cs" />
   </ItemGroup>
   <ItemGroup>

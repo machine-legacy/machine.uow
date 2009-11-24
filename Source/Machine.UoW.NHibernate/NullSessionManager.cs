@@ -6,16 +6,7 @@ namespace Machine.UoW.NHibernate
   {
     public IManagedSession OpenSession()
     {
-      return OpenSession(String.Empty);
-    }
-
-    public IManagedSession OpenSession(object key)
-    {
       return NullManagedSession.Null;
-    }
-
-    public void DisposeAndRemoveSession(object key)
-    {
     }
   }
 

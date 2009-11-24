@@ -14,17 +14,7 @@ namespace Machine.UoW.NHibernate
 
     public IManagedSession OpenSession()
     {
-      return OpenSession(String.Empty);
-    }
-
-    public IManagedSession OpenSession(object key)
-    {
       return new ManagedSession(_sessionFactory.OpenSession(), true);
-    }
-
-    public void DisposeAndRemoveSession(object key)
-    {
-      throw new InvalidOperationException("Cannot dispose and remove from TransientSessionManager");
     }
   }
 }

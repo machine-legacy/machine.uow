@@ -14,12 +14,14 @@ namespace Machine.UoW.NHibernate
 {
   public class ManagedTransactionSession : IManagedSession
   {
+    readonly static log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ManagedTransactionSession));
     readonly ManagedSession _parent;
     readonly ITransaction _transaction;
     readonly ManagedConnection _connection;
 
     public ManagedTransactionSession(ManagedSession parent, ISession session)
     {
+      _log.Debug("Begin");
       _parent = parent;
       _transaction = session.BeginTransaction();
       _connection = new ManagedConnection(session.Connection, SorryAboutThisHackToGetTransactionsFromNH.GetAdoNetTransaction(session));
@@ -42,16 +44,19 @@ namespace Machine.UoW.NHibernate
 
     public void Rollback()
     {
+      _log.Debug("Rollback");
       _transaction.Rollback();
     }
 
     public void Commit()
     {
+      _log.Debug("Commit");
       _transaction.Commit();
     }
 
     public void Dispose()
     {
+      _log.Debug("Dispose");
       _transaction.Dispose();
       _connection.Dispose();
       _parent.ClearTransaction();
@@ -60,6 +65,7 @@ namespace Machine.UoW.NHibernate
   
   public class ManagedSession : IManagedSession
   {
+    readonly static log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ManagedSession));
     readonly ISession _session;
     readonly bool _shouldDispose;
     ManagedTransactionSession _transaction;
@@ -67,6 +73,7 @@ namespace Machine.UoW.NHibernate
 
     public ManagedSession(ISession session, bool shouldDispose)
     {
+      _log.Debug("Begin");
       _session = session;
       _shouldDispose = shouldDispose;
       _transaction = new ManagedTransactionSession(this, session);
@@ -101,6 +108,7 @@ namespace Machine.UoW.NHibernate
     public void Rollback()
     {
       if (_transaction == null) throw new InvalidOperationException("No transaction");
+      _log.Debug("Rollback");
       _transaction.Rollback();
       _transaction.Dispose();
       ClearTransaction();
@@ -109,6 +117,7 @@ namespace Machine.UoW.NHibernate
     public void Commit()
     {
       if (_transaction == null) throw new InvalidOperationException("No transaction");
+      _log.Debug("Commit");
       _transaction.Commit();
       _transaction.Dispose();
       ClearTransaction();
@@ -116,6 +125,7 @@ namespace Machine.UoW.NHibernate
 
     public void Dispose()
     {
+      _log.Debug("Dispose");
       NH.Session = null;
       if (_transaction != null)
       {
@@ -140,12 +150,5 @@ namespace Machine.UoW.NHibernate
     IManagedSession Begin();
     void Rollback();
     void Commit();
-  }
-
-  public interface ISessionManager
-  {
-    IManagedSession OpenSession();
-    IManagedSession OpenSession(object key);
-    void DisposeAndRemoveSession(object key);
   }
 }

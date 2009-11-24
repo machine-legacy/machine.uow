@@ -159,7 +159,7 @@ namespace Machine.UoW.NHibernate.ManagerSpecs
 
     public static IManagedSession OpenSession()
     {
-      return _sessionManager.OpenSession(String.Empty);
+      return _sessionManager.OpenSession();
     }
 
     public static IManagedConnection OpenConnection()
