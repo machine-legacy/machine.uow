@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DatabaseBase.cs" />
     <Compile Include="ISessionManager.cs" />
     <Compile Include="ManagedTransactionSession.cs" />
     <Compile Include="SessionContextSessionManager.cs" />

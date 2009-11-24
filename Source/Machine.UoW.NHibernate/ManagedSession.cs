@@ -41,7 +41,7 @@ namespace Machine.UoW.NHibernate
           _inFirstTransaction = false;
           return _transaction;
         }
-        throw new InvalidOperationException("can't open multiple transactions");
+        throw new InvalidOperationException("Can't open multiple transactions");
       }
       _transaction = new ManagedTransactionSession(this, _session);
       return _transaction;
@@ -52,7 +52,6 @@ namespace Machine.UoW.NHibernate
       if (_transaction == null) throw new InvalidOperationException("No transaction");
       _log.Debug("Rollback");
       _transaction.Rollback();
-      _transaction.Dispose();
       ClearTransaction();
     }
 
@@ -61,7 +60,6 @@ namespace Machine.UoW.NHibernate
       if (_transaction == null) throw new InvalidOperationException("No transaction");
       _log.Debug("Commit");
       _transaction.Commit();
-      _transaction.Dispose();
       ClearTransaction();
     }
 

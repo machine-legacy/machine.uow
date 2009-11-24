@@ -24,5 +24,15 @@ namespace Machine.UoW.NHibernate
       CurrentSessionContext.Bind(session);
       return new ManagedSession(session, false);
     }
+
+    public IManagedSession OpenSession(string key)
+    {
+      return OpenSession();
+    }
+
+    public ISession CurrentSession()
+    {
+      return _sessionFactory.GetCurrentSession();
+    }
   }
 }

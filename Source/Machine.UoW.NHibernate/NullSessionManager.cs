@@ -1,4 +1,5 @@
 using System;
+using NHibernate;
 
 namespace Machine.UoW.NHibernate
 {
@@ -7,6 +8,16 @@ namespace Machine.UoW.NHibernate
     public IManagedSession OpenSession()
     {
       return NullManagedSession.Null;
+    }
+
+    public IManagedSession OpenSession(string key)
+    {
+      return OpenSession();
+    }
+
+    public ISession CurrentSession()
+    {
+      throw new InvalidOperationException();
     }
   }
 
