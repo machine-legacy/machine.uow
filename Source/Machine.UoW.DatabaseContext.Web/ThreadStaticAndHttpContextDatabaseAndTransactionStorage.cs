@@ -22,12 +22,12 @@ namespace Machine.UoW.DatabaseContext.Web
       get
       {
         if (HttpContext.Current == null)
-          return _threadStaticAndHttpContextContextStorage;
+          return _threadStaticContextContextStorage;
         return _httpContextContextStorage;
       }
     }
 
-    readonly IContextStorage<T> _threadStaticAndHttpContextContextStorage = new ThreadStaticStorage<T>();
+    readonly IContextStorage<T> _threadStaticContextContextStorage = new ThreadStaticStorage<T>();
     readonly IContextStorage<T> _httpContextContextStorage = new HttpContextStorage<T>();
   }
 }
