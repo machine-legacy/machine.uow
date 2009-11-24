@@ -36,6 +36,11 @@ namespace Machine.UoW.DatabaseContext
       get { return !Stack.Any(); }
     }
 
+    public void Clear()
+    {
+      Stack.Clear();
+    }
+
     public T Pop()
     {
       return Stack.Pop();

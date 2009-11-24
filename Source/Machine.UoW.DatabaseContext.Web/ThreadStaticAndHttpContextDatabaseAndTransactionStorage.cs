@@ -34,6 +34,11 @@ namespace Machine.UoW.DatabaseContext.Web
       get { return CurrentStorage.IsEmpty; }
     }
 
+    public void Clear()
+    {
+      CurrentStorage.Clear();
+    }
+
     public T Pop()
     {
       return CurrentStorage.Pop();

@@ -7,6 +7,7 @@ namespace Machine.UoW.DatabaseContext
     T Peek();
     void Push(T value);
     bool IsEmpty { get; }
+    void Clear();
     T Pop();
   }
 }
