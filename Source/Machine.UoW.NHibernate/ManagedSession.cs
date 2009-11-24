@@ -19,7 +19,7 @@ namespace Machine.UoW.NHibernate
       _session = session;
       _shouldDispose = shouldDispose;
       _transaction = new ManagedTransactionSession(this, session);
-      NH.Session = _session;
+      NH.Storage.Push(_session);
     }
 
     public void Save<T>(T value)
@@ -68,7 +68,8 @@ namespace Machine.UoW.NHibernate
     public void Dispose()
     {
       _log.Debug("Dispose");
-      NH.Session = null;
+      if (_session != NH.Storage.Pop())
+        throw new InvalidOperationException("Popped session is NOT the one that was pushed?");
       if (_transaction != null)
       {
         _transaction.Dispose();

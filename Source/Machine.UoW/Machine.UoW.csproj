@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdoDotNet\IConnectionManager.cs" />
     <Compile Include="AdoDotNet\ManagedConnection.cs" />
     <Compile Include="AdoDotNet\NullConnectionManager.cs" />
     <Compile Include="AdoDotNet\TransientConnectionManager.cs" />

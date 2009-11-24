@@ -1,5 +1,5 @@
 using System;
-using System.Data;
+using System.Collections.Generic;
 using System.Web;
 
 namespace Machine.UoW.DatabaseContext.Web
@@ -8,9 +8,9 @@ namespace Machine.UoW.DatabaseContext.Web
   {
     readonly Guid _id = Guid.NewGuid();
 
-    protected override T InternalValue
+    protected override Stack<T> InternalStack
     {
-      get { return (T) HttpContext.Current.Items[_id.ToString()]; }
+      get { return (Stack<T>)HttpContext.Current.Items[_id.ToString()]; }
       set { HttpContext.Current.Items[_id.ToString()] = value; }
     }
   }

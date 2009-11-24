@@ -22,24 +22,22 @@ namespace Machine.UoW.DatabaseContext
 
     public static IDbConnection Connection
     {
-      get { return _connectionStorage.StoredValue; }
-      set { _connectionStorage.StoredValue = value; }
+      get { return _connectionStorage.Peek(); }
     }
 
     public static bool HasConnection
     {
-      get { return _connectionStorage.HasValue; }
+      get { return !_connectionStorage.IsEmpty; }
     }
     
     public static IDbTransaction Transaction
     {
-      get { return _transactionStorage.StoredValue; }
-      set { _transactionStorage.StoredValue = value; }
+      get { return _transactionStorage.Peek(); }
     }
 
     public static bool HasTransaction
     {
-      get { return _transactionStorage.HasValue; }
+      get { return !_transactionStorage.IsEmpty; }
     }
   }
 }

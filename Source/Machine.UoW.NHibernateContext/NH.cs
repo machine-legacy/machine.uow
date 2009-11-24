@@ -19,13 +19,12 @@ namespace Machine.UoW.NHibernate
 
     public static ISession Session
     {
-      get { return _sessionStorage.StoredValue; }
-      set { _sessionStorage.StoredValue = value; }
+      get { return _sessionStorage.Peek(); }
     }
 
     public static bool HasSession
     {
-      get { return _sessionStorage.HasValue; }
+      get { return !_sessionStorage.IsEmpty; }
     }
   }
 }

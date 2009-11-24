@@ -14,36 +14,32 @@ namespace Machine.UoW.AdoDotNet
     {
       _connection = connection;
       _transaction = transaction;
-      Database.Connection = _connection;
-      Database.Transaction = _transaction;
+      Database.ConnectionStorage.Push(_connection);
+      Database.TransactionStorage.Push(_transaction);
     }
 
     public ManagedConnection(IDbConnection connection)
     {
       _transaction = connection.BeginTransaction();
       _connection = connection;
-      Database.Connection = _connection;
-      Database.Transaction = _transaction;
+      Database.ConnectionStorage.Push(_connection);
+      Database.TransactionStorage.Push(_transaction);
     }
 
     public void Rollback()
     {
-      Database.Transaction = null;
-      Database.Connection = null;
       if (_transaction != null) _transaction.Rollback();
     }
 
     public void Commit()
     {
-      Database.Transaction = null;
-      Database.Connection = null;
       if (_transaction != null) _transaction.Commit();
     }
 
     public void Dispose()
     {
-      Database.Transaction = null;
-      Database.Connection = null;
+      Database.ConnectionStorage.Pop();
+      Database.TransactionStorage.Pop();
       if (_transaction != null) _transaction.Dispose();
     }
   }
@@ -52,10 +48,5 @@ namespace Machine.UoW.AdoDotNet
   {
     void Rollback();
     void Commit();
-  }
-
-  public interface IConnectionManager
-  {
-    IManagedConnection OpenConnection(object key);
   }
 }

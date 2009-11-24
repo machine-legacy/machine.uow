@@ -1,38 +1,44 @@
 using System;
-using System.Data;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Machine.UoW.DatabaseContext
 {
   public abstract class StorageBase<T> : IContextStorage<T> where T : class
   {
-    protected abstract T InternalValue { get; set; }
-
-    public T StoredValue
+    protected abstract Stack<T> InternalStack { get; set; }
+    protected Stack<T> Stack
     {
       get
       {
-        if (InternalValue == null)
-        {
-          throw new NoStoredValueException("There is no " + typeof(T) + " available!");
-        }
-        return InternalValue;
-      }
-      set
-      {
-        if (InternalValue != value)
-        {
-          if (InternalValue != null && value != null)
-          {
-            throw new InvalidOperationException("Trying to use another " + typeof(T) + " when one is already in use!");
-          }
-        }
-        InternalValue = value;
+        var stack = this.InternalStack ?? new Stack<T>();
+        this.InternalStack = stack;
+        return stack;
       }
     }
 
-    public bool HasValue
+    public T Peek()
     {
-      get { return InternalValue != null; }
+      if (IsEmpty)
+      {
+        throw new NoStoredValueException("There is no " + typeof(T) + " available!");
+      }
+      return Stack.Peek();
+    }
+
+    public void Push(T value)
+    {
+      Stack.Push(value);
+    }
+
+    public bool IsEmpty
+    {
+      get { return !Stack.Any(); }
+    }
+
+    public T Pop()
+    {
+      return Stack.Pop();
     }
   }
 }
