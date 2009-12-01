@@ -29,7 +29,7 @@ namespace Machine.UoW.NHibernate
       Startup(new NullSessionManager());
     }
 
-    public static void WithSession(Action action)
+    public static void With(Action action)
     {
       using (var session = OpenSession())
       {
@@ -38,7 +38,7 @@ namespace Machine.UoW.NHibernate
       }
     }
 
-    public static T WithSession<T>(Func<T> func)
+    public static T With<T>(Func<T> func)
     {
       using (var session = OpenSession())
       {

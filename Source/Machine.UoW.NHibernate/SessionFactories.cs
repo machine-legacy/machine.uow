@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Machine.Core.Utility;
 using NHibernate;
 using NHibernate.Context;
-using NHibernate.Engine;
 
 namespace Machine.UoW.NHibernate
 {
@@ -47,28 +46,6 @@ namespace Machine.UoW.NHibernate
       ForEach(sf => {
         CurrentSessionContext.Unbind(sf);
       });
-    }
-  }
-
-  [Serializable]
-  public class WebSessionContext : MapBasedSessionContext
-  {
-    private readonly string SessionFactoryMapKey = "WebSessionContext.SessionFactoryMapKey.";
-
-    public WebSessionContext(ISessionFactoryImplementor factory)
-      : base(factory)
-    {
-      SessionFactoryMapKey += Guid.NewGuid().ToString();
-    }
-
-    protected override System.Collections.IDictionary GetMap()
-    {
-      return (System.Web.HttpContext.Current.Items[SessionFactoryMapKey] as System.Collections.IDictionary);
-    }
-
-    protected override void SetMap(System.Collections.IDictionary value)
-    {
-      System.Web.HttpContext.Current.Items[SessionFactoryMapKey] = value;
     }
   }
 }

@@ -21,8 +21,7 @@ namespace Machine.UoW.NHibernate
         return new ManagedSession(_sessionFactory.GetCurrentSession(), false);
       }
       var session = _sessionFactory.OpenSession();
-      CurrentSessionContext.Bind(session);
-      return new ManagedSession(session, false);
+      return new ManagedSession(session, true);
     }
 
     public IManagedSession OpenSession(string key)

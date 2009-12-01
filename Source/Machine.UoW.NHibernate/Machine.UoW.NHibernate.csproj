@@ -78,6 +78,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SessionFactories.cs" />
     <Compile Include="TransientSessionManager.cs" />
+    <Compile Include="WebSessionContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.UoW.DatabaseContext.Web\Machine.UoW.DatabaseContext.Web.csproj">
