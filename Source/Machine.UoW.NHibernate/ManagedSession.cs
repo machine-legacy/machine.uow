@@ -15,7 +15,6 @@ namespace Machine.UoW.NHibernate
 
     public ManagedSession(ISession session, bool shouldDispose)
     {
-      _log.Debug("Begin");
       _session = session;
       _shouldDispose = shouldDispose;
       _transaction = new ManagedTransactionSession(this, session);
@@ -50,7 +49,6 @@ namespace Machine.UoW.NHibernate
     public void Rollback()
     {
       if (_transaction == null) throw new InvalidOperationException("No transaction");
-      _log.Debug("Rollback");
       _transaction.Rollback();
       ClearTransaction();
     }
@@ -58,14 +56,12 @@ namespace Machine.UoW.NHibernate
     public void Commit()
     {
       if (_transaction == null) throw new InvalidOperationException("No transaction");
-      _log.Debug("Commit");
       _transaction.Commit();
       ClearTransaction();
     }
 
     public void Dispose()
     {
-      _log.Debug("Dispose");
       if (_session != NH.Storage.Pop())
         throw new InvalidOperationException("Popped session is NOT the one that was pushed?");
       if (_transaction != null)

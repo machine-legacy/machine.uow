@@ -16,7 +16,6 @@ namespace Machine.UoW.NHibernate
     {
       _parent = parent;
       _transactionOwner = !session.Transaction.IsActive;
-      _log.Debug("Begin: " + (_transactionOwner ? "Owner" : ""));
       _transaction = session.BeginTransaction();
       _connection = new ManagedConnection(session.Connection, SorryAboutThisHackToGetTransactionsFromNH.GetAdoNetTransaction(session));
     }
@@ -40,7 +39,6 @@ namespace Machine.UoW.NHibernate
     {
       if (_transaction.WasCommitted || _transaction.WasRolledBack)
         return;
-      _log.Debug("Rollback");
       _transaction.Rollback();
     }
 
@@ -48,15 +46,12 @@ namespace Machine.UoW.NHibernate
     {
       if (!_transactionOwner)
       {
-        _log.Debug("Commit (ChildIgnoring)");
         return;
       }
       if (_transaction.WasRolledBack)
       {
-        _log.Debug("Commit (After Rollback)");
         return;
       }
-      _log.Debug("Commit");
       _transaction.Commit();
     }
 
@@ -64,12 +59,7 @@ namespace Machine.UoW.NHibernate
     {
       if (_transactionOwner)
       {
-        _log.Debug("Dispose (Owner)");
         _transaction.Dispose();
-      }
-      else
-      {
-        _log.Debug("Dispose (Nothing)");
       }
       _connection.Dispose();
       _parent.ClearTransaction();
